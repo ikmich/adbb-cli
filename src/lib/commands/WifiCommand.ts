@@ -2,10 +2,11 @@ import BaseCommand from './BaseCommand';
 import chalk = require('chalk');
 import NetConfig from '../NetConfig';
 import config from '../../config';
-import { LOOPBACK_ADDRESS } from '../constants';
+import {LOOPBACK_ADDRESS} from '../constants';
 import DifferentNetworksError from '../errors/DifferentNetworksError';
 import errorParser from '../errors/error-parser';
 import buildAdbCommand from '../helpers/build-adb-command';
+import UndefinedNetworkConfigError from "../errors/UndefinedNetworkConfigError";
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -80,8 +81,11 @@ class WifiCommand extends BaseCommand {
 
     async getDeviceIp(): Promise<string> {
         let networkConfigs = await this.getDeviceNetworkConfigs();
+        if (!networkConfigs) {
+            throw new UndefinedNetworkConfigError();
+        }
         for (let nc of networkConfigs) {
-            if (/wlan/.test(nc.netInterface) && nc.scope != 'lo') {
+            if ((/wlan/.test(nc.netInterface) || /rmnet/.test(nc.netInterface)) && nc.scope != 'lo') {
                 return Promise.resolve(nc.ip);
             }
         }
@@ -118,7 +122,7 @@ class WifiCommand extends BaseCommand {
                 deviceIpParts[1] === hostIpParts[1] &&
                 deviceIpParts[2] === hostIpParts[2]
             ) {
-                // Same network
+                // => Same network
                 const tcpipOutput = await this.exec(await buildAdbCommand('tcpip 5555'));
                 setTimeout(async () => {
                     const connectOutput = await this.exec(await buildAdbCommand(`connect ${deviceIp}:5555`));

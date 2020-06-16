@@ -5,7 +5,6 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node src/index.ts",
-    "debug": "cross-env NODE_ENV=development --inspect=54321 ts-node src/index.ts",
     "build": "rm -rf ./dist && tsc",
     "deploy": "npm uninstall -g adbb && yarn build && npm install -g",
     "start": "link-module-alias node dist/index.js",

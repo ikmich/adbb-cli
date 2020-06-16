@@ -1,17 +1,14 @@
-import {CommandInfo} from '../../types/CommandInfo.type';
+import { CommandInfo } from '../../types/CommandInfo.type';
 import WifiCommand from '../commands/WifiCommand';
-import {CMD_CLEAR, CMD_DEVICES, CMD_EMU, CMD_EMULATOR, CMD_PACKAGES, CMD_PKGS, CMD_WIFI} from '../constants';
+import { CMD_CLEAR, CMD_DEVICES, CMD_EMU, CMD_EMULATOR, CMD_PACKAGES, CMD_PKGS, CMD_WIFI } from '../constants';
 import DevicesCommand from '../commands/DevicesCommand';
 import PackagesCommand from '../commands/PackagesCommand';
 import getCliCommandString from './get-cli-command-string';
-import ClearCommand from "../commands/ClearCommand";
-import errorParser from "../errors/error-parser";
-import {ChildProcessWithoutNullStreams, spawn} from "child_process";
+import ClearCommand from '../commands/ClearCommand';
+import errorParser from '../errors/error-parser';
+import runShellCmd from './run-shell-cmd';
+import LaunchEmulatorCommand from '../commands/LaunchEmulatorCommand';
 import chalk = require('chalk');
-import runShellCmd from "./run-shell-cmd";
-import LaunchEmulatorCommand from "../commands/LaunchEmulatorCommand";
-
-const sys = require('process');
 
 const commandDispatcher = {
     dispatch: async (commandInfo: CommandInfo) => {
@@ -64,7 +61,7 @@ const commandDispatcher = {
 
                 break;
         }
-    }
+    },
 };
 
 export default commandDispatcher;

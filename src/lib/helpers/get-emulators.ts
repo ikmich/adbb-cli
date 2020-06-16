@@ -7,7 +7,6 @@ const getEmulators = async (): Promise<string[]> => {
     const rexGlobal = /\w+/gmi;
     const emulators: any = output.match(rexGlobal);
     if (emulators && emulators.length > 0) {
-        // console.log('>> globalMatches:', emulators);
         results = emulators;
     }
 
