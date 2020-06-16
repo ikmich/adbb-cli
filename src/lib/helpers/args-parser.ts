@@ -1,0 +1,39 @@
+import config from "../../config";
+import {CommandInfo} from "../../types/CommandInfo.type";
+
+const argsParser = {
+    parse: (argv: any): CommandInfo => {
+        let commandInfo: CommandInfo = {
+            name: '',
+            args: [],
+            options: {}
+        };
+
+        const commands = argv._;
+        commandInfo.name = (commands && commands.length > 0 ? commands[0] : '').trim();
+
+        argv._.forEach((arg: string, idx: number) => {
+            if (idx > 0) {
+                commandInfo.args.push(arg);
+            }
+        });
+
+        if (config.isDev()) {
+            console.log('>> args:', commandInfo.args);
+        }
+
+        for (let o in argv) {
+            if (argv.hasOwnProperty(o) && o !== '_' && o !== '$0') {
+                commandInfo.options[o] = argv[o];
+            }
+        }
+
+        if (config.isDev()) {
+            console.log('>>> flags', commandInfo.options);
+        }
+
+        return commandInfo;
+    }
+};
+
+export default argsParser;
