@@ -2,6 +2,7 @@ import BaseCommand from './BaseCommand';
 import consolePrint from '../helpers/console-print';
 import IpManager from '../IpManager';
 import NetConfig from '../NetConfig';
+import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError';
 
 class IpCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -16,6 +17,9 @@ class IpCommand extends BaseCommand {
             for (let netConfig of netConfigs) {
                 output += netConfig.ip + '\n';
             }
+        } else {
+            const e = new UndefinedNetworkConfigError();
+            consolePrint.error(e.message);
         }
         output = output.replace(/\n+$/, '');
 
