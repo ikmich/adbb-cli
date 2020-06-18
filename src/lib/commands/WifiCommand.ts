@@ -1,12 +1,16 @@
 import BaseCommand from './BaseCommand';
-import chalk = require('chalk');
 import NetConfig from '../NetConfig';
 import config from '../../config';
-import {LOOPBACK_ADDRESS} from '../constants';
+import { LOOPBACK_ADDRESS } from '../../constants';
 import DifferentNetworksError from '../errors/DifferentNetworksError';
 import errorParser from '../errors/error-parser';
 import buildAdbCommand from '../helpers/build-adb-command';
-import UndefinedNetworkConfigError from "../errors/UndefinedNetworkConfigError";
+import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError';
+import chalk = require('chalk');
+import IpManager from '../IpManager';
+import consolePrint from '../helpers/console-print';
+import { no } from '../helpers/utils';
+import spawnShellCmd from '../helpers/spawn-shell-cmd';
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -14,100 +18,37 @@ class WifiCommand extends BaseCommand {
         this.printOutput = false;
     }
 
-    async getHostIp() {
-        let ip = '';
-        try {
-            let ifconfig = await this.exec('ifconfig | grep inet');
-            // console.log('>> ifconfig:', ifconfig);
-
-            let rexConfigs = /inet (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gim;
-            let configLineMatches: any = ifconfig.match(rexConfigs);
-
-            for (let configLine of configLineMatches) {
-                if (configLine.indexOf(LOOPBACK_ADDRESS) > -1) {
-                    continue;
-                }
-
-                let rexIp = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/i;
-                let ipResults: any = configLine.match(rexIp);
-                if (ipResults && ipResults.length > 0) {
-                    //console.log('-->>>> ipResults', ipResults);
-                    ip = ipResults[1];
-                }
-            }
-        } catch (e) {
-            console.log(chalk.red(`Could not get host ip: ${e.message}`));
-        }
-
-        return ip;
-    }
-
-    async getDeviceNetworkConfigs(): Promise<NetConfig[]> {
-        let shellCmd = await buildAdbCommand('shell ip -f inet addr | grep inet');
-        let netConfigs: NetConfig[] = [];
-
-        try {
-            let cmdOutput = await this.exec(shellCmd);
-            let rexConfigString = /(inet \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,3}\s+.*scope\s+\w+\s+\w+$)/gim;
-            let allConfigsMatches: any = cmdOutput.match(rexConfigString);
-
-            if (allConfigsMatches && allConfigsMatches.length > 0) {
-                allConfigsMatches.forEach((configString: string, idx: number) => {
-                    if (config.isDev()) {
-                        // console.log(`>> config: ${idx}`, configString);
-                    }
-
-                    let rex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,3})\s+.*scope\s+(\w+)\s+(\w+$)/i;
-                    let singleConfigMatches: any = configString.match(rex);
-                    if (singleConfigMatches && singleConfigMatches.length > 0) {
-                        let ip = singleConfigMatches[1].replace(/\/\d{1,3}$/, '');
-                        let scope = singleConfigMatches[2];
-                        let netInterface = singleConfigMatches[3];
-
-                        netConfigs.push(new NetConfig(ip, scope, netInterface));
-                        if (config.isDev()) {
-                            // console.log(`>> matches ${idx}:`, singleConfigMatches);
-                            // console.log('\n');
-                        }
-                    }
-                });
-            }
-        } catch (e) {
-            throw errorParser.parse(e);
-        }
-
-        return netConfigs;
-    }
-
-    async getDeviceIp(): Promise<string> {
-        let networkConfigs = await this.getDeviceNetworkConfigs();
-        if (!networkConfigs) {
-            throw new UndefinedNetworkConfigError();
-        }
-        for (let nc of networkConfigs) {
-            if ((/wlan/.test(nc.netInterface) || /rmnet/.test(nc.netInterface)) && nc.scope != 'lo') {
-                return Promise.resolve(nc.ip);
-            }
-        }
-        return Promise.reject('Could not get device ip');
-    }
-
     async run() {
+        const ipManager = new IpManager();
+        let deviceIp;
+        try {
+            deviceIp = await ipManager.getDeviceIp();
+        } catch (e) {
+            consolePrint.error(e.message);
+            return;
+        }
+
+        if (no(deviceIp)) {
+            consolePrint.error('Empty device ip');
+            return;
+        }
+
         if (this.options.disconnect) {
             console.log('Disconnecting...');
             try {
-                const deviceIp = await this.getDeviceIp();
+                // const deviceIp = await ipManager.getDeviceIp();
                 const output = await this.exec(await buildAdbCommand(`disconnect ${deviceIp}`));
                 console.log(chalk.blueBright(output));
             } catch (e) {
+                e = errorParser.parse(e);
                 console.log(chalk.red(`${e.message}`));
             }
             return;
         }
 
         try {
-            const deviceIp = await this.getDeviceIp();
-            const hostIp = await this.getHostIp();
+            //const deviceIp = await this.getDeviceIp();
+            const hostIp = await ipManager.getHostIp();
 
             if (config.isDev()) {
                 console.log('>> device ip: ', deviceIp);
@@ -123,11 +64,39 @@ class WifiCommand extends BaseCommand {
                 deviceIpParts[2] === hostIpParts[2]
             ) {
                 // => Same network
-                const tcpipOutput = await this.exec(await buildAdbCommand('tcpip 5555'));
+                const adbTcpipCmd = await buildAdbCommand('tcpip 5555');
+                /*const tcpipOutput = await this.exec(adbTcpipCmd);
                 setTimeout(async () => {
                     const connectOutput = await this.exec(await buildAdbCommand(`connect ${deviceIp}:5555`));
                     console.log(chalk.blueBright(connectOutput));
-                }, 200);
+                }, 200);*/
+
+                spawnShellCmd(adbTcpipCmd, {
+                    close: function(code: number, signal: NodeJS.Signals) {},
+                    error: function(e: Error) {
+                        throw e;
+                    },
+                    stderr: function(stderr: string) {
+                        throw new Error(stderr);
+                    },
+                    stdout: async function(tcpipOutput: string) {
+                        consolePrint.info(tcpipOutput);
+                        //
+                        const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:5555`);
+                        spawnShellCmd(adbConnectCmd, {
+                            close: function(code: number, signal: NodeJS.Signals) {},
+                            error: function(e: Error) {
+                                throw e;
+                            },
+                            stderr: function(stderr: string) {
+                                throw new Error(stderr);
+                            },
+                            stdout: function(output: string) {
+                                consolePrint.info(output);
+                            },
+                        });
+                    },
+                });
             } else {
                 // noinspection ExceptionCaughtLocallyJS
                 throw new DifferentNetworksError();

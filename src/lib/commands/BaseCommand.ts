@@ -1,14 +1,14 @@
-import {CommandOptionsType} from '../../types/CommandOptions.type';
-import {CommandInfo} from "../../types/CommandInfo.type";
-import runShellCmd from "../helpers/run-shell-cmd";
-import errorParser from "../errors/error-parser";
+import { ICommandOptions } from '../../types/ICommandOptions';
+import { ICommandInfo } from '../../types/ICommandInfo';
+import execShellCmd from '../helpers/exec-shell-cmd';
+import errorParser from '../errors/error-parser';
+import ifConcat from '../helpers/if-concat';
 
 class BaseCommand {
-
-    public commandInfo: CommandInfo;
+    public commandInfo: ICommandInfo;
     protected name: string;
     protected args: string[] = [];
-    protected options: CommandOptionsType = {
+    protected options: ICommandOptions = {
         verbose: false,
     };
 
@@ -22,22 +22,35 @@ class BaseCommand {
      */
     protected printOutput: boolean = false;
 
-    constructor(commandInfo: CommandInfo) {
+    constructor(commandInfo: ICommandInfo) {
         this.commandInfo = commandInfo;
         this.name = commandInfo.name;
         this.args = commandInfo.args;
         this.options = commandInfo.options;
     }
 
-    async run() {
-    }
+    async run() {}
 
     protected async exec(cmd: string): Promise<string> {
         try {
-            return await runShellCmd(cmd);
+            return await execShellCmd(cmd);
         } catch (e) {
             throw errorParser.parse(e);
         }
+    }
+
+    /**
+     * Use to filter the command output. Should be called AFTER the other command options have been applied to the
+     * string.
+     * @param cmd
+     */
+    protected applyFilter(cmd: string): string {
+        return ifConcat(cmd, [
+            {
+                c: typeof this.options.filter !== 'undefined' && this.options.filter !== null,
+                s: ` | grep ${this.options.filter}`,
+            },
+        ]);
     }
 }
 

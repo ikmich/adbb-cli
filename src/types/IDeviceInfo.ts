@@ -1,4 +1,4 @@
-export interface DeviceInfo {
+export interface IDeviceInfo {
     sid: string;
     specSheet: string;
     usbId?: string;

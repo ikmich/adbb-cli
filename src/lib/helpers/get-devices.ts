@@ -1,9 +1,10 @@
-import runShellCmd from './run-shell-cmd';
-import { DeviceInfo } from '../../types/DeviceInfo.type';
+import execShellCmd from './exec-shell-cmd';
+import { IDeviceInfo } from '../../types/IDeviceInfo';
+import Device from '../Device';
 
-const getDevices = async (): Promise<DeviceInfo[]> => {
-    let results: DeviceInfo[] = [];
-    const output = await runShellCmd('adb devices -l');
+const getDevices = async (): Promise<Device[]> => {
+    let results: Device[] = [];
+    const output = await execShellCmd('adb devices -l');
 
     const rexGlobal = /[a-z0-9.:]+\s+device(\s+usb:\w+)?\s+product:\w+\s+model:\w+\s+device:\w+\s+transport_id:\w+/gim;
     const globalMatches: any = output.match(rexGlobal);
@@ -16,7 +17,7 @@ const getDevices = async (): Promise<DeviceInfo[]> => {
             const tokensMatches: any = resultLine.match(rexTokens);
             if (tokensMatches && tokensMatches.length > 0) {
                 // console.log('tokensMatches:', tokensMatches);
-                const deviceInfo: DeviceInfo = {
+                const deviceInfo: IDeviceInfo = {
                     specSheet: tokensMatches[0],
                     sid: tokensMatches[1],
                     usbId: tokensMatches[3] || null,
@@ -25,7 +26,7 @@ const getDevices = async (): Promise<DeviceInfo[]> => {
                     device: tokensMatches[6],
                     transportId: tokensMatches[7],
                 };
-                results.push(deviceInfo);
+                results.push(new Device(deviceInfo));
             }
         });
     }

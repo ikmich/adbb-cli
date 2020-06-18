@@ -1,8 +1,8 @@
-import runShellCmd from './run-shell-cmd';
+import execShellCmd from './exec-shell-cmd';
 
 const getEmulators = async (): Promise<string[]> => {
     let results: string[] = [];
-    const output = await runShellCmd('emulator -list-avds');
+    const output = await execShellCmd('emulator -list-avds');
 
     const rexGlobal = /\w+/gmi;
     const emulators: any = output.match(rexGlobal);

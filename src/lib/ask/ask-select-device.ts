@@ -1,9 +1,9 @@
-import {DeviceInfo} from "../../types/DeviceInfo.type";
 import getDevices from "../helpers/get-devices";
 import inquirer from 'inquirer';
+import Device from "../Device";
 
 const askSelectDevice = async () => {
-    const devices: DeviceInfo[] = await getDevices();
+    const devices: Device[] = await getDevices();
     if (devices && devices.length > 1) {
         const deviceIds = devices.map(deviceInfo => {
             return deviceInfo.sid;

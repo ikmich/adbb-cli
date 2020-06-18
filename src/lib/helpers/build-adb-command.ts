@@ -1,16 +1,19 @@
 import getDevices from './get-devices';
-import {DeviceInfo} from '../../types/DeviceInfo.type';
-import askSelectDevice from "../ask/ask-select-device";
+import askSelectDevice from '../ask/ask-select-device';
+import Device from "../Device";
 import chalk = require('chalk');
 
 const buildAdbCommand = async (optsString: string, sid: string = '') => {
     let commandString = 'adb';
 
+    let flag_devices: boolean = /devices/gi.test(optsString);
+    let flag_disconnect: boolean = /disconnect/gi.test(optsString);
+
     if (sid && sid.trim() !== '') {
         commandString += ` -s ${sid}`;
-    } else if (!optsString.includes('devices') && !optsString.includes('disconnect')) {
+    } else if (!flag_devices && !flag_disconnect) {
         // If multiple devices, show options to select device id
-        const devices: DeviceInfo[] = await getDevices();
+        const devices: Device[] = await getDevices();
         if (devices && devices.length > 1) {
             console.log(chalk.yellow('Multiple devices/emulators connected.'));
 

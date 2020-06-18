@@ -1,4 +1,4 @@
-export interface CommandOptionsType {
+export interface ICommandOptions {
     verbose?: boolean;
     package?: string;
     alias?: string;

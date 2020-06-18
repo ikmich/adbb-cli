@@ -9,9 +9,7 @@ class PackagesCommand extends BaseCommand {
 
     async run() {
         let shellCmd = await buildAdbCommand('shell pm list packages', this.options.sid);
-        if (typeof this.options.filter !== 'undefined' && this.options.filter !== null) {
-            shellCmd += ` | grep ${this.options.filter}`;
-        }
+        shellCmd = this.applyFilter(shellCmd);
 
         try {
             const output = await this.exec(shellCmd);

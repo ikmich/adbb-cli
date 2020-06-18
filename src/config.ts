@@ -5,7 +5,8 @@ const config = {
     },
     isProduction: function () {
         return this.environment === 'production';
-    }
+    },
+    cmd_exec_delay: 200
 };
 
 export default config;

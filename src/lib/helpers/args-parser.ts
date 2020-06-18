@@ -1,9 +1,9 @@
 import config from "../../config";
-import {CommandInfo} from "../../types/CommandInfo.type";
+import {ICommandInfo} from "../../types/ICommandInfo";
 
 const argsParser = {
-    parse: (argv: any): CommandInfo => {
-        let commandInfo: CommandInfo = {
+    parse: (argv: any): ICommandInfo => {
+        let commandInfo: ICommandInfo = {
             name: '',
             args: [],
             options: {}

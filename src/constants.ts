@@ -9,3 +9,6 @@ export const CMD_EMU = 'emu';
 export const CMD_EMULATOR = 'emulator';
 
 export const LOOPBACK_ADDRESS = '127.0.0.1';
+
+export const IP_F_INET_ADDR = 'IP_F_INET_ADDR';
+export const IFCONFIG = 'IFCONFIG';

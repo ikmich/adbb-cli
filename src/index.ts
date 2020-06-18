@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { CMD_CLEAR, CMD_DEVICES, CMD_PACKAGES, CMD_PKGS, CMD_WIFI } from './lib/constants';
+import { CMD_CLEAR, CMD_DEVICES, CMD_PACKAGES, CMD_PKGS, CMD_WIFI } from './constants';
 
 import argsParser from './lib/helpers/args-parser';
 import commandDispatcher from './lib/helpers/command-dispatcher';
