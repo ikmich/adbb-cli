@@ -1,6 +1,15 @@
-import { ICommandInfo } from '../../types/ICommandInfo';
+import {ICommandInfo} from '../../types/ICommandInfo';
 import WifiCommand from '../commands/WifiCommand';
-import { CMD_CLEAR, CMD_DEVICES, CMD_EMU, CMD_EMULATOR, CMD_PACKAGES, CMD_PKGS, CMD_WIFI } from '../../constants';
+import {
+    CMD_CLEAR,
+    CMD_DEVICES,
+    CMD_EMU,
+    CMD_EMULATOR,
+    CMD_IP,
+    CMD_PACKAGES,
+    CMD_PKGS,
+    CMD_WIFI,
+} from '../../constants';
 import DevicesCommand from '../commands/DevicesCommand';
 import PackagesCommand from '../commands/PackagesCommand';
 import getCliCommandString from './get-cli-command-string';
@@ -8,6 +17,7 @@ import ClearCommand from '../commands/ClearCommand';
 import errorParser from '../errors/error-parser';
 import execShellCmd from './exec-shell-cmd';
 import LaunchEmulatorCommand from '../commands/LaunchEmulatorCommand';
+import IpCommand from '../commands/IpCommand';
 import chalk = require('chalk');
 
 const commandDispatcher = {
@@ -35,6 +45,10 @@ const commandDispatcher = {
             case CMD_EMU:
             case CMD_EMULATOR:
                 await new LaunchEmulatorCommand(commandInfo).run();
+                break;
+
+            case CMD_IP:
+                await new IpCommand(commandInfo).run();
                 break;
 
             default:

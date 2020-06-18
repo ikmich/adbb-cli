@@ -7,6 +7,7 @@ export const CMD_PKGS = 'pkgs';
 export const CMD_PACKAGES = 'packages';
 export const CMD_EMU = 'emu';
 export const CMD_EMULATOR = 'emulator';
+export const CMD_IP = 'ip';
 
 export const LOOPBACK_ADDRESS = '127.0.0.1';
 
