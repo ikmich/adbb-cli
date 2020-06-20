@@ -1,6 +1,8 @@
 import { yes } from '../lib/helpers/utils';
 import config from './config';
-import { STORE_LAST_PKG_NOTICE_TIME, STORE_REF_PACKAGE } from '../constants';
+import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE } from '../constants';
+import Device from '../lib/Device';
+import { IDeviceInfo } from '../types/IDeviceInfo';
 
 const Conf = require('conf');
 
@@ -25,6 +27,7 @@ const store = {
         conf.clear();
     },
 
+    // PACKAGES
     setPackage(packageName: string) {
         conf.set(STORE_REF_PACKAGE, packageName);
     },
@@ -56,6 +59,19 @@ const store = {
         return elapsedMins >= config.elapsed_mins_show_pkg_notice;
         // const elapsedSecs = Math.round(elapsed / 1000);
         // return elapsedSecs >= config.elapsed_secs_show_pkg_notice;
+    },
+
+    // WIFI
+    saveWifiIp(ip: string) {
+        conf.set(STORE_LAST_WIFI_IP, ip);
+    },
+
+    getLastWifiIp() {
+        return conf.get(STORE_LAST_WIFI_IP);
+    },
+
+    hasWifiDevice(): boolean {
+        return yes(this.getLastWifiIp());
     },
 };
 

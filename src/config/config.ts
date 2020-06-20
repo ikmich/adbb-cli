@@ -1,4 +1,4 @@
-import { STORE_LAST_PKG_NOTICE_TIME, STORE_REF_PACKAGE } from '../constants';
+import {STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE} from '../constants';
 
 const config = {
     environment: process.env.NODE_ENV || 'production',
@@ -24,6 +24,9 @@ const config = {
         [STORE_LAST_PKG_NOTICE_TIME]: {
             type: 'number',
         },
+        [STORE_LAST_WIFI_IP]: {
+            type: 'string'
+        }
     },
 };
 

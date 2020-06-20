@@ -5,10 +5,11 @@ import errorParser from '../errors/error-parser';
 import buildAdbCommand from '../helpers/build-adb-command';
 import IpManager from '../IpManager';
 import consolePrint from '../helpers/console-print';
-import {no} from '../helpers/utils';
+import {no, yes} from '../helpers/utils';
 import spawnShellCmd from '../helpers/spawn-shell-cmd';
 import ShellExitError from '../errors/ShellExitError';
-import {EMPTY_DEVICE_IP_ADDRESS, EMPTY_HOST_IP_ADDRESS} from "../errors/error-constants";
+import { EMPTY_DEVICE_IP_ADDRESS, EMPTY_HOST_IP_ADDRESS } from '../errors/error-constants';
+import store from '../../config/store';
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -99,6 +100,8 @@ class WifiCommand extends BaseCommand {
                                 throw new Error(stderr);
                             },
                             stdout: function(output: string) {
+                                // Connected.
+                                store.saveWifiIp(deviceIp);
                                 consolePrint.info(output);
                             },
                         });
