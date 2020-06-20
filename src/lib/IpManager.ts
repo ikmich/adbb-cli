@@ -1,7 +1,7 @@
 import UndefinedNetworkConfigError from './errors/UndefinedNetworkConfigError';
 import NetConfig from './NetConfig';
 import buildAdbCommand from './helpers/build-adb-command';
-import config from '../config';
+import config from '../config/config';
 import errorParser from './errors/error-parser';
 import execShellCmd from './helpers/exec-shell-cmd';
 import { LOOPBACK_ADDRESS } from '../constants';

@@ -1,4 +1,4 @@
-import config from "../../config";
+import config from "../../config/config";
 import {ICommandInfo} from "../../types/ICommandInfo";
 
 const argsParser = {

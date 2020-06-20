@@ -7,14 +7,14 @@ export interface ISpawnCallbacks {
     close: (code: number, signal: NodeJS.Signals) => void;
 }
 
-const spawnShellCmd = (shellCmd: string, callbacks: ISpawnCallbacks) => {
+const spawnShellCmd = (shellCmd: string, callbacks: ISpawnCallbacks, opts = {}) => {
     const parts = shellCmd.split(/\s+/);
     const main = parts[0];
     const args = parts.filter((entry, i) => {
         return i > 0;
     });
 
-    const listener: ChildProcessWithoutNullStreams = spawn(main, args, {});
+    const listener: ChildProcessWithoutNullStreams = spawn(main, args, opts);
 
     listener.stdout.on('data', data => {
         // consolePrint.info(chalk.green(`stdout: ${data}`));

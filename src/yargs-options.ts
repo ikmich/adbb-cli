@@ -19,7 +19,7 @@ const yargsOptions = {
         type: 'boolean',
     },
     sid: {
-        alias: ['s', 'serialId', 'd'],
+        alias: ['s', 'serialId'],
         description: 'Device serial id',
         type: 'string',
     },
@@ -28,6 +28,10 @@ const yargsOptions = {
         description: 'Target application package',
         type: 'string',
     },
+    unset: {
+        description: 'Unset a value',
+        type: 'boolean',
+    }
 };
 
 export default yargsOptions;

@@ -2,7 +2,7 @@ import BaseCommand from './BaseCommand';
 import chalk = require('chalk');
 import buildAdbCommand from "../helpers/build-adb-command";
 
-class PackagesCommand extends BaseCommand {
+class ListPackagesCommand extends BaseCommand {
     constructor(commandInfo) {
         super(commandInfo);
     }
@@ -20,4 +20,4 @@ class PackagesCommand extends BaseCommand {
     }
 }
 
-export default PackagesCommand;
+export default ListPackagesCommand;

@@ -3,7 +3,11 @@ import MultipleDevicesError from './MultipleDevicesError';
 import NoDevicesFoundError from './NoDevicesFoundError';
 
 const errorParser = {
-    parse(e: Error): Error {
+    parse(e: Error|string): Error {
+        if (typeof e === 'string') {
+            e = new Error(e);
+        }
+
         if (e && e.message) {
             if (e.message.toLowerCase().includes('device offline')) {
                 return new DeviceOfflineError(e);

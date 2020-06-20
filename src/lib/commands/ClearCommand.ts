@@ -1,10 +1,10 @@
 import BaseCommand from './BaseCommand';
-import chalk = require('chalk');
 import buildAdbCommand from '../helpers/build-adb-command';
 import askEnterPackage from '../ask/ask-enter-package';
 import NoPackageError from '../errors/NoPackageError';
-import { yes } from '../helpers/utils';
+import {yes} from '../helpers/utils';
 import consolePrint from '../helpers/console-print';
+import store from '../../config/store';
 
 class ClearCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -23,13 +23,20 @@ class ClearCommand extends BaseCommand {
                 adbCmdString += ` ${this.options.package}`;
                 break;
             default:
-                // Request for package
-                const answer = await askEnterPackage();
-                if (yes(answer) && answer.trim() !== '') {
-                    adbCmdString += ` ${answer}`;
+                // Check if a reference package has previously been set
+                if (store.hasPackage()) {
+                    const pkg = store.getPackage();
+                    adbCmdString += ` ${pkg}`;
                 } else {
-                    throw new NoPackageError();
+                    // Request for package
+                    const pkg = await askEnterPackage();
+                    if (yes(pkg) && pkg.trim() !== '') {
+                        adbCmdString += ` ${pkg}`;
+                    } else {
+                        throw new NoPackageError();
+                    }
                 }
+
                 break;
         }
 

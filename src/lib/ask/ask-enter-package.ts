@@ -1,10 +1,10 @@
 import inquirer from 'inquirer';
 
-const askEnterPackage = async () => {
+const askEnterPackage = async (label: string = 'Enter application package (e.g. com.package.app):') => {
     const answer = await inquirer.prompt({
         type: 'input',
         name: 'package',
-        message: 'Enter application package (e.g. com.package.app):'
+        message: label,
     });
 
     return answer.package;

@@ -1,16 +1,14 @@
 import BaseCommand from './BaseCommand';
-import NetConfig from '../NetConfig';
-import config from '../../config';
-import { LOOPBACK_ADDRESS } from '../../constants';
+import config from '../../config/config';
 import DifferentNetworksError from '../errors/DifferentNetworksError';
 import errorParser from '../errors/error-parser';
 import buildAdbCommand from '../helpers/build-adb-command';
-import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError';
-import chalk = require('chalk');
 import IpManager from '../IpManager';
 import consolePrint from '../helpers/console-print';
-import { no } from '../helpers/utils';
+import {no} from '../helpers/utils';
 import spawnShellCmd from '../helpers/spawn-shell-cmd';
+import ShellExitError from '../errors/ShellExitError';
+import {EMPTY_DEVICE_IP_ADDRESS, EMPTY_HOST_IP_ADDRESS} from "../errors/error-constants";
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -20,6 +18,7 @@ class WifiCommand extends BaseCommand {
 
     async run() {
         const ipManager = new IpManager();
+
         let deviceIp;
         try {
             deviceIp = await ipManager.getDeviceIp();
@@ -29,26 +28,30 @@ class WifiCommand extends BaseCommand {
         }
 
         if (no(deviceIp)) {
-            consolePrint.error('Empty device ip');
+            consolePrint.error(EMPTY_DEVICE_IP_ADDRESS);
             return;
         }
 
         if (this.options.disconnect) {
             console.log('Disconnecting...');
             try {
-                // const deviceIp = await ipManager.getDeviceIp();
-                const output = await this.exec(await buildAdbCommand(`disconnect ${deviceIp}`));
-                console.log(chalk.blueBright(output));
+                const adbCmd = await buildAdbCommand(`disconnect ${deviceIp}`);
+                const output = await this.exec(adbCmd);
+                consolePrint.info(output);
             } catch (e) {
                 e = errorParser.parse(e);
-                console.log(chalk.red(`${e.message}`));
+                consolePrint.error(e.message);
             }
             return;
         }
 
         try {
-            //const deviceIp = await this.getDeviceIp();
             const hostIp = await ipManager.getHostIp();
+
+            if (no(hostIp)) {
+                consolePrint.error(EMPTY_HOST_IP_ADDRESS);
+                return;
+            }
 
             if (config.isDev()) {
                 console.log('>> device ip: ', deviceIp);
@@ -65,14 +68,14 @@ class WifiCommand extends BaseCommand {
             ) {
                 // => Same network
                 const adbTcpipCmd = await buildAdbCommand('tcpip 5555');
-                /*const tcpipOutput = await this.exec(adbTcpipCmd);
-                setTimeout(async () => {
-                    const connectOutput = await this.exec(await buildAdbCommand(`connect ${deviceIp}:5555`));
-                    console.log(chalk.blueBright(connectOutput));
-                }, 200);*/
 
                 spawnShellCmd(adbTcpipCmd, {
-                    close: function(code: number, signal: NodeJS.Signals) {},
+                    close: function(code: number, signal: NodeJS.Signals) {
+                        if (code !== 0) {
+                            // Wrong exit code
+                            throw new ShellExitError(code);
+                        }
+                    },
                     error: function(e: Error) {
                         throw e;
                     },
@@ -81,10 +84,14 @@ class WifiCommand extends BaseCommand {
                     },
                     stdout: async function(tcpipOutput: string) {
                         consolePrint.info(tcpipOutput);
-                        //
+
                         const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:5555`);
                         spawnShellCmd(adbConnectCmd, {
-                            close: function(code: number, signal: NodeJS.Signals) {},
+                            close: function(code: number, signal: NodeJS.Signals) {
+                                if (code !== 0) {
+                                    throw new ShellExitError(code);
+                                }
+                            },
                             error: function(e: Error) {
                                 throw e;
                             },
@@ -102,7 +109,7 @@ class WifiCommand extends BaseCommand {
                 throw new DifferentNetworksError();
             }
         } catch (e) {
-            console.log(chalk.red(e.message));
+            consolePrint.error(errorParser.parse(e).message);
         }
     }
 }

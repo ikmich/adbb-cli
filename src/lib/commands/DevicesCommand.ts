@@ -2,7 +2,6 @@ import BaseCommand from './BaseCommand';
 import buildAdbCommand from '../helpers/build-adb-command';
 import consolePrint from '../helpers/console-print';
 import chalk = require('chalk');
-import ifConcat from '../helpers/if-concat';
 
 class DevicesCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -11,16 +10,9 @@ class DevicesCommand extends BaseCommand {
 
     async run() {
         let shellCmd = await buildAdbCommand('devices');
-        // if (this.options.verbose) {
-        //     shellCmd += ' -l';
-        // }
-
-        shellCmd = ifConcat(shellCmd, [
-            {
-                c: this.options.verbose,
-                s: ' -l',
-            },
-        ]);
+        if (this.options.verbose) {
+            shellCmd += ' -l';
+        }
 
         shellCmd = this.applyFilter(shellCmd);
 

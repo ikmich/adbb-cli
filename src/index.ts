@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { CMD_CLEAR, CMD_DEVICES, CMD_PACKAGES, CMD_PKGS, CMD_WIFI } from './constants';
 
 import argsParser from './lib/helpers/args-parser';
 import commandDispatcher from './lib/helpers/command-dispatcher';
@@ -8,6 +7,7 @@ import yargsOptions from './yargs-options';
 import yargs from 'yargs';
 import getDevices from "./lib/helpers/get-devices";
 import getCliCommandString from "./lib/helpers/get-cli-command-string";
+import {CMD_CLEAR, CMD_DEVICES, CMD_PACKAGES, CMD_PKGS, CMD_WIFI} from "./lib/commands/command-constants";
 
 const argv = yargs
     .command(CMD_DEVICES, 'List connected devices')

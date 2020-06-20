@@ -1,0 +1,13 @@
+export const CMD_DEVICES = 'devices';
+export const CMD_CLEAR = 'clear';
+export const CMD_WIFI = 'wifi';
+export const CMD_UNSET_PKG = 'unset-pkg';
+export const CMD_UNSET_PACKAGE = 'unset-package';
+export const CMD_PKG = 'pkg';
+export const CMD_PACKAGE = 'package';
+export const CMD_PKGS = 'pkgs';
+export const CMD_PACKAGES = 'packages';
+export const CMD_EMU = 'emu';
+export const CMD_EMULATOR = 'emulator';
+export const CMD_IP = 'ip';
+export const CMD_RESET_SERVER = 'reset-server';

@@ -5,4 +5,5 @@ export interface ICommandOptions {
     filter?: string;
     disconnect?: boolean;
     sid?: string;
+    unset?: boolean;
 }

@@ -1,5 +1,5 @@
 import { exec, spawn, ExecException } from 'child_process';
-import config from '../../config';
+import config from '../../config/config';
 
 const execShellCmd = async (cmd: string): Promise<string> => {
     return new Promise((resolve, reject) => {
