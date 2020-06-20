@@ -31,6 +31,11 @@ const yargsOptions = {
     unset: {
         description: 'Unset a value',
         type: 'boolean',
+    },
+    list: {
+        alias: ['l'],
+        description: 'Display items',
+        type: 'boolean'
     }
 };
 

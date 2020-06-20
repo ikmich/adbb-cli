@@ -10,3 +10,10 @@ export function yes(o: any) {
 export function no(o: any) {
     return !yes(o);
 }
+
+export function removeEndLineSpace(s: string) {
+    if (no(s)) {
+        return s;
+    }
+    return s.replace(/(\s|\t|\n|\r\n)+$/, '');
+}
