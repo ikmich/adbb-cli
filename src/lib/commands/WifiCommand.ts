@@ -12,6 +12,7 @@ import { EMPTY_DEVICE_IP_ADDRESS, EMPTY_HOST_IP_ADDRESS } from '../errors/error-
 import store from '../../config/store';
 import getDevices from '../helpers/get-devices';
 import Device from '../Device';
+import askSelect from '../ask/ask-select';
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -24,13 +25,24 @@ class WifiCommand extends BaseCommand {
 
         async function getIpForDisconnect() {
             const devices: Device[] = await getDevices();
+            const tcpDevices: Device[] = [];
             for (let d of devices) {
                 if (d.isTcpConnection()) {
-                    // Found tcpip-connected device. Disconnect this one.
-                    // Todo - If multiple, ask to select choice.
-                    return d.sid;
+                    tcpDevices.push(d);
                 }
             }
+
+            if (tcpDevices.length > 0) {
+                if (tcpDevices.length === 1) {
+                    return tcpDevices[0].sid;
+                } else {
+                    // Ask to select device to disconnect:
+                    const choices = tcpDevices.map((d: Device) => d.sid);
+                    return await askSelect('tcpDevice', 'Select tcp-connected device', choices);
+                }
+            }
+
+            return ipManager.getDeviceIp();
         }
 
         if (this.options.disconnect) {
