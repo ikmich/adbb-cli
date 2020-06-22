@@ -11,6 +11,8 @@ const config = {
         return this.environment === 'production';
     },
 
+    ipRegex: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/,
+
     cmd_exec_delay: 200,
 
     elapsed_mins_show_pkg_notice: 10,

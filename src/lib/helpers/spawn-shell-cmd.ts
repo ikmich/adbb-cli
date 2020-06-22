@@ -1,5 +1,5 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
-import { removeEndLineSpace } from './utils';
+import { removeEndLines } from './utils';
 
 export interface ISpawnCallbacks {
     stdout: (data: string) => void;
@@ -20,7 +20,7 @@ const spawnShellCmd = (shellCmd: string, callbacks: ISpawnCallbacks, opts = {}) 
     listener.stdout.on('data', (data: any) => {
         // consolePrint.info(chalk.green(`stdout: ${data}`));
         if (callbacks) {
-            callbacks.stdout(removeEndLineSpace(data.toString()));
+            callbacks.stdout(removeEndLines(data.toString(), 1));
         }
     });
 

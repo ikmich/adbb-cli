@@ -5,11 +5,13 @@ import errorParser from '../errors/error-parser';
 import buildAdbCommand from '../helpers/build-adb-command';
 import IpManager from '../IpManager';
 import consolePrint from '../helpers/console-print';
-import {no, yes} from '../helpers/utils';
+import { no, yes } from '../helpers/utils';
 import spawnShellCmd from '../helpers/spawn-shell-cmd';
 import ShellExitError from '../errors/ShellExitError';
 import { EMPTY_DEVICE_IP_ADDRESS, EMPTY_HOST_IP_ADDRESS } from '../errors/error-constants';
 import store from '../../config/store';
+import getDevices from '../helpers/get-devices';
+import Device from '../Device';
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -19,6 +21,32 @@ class WifiCommand extends BaseCommand {
 
     async run() {
         const ipManager = new IpManager();
+
+        async function getIpForDisconnect() {
+            const devices: Device[] = await getDevices();
+            for (let d of devices) {
+                if (d.isTcpConnection()) {
+                    // Found tcpip-connected device. Disconnect this one.
+                    // Todo - If multiple, ask to select choice.
+                    return d.sid;
+                }
+            }
+        }
+
+        if (this.options.disconnect) {
+            console.log('Disconnecting...');
+
+            try {
+                const adbCmd = await buildAdbCommand(`disconnect ${await getIpForDisconnect()}`);
+                const output = await this.exec(adbCmd);
+                consolePrint.info(output);
+            } catch (e) {
+                e = errorParser.parse(e);
+                consolePrint.error(e.message);
+            }
+
+            return;
+        }
 
         let deviceIp;
         try {
@@ -30,19 +58,6 @@ class WifiCommand extends BaseCommand {
 
         if (no(deviceIp)) {
             consolePrint.error(EMPTY_DEVICE_IP_ADDRESS);
-            return;
-        }
-
-        if (this.options.disconnect) {
-            console.log('Disconnecting...');
-            try {
-                const adbCmd = await buildAdbCommand(`disconnect ${deviceIp}`);
-                const output = await this.exec(adbCmd);
-                consolePrint.info(output);
-            } catch (e) {
-                e = errorParser.parse(e);
-                consolePrint.error(e.message);
-            }
             return;
         }
 

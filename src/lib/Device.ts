@@ -1,4 +1,5 @@
 import { IDeviceInfo } from '../types/IDeviceInfo';
+import config from "../config/config";
 
 class Device implements IDeviceInfo {
     readonly device: string;
@@ -17,6 +18,10 @@ class Device implements IDeviceInfo {
         this.specSheet = info.specSheet;
         this.transportId = info.transportId;
         this.usbId = info.usbId;
+    }
+
+    isTcpConnection():boolean {
+        return config.ipRegex.test(this.sid);
     }
 }
 

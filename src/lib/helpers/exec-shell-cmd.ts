@@ -1,6 +1,6 @@
 import { exec, spawn, ExecException } from 'child_process';
 import config from '../../config/config';
-import {removeEndLineSpace} from "./utils";
+import {removeEndLines} from "./utils";
 
 const execShellCmd = async (cmd: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -16,7 +16,7 @@ const execShellCmd = async (cmd: string): Promise<string> => {
             }
 
             setTimeout(() => {
-                resolve(removeEndLineSpace(stdout));
+                resolve(removeEndLines(stdout, 1));
             }, config.cmd_exec_delay);
         });
     });
