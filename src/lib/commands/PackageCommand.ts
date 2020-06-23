@@ -5,7 +5,7 @@ import askEnterPackage from '../ask/ask-enter-package';
 import errorParser from '../errors/error-parser';
 import store from '../../config/store';
 import chalk = require('chalk');
-import { CMD_UNSET_PACKAGE, CMD_UNSET_PKG } from './command-constants';
+import { CMD_UNSET_PACKAGE, CMD_UNSET_PKG } from '../../command-constants';
 
 class PackageCommand extends BaseCommand {
     constructor(commandInfo) {

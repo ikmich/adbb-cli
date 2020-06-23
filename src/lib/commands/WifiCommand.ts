@@ -13,6 +13,7 @@ import store from '../../config/store';
 import getDevices from '../helpers/get-devices';
 import Device from '../Device';
 import askSelect from '../ask/ask-select';
+import askInput from '../ask/ask-input';
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -33,11 +34,13 @@ class WifiCommand extends BaseCommand {
             }
 
             if (tcpDevices.length > 0) {
+                // Only one device is currently connected via tcpip. Disconnect that one.
                 if (tcpDevices.length === 1) {
                     return tcpDevices[0].sid;
                 } else {
-                    // Ask to select device to disconnect:
-                    const choices = tcpDevices.map((d: Device) => d.sid);
+                    // Multiple devices are currently connected via tcpip.
+                    // Ask user to select device to disconnect:
+                    const choices: string[] = tcpDevices.map((d: Device) => d.sid);
                     return await askSelect('tcpDevice', 'Select tcp-connected device', choices);
                 }
             }
@@ -95,45 +98,15 @@ class WifiCommand extends BaseCommand {
                 deviceIpParts[2] === hostIpParts[2]
             ) {
                 // => Same network
-                const adbTcpipCmd = await buildAdbCommand('tcpip 5555');
 
-                spawnShellCmd(adbTcpipCmd, {
-                    close: function(code: number, signal: NodeJS.Signals) {
-                        if (code !== 0) {
-                            // Wrong exit code
-                            throw new ShellExitError(code);
-                        }
-                    },
-                    error: function(e: Error) {
-                        throw e;
-                    },
-                    stderr: function(stderr: string) {
-                        throw new Error(stderr);
-                    },
-                    stdout: async function(tcpipOutput: string) {
-                        consolePrint.info(tcpipOutput);
-
-                        const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:5555`);
-                        spawnShellCmd(adbConnectCmd, {
-                            close: function(code: number, signal: NodeJS.Signals) {
-                                if (code !== 0) {
-                                    throw new ShellExitError(code);
-                                }
-                            },
-                            error: function(e: Error) {
-                                throw e;
-                            },
-                            stderr: function(stderr: string) {
-                                throw new Error(stderr);
-                            },
-                            stdout: function(output: string) {
-                                // Connected.
-                                store.saveWifiIp(deviceIp);
-                                consolePrint.info(output);
-                            },
-                        });
-                    },
-                });
+                try {
+                    const result = await this.listenTcp();
+                    await askInput('done', 'Unplug usb and press ENTER/RETURN');
+                    await this.connectDeviceIp(deviceIp);
+                } catch (e) {
+                    consolePrint.error(errorParser.parse(e).message);
+                    return;
+                }
             } else {
                 // noinspection ExceptionCaughtLocallyJS
                 throw new DifferentNetworksError();
@@ -141,6 +114,62 @@ class WifiCommand extends BaseCommand {
         } catch (e) {
             consolePrint.error(errorParser.parse(e).message);
         }
+    }
+
+    private async listenTcp(): Promise<{ code: number; output: string }> {
+        let output = '';
+        return new Promise(async (resolve, reject) => {
+            const adbTcpipCmd = await buildAdbCommand(`tcpip ${config.PORT_TCP}`);
+
+            spawnShellCmd(adbTcpipCmd, {
+                close: async (code: number, signal: NodeJS.Signals) => {
+                    if (code !== 0) {
+                        // Wrong exit code
+                        throw new ShellExitError(code);
+                    }
+
+                    resolve({ code, output });
+                },
+                error: function(e: Error) {
+                    throw e;
+                },
+                stderr: function(stderr: string) {
+                    throw new Error(stderr);
+                },
+                stdout: async function(tcpipOutput: string) {
+                    output += tcpipOutput;
+                    consolePrint.info(tcpipOutput);
+                },
+            });
+        });
+    }
+
+    private async connectDeviceIp(deviceIp: string) {
+        let _output = '';
+        return new Promise(async (resolve, reject) => {
+            const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:${config.PORT_TCP}`);
+            spawnShellCmd(adbConnectCmd, {
+                close: function(code: number, signal: NodeJS.Signals) {
+                    if (code !== 0) {
+                        throw new ShellExitError(code);
+                    }
+
+                    resolve({ code, output: _output });
+                },
+                error: function(e: Error) {
+                    throw e;
+                },
+                stderr: function(stderr: string) {
+                    throw new Error(stderr);
+                },
+                stdout: function(output: string) {
+                    // Connected.
+                    _output += output;
+                    store.saveWifiIp(deviceIp);
+                    consolePrint.info(output);
+                },
+            });
+        });
     }
 }
 

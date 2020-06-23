@@ -24,7 +24,7 @@ const yargsOptions = {
         type: 'string',
     },
     package: {
-        alias: ['p', 'pkg'],
+        alias: ['pkg'],
         description: 'Target application package',
         type: 'string',
     },
@@ -35,6 +35,10 @@ const yargsOptions = {
     list: {
         alias: ['l'],
         description: 'Display items',
+        type: 'boolean'
+    },
+    pretty: {
+        description: 'Pretty display',
         type: 'boolean'
     }
 };

@@ -23,7 +23,7 @@ import {
     CMD_UNSET_PACKAGE,
     CMD_UNSET_PKG,
     CMD_WIFI,
-} from '../commands/command-constants';
+} from '../../command-constants';
 import consolePrint from './console-print';
 import PackageCommand from '../commands/PackageCommand';
 import chalk = require('chalk');
