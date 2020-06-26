@@ -1,11 +1,11 @@
 import BaseCommand from './BaseCommand';
-import { yes } from '../helpers/utils';
+import {yes} from '../helpers/utils';
 import consolePrint from '../helpers/console-print';
 import askEnterPackage from '../ask/ask-enter-package';
-import errorParser from '../errors/error-parser';
 import store from '../../config/store';
+import {CMD_UNSET_PACKAGE, CMD_UNSET_PKG} from '../../command-constants';
+import parseError from "../errors/parseError";
 import chalk = require('chalk');
-import { CMD_UNSET_PACKAGE, CMD_UNSET_PKG } from '../../command-constants';
 
 class PackageCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -14,7 +14,7 @@ class PackageCommand extends BaseCommand {
 
     private static unsetPkg() {
         store.unsetPackage();
-        consolePrint.info('Saved reference package has been unset');
+        consolePrint.info('Reference package has been unset');
     }
 
     async run() {
@@ -35,14 +35,18 @@ class PackageCommand extends BaseCommand {
 
         let packageName: string | any = null;
 
-        if (yes(this.args[0])) {
-            packageName = this.args[0];
-        } else if (store.hasPackage()) {
-            // Show current package
-            console.log(`Reference package: ${chalk.blueBright(store.getPackage())}`);
-        } else {
-            // Ask to enter the reference package.
-            packageName = await askEnterPackage('Set reference package e.g com.package.app:');
+        switch (true) {
+            case yes(this.args[0]):
+                packageName = this.args[0];
+                break;
+            case store.hasPackage():
+                // Show current package
+                console.log(`Reference package: ${chalk.blueBright(store.getPackage())}`);
+                break;
+            default:
+                // Ask to enter the reference package.
+                packageName = await askEnterPackage('Set reference package e.g com.package.app:');
+                break;
         }
 
         if (yes(packageName)) {
@@ -50,7 +54,7 @@ class PackageCommand extends BaseCommand {
                 store.setPackage(packageName);
                 consolePrint.info(`${packageName} is now the default package`);
             } catch (e) {
-                consolePrint.error(errorParser.parse(e).message);
+                consolePrint.error(parseError(e).message);
             }
         }
     }

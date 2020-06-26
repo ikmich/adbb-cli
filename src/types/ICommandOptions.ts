@@ -7,4 +7,6 @@ export interface ICommandOptions {
     sid?: string;
     unset?: boolean;
     list?: boolean;
+    grid?: boolean;
+    json?: boolean;
 }

@@ -1,11 +1,10 @@
 import BaseCommand from './BaseCommand';
 import config from '../../config/config';
 import DifferentNetworksError from '../errors/DifferentNetworksError';
-import errorParser from '../errors/error-parser';
 import buildAdbCommand from '../helpers/build-adb-command';
 import IpManager from '../IpManager';
 import consolePrint from '../helpers/console-print';
-import { no, yes } from '../helpers/utils';
+import { no } from '../helpers/utils';
 import spawnShellCmd from '../helpers/spawn-shell-cmd';
 import ShellExitError from '../errors/ShellExitError';
 import { EMPTY_DEVICE_IP_ADDRESS, EMPTY_HOST_IP_ADDRESS } from '../errors/error-constants';
@@ -14,6 +13,7 @@ import getDevices from '../helpers/get-devices';
 import Device from '../Device';
 import askSelect from '../ask/ask-select';
 import askInput from '../ask/ask-input';
+import parseError from '../errors/parseError';
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -56,7 +56,7 @@ class WifiCommand extends BaseCommand {
                 const output = await this.exec(adbCmd);
                 consolePrint.info(output);
             } catch (e) {
-                e = errorParser.parse(e);
+                e = parseError(e);
                 consolePrint.error(e.message);
             }
 
@@ -100,11 +100,13 @@ class WifiCommand extends BaseCommand {
                 // => Same network
 
                 try {
-                    const result = await this.listenTcp();
-                    await askInput('done', 'Unplug usb and press ENTER/RETURN');
-                    await this.connectDeviceIp(deviceIp);
+                    /*const result =*/ await this.listenTcp();
+                    setTimeout(async () => {
+                        await askInput('done', 'Unplug usb and press ENTER/RETURN');
+                        await this.connectDeviceIp(deviceIp);
+                    }, 400);
                 } catch (e) {
-                    consolePrint.error(errorParser.parse(e).message);
+                    consolePrint.error(parseError(e).message);
                     return;
                 }
             } else {
@@ -112,7 +114,7 @@ class WifiCommand extends BaseCommand {
                 throw new DifferentNetworksError();
             }
         } catch (e) {
-            consolePrint.error(errorParser.parse(e).message);
+            consolePrint.error(parseError(e).message);
         }
     }
 
@@ -131,10 +133,10 @@ class WifiCommand extends BaseCommand {
                     resolve({ code, output });
                 },
                 error: function(e: Error) {
-                    throw e;
+                    reject(e);
                 },
                 stderr: function(stderr: string) {
-                    throw new Error(stderr);
+                    reject(new Error(stderr));
                 },
                 stdout: async function(tcpipOutput: string) {
                     output += tcpipOutput;
@@ -157,10 +159,10 @@ class WifiCommand extends BaseCommand {
                     resolve({ code, output: _output });
                 },
                 error: function(e: Error) {
-                    throw e;
+                    reject(e);
                 },
                 stderr: function(stderr: string) {
-                    throw new Error(stderr);
+                    reject(new Error(stderr));
                 },
                 stdout: function(output: string) {
                     // Connected.

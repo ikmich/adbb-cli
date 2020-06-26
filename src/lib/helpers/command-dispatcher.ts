@@ -1,10 +1,9 @@
-import { ICommandInfo } from '../../types/ICommandInfo';
+import {ICommandInfo} from '../../types/ICommandInfo';
 import WifiCommand from '../commands/WifiCommand';
 import DevicesCommand from '../commands/DevicesCommand';
 import ListPackagesCommand from '../commands/ListPackagesCommand';
 import getCliCommandString from './get-cli-command-string';
 import ClearCommand from '../commands/ClearCommand';
-import errorParser from '../errors/error-parser';
 import execShellCmd from './exec-shell-cmd';
 import LaunchEmulatorCommand from '../commands/LaunchEmulatorCommand';
 import IpCommand from '../commands/IpCommand';
@@ -20,14 +19,17 @@ import {
     CMD_PKG,
     CMD_PKGS,
     CMD_RESET_SERVER,
+    CMD_UNINSTALL,
     CMD_UNSET_PACKAGE,
     CMD_UNSET_PKG,
     CMD_WIFI,
 } from '../../command-constants';
 import consolePrint from './console-print';
 import PackageCommand from '../commands/PackageCommand';
-import chalk = require('chalk');
 import store from '../../config/store';
+import parseError from '../errors/parseError';
+import chalk = require('chalk');
+import UninstallCommand from "../commands/UninstallCommand";
 
 const commandDispatcher = {
     dispatch: async (commandInfo: ICommandInfo) => {
@@ -85,6 +87,10 @@ const commandDispatcher = {
                 await new PackageCommand(commandInfo).run();
                 break;
 
+            case CMD_UNINSTALL:
+                await new UninstallCommand(commandInfo).run();
+                break;
+
             default:
                 const cliCommand = await getCliCommandString();
 
@@ -101,7 +107,7 @@ const commandDispatcher = {
                         const output = await execShellCmd(shellCmd);
                         console.log(output);
                     } catch (e) {
-                        consolePrint.error(errorParser.parse(e).message);
+                        consolePrint.error(parseError(e).message);
                     }
                 } else {
                     // console.log(chalk.red(`No such command: ${mainCommand}`));

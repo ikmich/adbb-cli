@@ -1,6 +1,9 @@
 import BaseCommand from './BaseCommand';
 import chalk = require('chalk');
 import buildAdbCommand from "../helpers/build-adb-command";
+import consolePrint from "../helpers/console-print";
+import {yes} from "../helpers/utils";
+import parseError from "../errors/parseError";
 
 class ListPackagesCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -13,9 +16,13 @@ class ListPackagesCommand extends BaseCommand {
 
         try {
             const output = await this.exec(shellCmd);
-            console.log(chalk.blueBright(output));
+            if (yes(output)) {
+                consolePrint.info(output);
+            } else {
+                consolePrint.error('NO RESULTS!');
+            }
         } catch (e) {
-            console.log(chalk.red(e.message));
+            consolePrint.error(parseError(e).message);
         }
     }
 }

@@ -1,8 +1,8 @@
-import { ICommandOptions } from '../../types/ICommandOptions';
-import { ICommandInfo } from '../../types/ICommandInfo';
+import {ICommandOptions} from '../../types/ICommandOptions';
+import {ICommandInfo} from '../../types/ICommandInfo';
 import execShellCmd from '../helpers/exec-shell-cmd';
-import errorParser from '../errors/error-parser';
 import ifConcat from '../helpers/if-concat';
+import parseError from "../errors/parseError";
 
 class BaseCommand {
     public commandInfo: ICommandInfo;
@@ -35,7 +35,7 @@ class BaseCommand {
         try {
             return await execShellCmd(cmd);
         } catch (e) {
-            throw errorParser.parse(e);
+            throw parseError(e);
         }
     }
 

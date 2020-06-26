@@ -1,8 +1,9 @@
 import BaseCommand from './BaseCommand';
 import buildAdbCommand from '../helpers/build-adb-command';
 import consolePrint from '../helpers/console-print';
+import getDevices from '../helpers/get-devices';
+import parseError from '../errors/parseError';
 import chalk = require('chalk');
-import getDevices from "../helpers/get-devices";
 
 class DevicesCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -10,21 +11,47 @@ class DevicesCommand extends BaseCommand {
     }
 
     async run() {
-        let shellCmd = await buildAdbCommand('devices');
-        if (this.options.verbose) {
-            shellCmd += ' -l';
-        }
-
-        shellCmd = this.applyFilter(shellCmd);
-
-        // const devices = await getDevices();
-        // console.table(devices);
-
         try {
-            const output = await this.exec(shellCmd);
-            consolePrint.info(output);
+            if (this.options.verbose || this.options.json || this.options.grid) {
+                switch (true) {
+                    case this.options.grid: {
+                        const devices = await getDevices();
+                        console.table(devices);
+                        break;
+                    }
+                    case this.options.json: {
+                        const devices = await getDevices();
+                        consolePrint.info(JSON.stringify(devices, null, 2));
+                        break;
+                    }
+                    default: {
+                        let shellCmd = await buildAdbCommand('devices -l');
+                        shellCmd = this.applyFilter(shellCmd);
+
+                        try {
+                            const output = await this.exec(shellCmd);
+                            consolePrint.info(output);
+                        } catch (e) {
+                            consolePrint.error(parseError(e).message);
+                            return;
+                        }
+                        break;
+                    }
+                }
+            } else {
+                let shellCmd = await buildAdbCommand('devices');
+                shellCmd = this.applyFilter(shellCmd);
+                let output = '';
+                try {
+                    output = await this.exec(shellCmd);
+                    consolePrint.info(output);
+                } catch (e) {
+                    consolePrint.error(parseError(e).message);
+                    return;
+                }
+            }
         } catch (e) {
-            console.log(chalk.red(`Could not run command ${shellCmd}: ${e.message}`));
+            consolePrint.error(parseError(e).message);
         }
     }
 }

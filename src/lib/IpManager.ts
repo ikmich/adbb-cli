@@ -2,13 +2,13 @@ import UndefinedNetworkConfigError from './errors/UndefinedNetworkConfigError';
 import NetConfig from './NetConfig';
 import buildAdbCommand from './helpers/build-adb-command';
 import config from '../config/config';
-import errorParser from './errors/error-parser';
 import execShellCmd from './helpers/exec-shell-cmd';
-import { LOOPBACK_ADDRESS } from '../constants';
-import chalk = require('chalk');
-import { yes } from './helpers/utils';
+import {LOOPBACK_ADDRESS} from '../constants';
+import {yes} from './helpers/utils';
 import HostNotConnectedError from './errors/HostNotConnectedError';
 import DeviceNotConnectedError from './errors/DeviceNotConnectedError';
+import parseError from "./errors/parseError";
+import chalk = require('chalk');
 
 class IpManager {
     async getDeviceNetworkConfigs(): Promise<NetConfig[]> {
@@ -45,7 +45,7 @@ class IpManager {
                 });
             }
         } catch (e) {
-            throw errorParser.parse(e);
+            throw parseError(e);
         }
 
         return netConfigs;
@@ -112,7 +112,7 @@ class IpManager {
             }
         } catch (e) {
             console.log(chalk.red(`Could not get host ip: ${e.message}`));
-            throw errorParser.parse(e);
+            throw parseError(e);
         }
 
         if (yes(ip)) {

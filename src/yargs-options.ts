@@ -35,12 +35,18 @@ const yargsOptions = {
     list: {
         alias: ['l'],
         description: 'Display items',
-        type: 'boolean'
+        type: 'boolean',
     },
-    pretty: {
-        description: 'Pretty display',
-        type: 'boolean'
-    }
+    grid: {
+        alias: ['g', 'grid', 'grid'],
+        description: 'Grid/tabular display',
+        type: 'boolean',
+    },
+    json: {
+        alias: ['j', 'json'],
+        description: 'JSON display',
+        type: 'boolean',
+    },
 };
 
 export default yargsOptions;
