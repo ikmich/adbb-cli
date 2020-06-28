@@ -26,7 +26,7 @@ import {
 } from '../../command-constants';
 import consolePrint from './console-print';
 import PackageCommand from '../commands/PackageCommand';
-import store from '../../config/store';
+import store from './store';
 import parseError from '../errors/parse-error';
 import chalk = require('chalk');
 import UninstallCommand from '../commands/UninstallCommand';

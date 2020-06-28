@@ -2,7 +2,7 @@ import BaseCommand from './BaseCommand';
 import {yes} from '../helpers/utils';
 import consolePrint from '../helpers/console-print';
 import askEnterPackage from '../ask/ask-enter-package';
-import store from '../../config/store';
+import store from '../helpers/store';
 import {CMD_UNSET_PACKAGE, CMD_UNSET_PKG} from '../../command-constants';
 import parseError from "../errors/parse-error";
 import chalk = require('chalk');

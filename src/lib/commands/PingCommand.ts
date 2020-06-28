@@ -1,7 +1,7 @@
 import BaseCommand from './BaseCommand';
 import consolePrint from '../helpers/console-print';
 import parseError from '../errors/parse-error';
-import IpManager, {TPingResult} from '../IpManager';
+import IpManager, {TPingResult} from '../core/IpManager';
 
 class PingCommand extends BaseCommand {
     constructor(commandInfo) {

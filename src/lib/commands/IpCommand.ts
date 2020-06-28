@@ -1,7 +1,7 @@
 import BaseCommand from './BaseCommand';
 import consolePrint from '../helpers/console-print';
-import IpManager from '../IpManager';
-import NetConfig from '../NetConfig';
+import IpManager from '../core/IpManager';
+import NetConfig from '../core/NetConfig';
 import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError';
 import { yes } from '../helpers/utils';
 import { NO_IP_ADDRESS_FOUND } from '../errors/error-constants';

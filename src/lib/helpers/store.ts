@@ -1,8 +1,6 @@
-import { yes } from '../lib/helpers/utils';
-import config from './config';
-import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE } from '../constants';
-import Device from '../lib/Device';
-import { IDeviceInfo } from '../types/IDeviceInfo';
+import { yes } from './utils';
+import config from '../../config/config';
+import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE } from '../../constants';
 
 const Conf = require('conf');
 

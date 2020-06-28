@@ -1,6 +1,6 @@
 import execShellCmd from './exec-shell-cmd';
 import { IDeviceInfo } from '../../types/IDeviceInfo';
-import Device from '../Device';
+import Device from '../core/Device';
 
 const getDevices = async (): Promise<Device[]> => {
     let results: Device[] = [];

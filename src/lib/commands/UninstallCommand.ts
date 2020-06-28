@@ -1,8 +1,10 @@
 import BaseCommand from './BaseCommand';
 import { ICommandInfo } from '../../types/ICommandInfo';
-import { yes } from '../helpers/utils';
+import { no, yes } from '../helpers/utils';
 import askEnterPackage from '../ask/ask-enter-package';
 import consolePrint from '../helpers/console-print';
+import store from '../helpers/store';
+import askInput from '../ask/ask-input';
 
 class UninstallCommand extends BaseCommand {
     constructor(commandInfo: ICommandInfo) {
@@ -20,7 +22,21 @@ class UninstallCommand extends BaseCommand {
                 pkg = this.args[0];
                 break;
             default:
-                pkg = await askEnterPackage();
+                // Check if a reference package has previously been set
+                if (store.hasPackage()) {
+                    const answer: string = await askInput(
+                        'confirm',
+                        `This application: "${store.getPackage()}" will be uninstalled. WOULD YOU LIKE TO CONTINUE? (y/n)`,
+                    );
+                    if (yes(answer) && answer.toLowerCase() === 'y') {
+                        pkg = answer;
+                    }
+                }
+
+                if (no(pkg)) {
+                    pkg = await askEnterPackage();
+                }
+
                 break;
         }
 

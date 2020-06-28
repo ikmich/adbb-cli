@@ -2,9 +2,9 @@ import BaseCommand from './BaseCommand';
 import buildAdbCommand from '../helpers/build-adb-command';
 import askEnterPackage from '../ask/ask-enter-package';
 import NoPackageError from '../errors/NoPackageError';
-import {yes} from '../helpers/utils';
+import { yes } from '../helpers/utils';
 import consolePrint from '../helpers/console-print';
-import store from '../../config/store';
+import store from '../helpers/store';
 
 class ClearCommand extends BaseCommand {
     constructor(commandInfo) {

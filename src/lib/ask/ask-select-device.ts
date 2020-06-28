@@ -1,6 +1,6 @@
 import getDevices from "../helpers/get-devices";
 import inquirer from 'inquirer';
-import Device from "../Device";
+import Device from "../core/Device";
 
 const askSelectDevice = async () => {
     const devices: Device[] = await getDevices();

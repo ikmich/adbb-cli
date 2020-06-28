@@ -1,6 +1,6 @@
 import getDevices from './get-devices';
 import askSelectDevice from '../ask/ask-select-device';
-import Device from "../Device";
+import Device from "../core/Device";
 import chalk = require('chalk');
 
 const buildAdbCommand = async (optsString: string, sid: string = '') => {

@@ -35,5 +35,12 @@
   },
   "bin": {
     "adbb": "./dist/index.js"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.3",
+    "babel-jest": "^26.1.0",
+    "jest": "^26.1.0",
+    "jest-config": "^26.1.0",
+    "ts-jest": "^26.1.1"
   }
 }
