@@ -1,4 +1,4 @@
-import {ICommandInfo} from '../../types/ICommandInfo';
+import { ICommandInfo } from '../../types/ICommandInfo';
 import WifiCommand from '../commands/WifiCommand';
 import DevicesCommand from '../commands/DevicesCommand';
 import ListPackagesCommand from '../commands/ListPackagesCommand';
@@ -15,7 +15,7 @@ import {
     CMD_EMULATOR,
     CMD_IP,
     CMD_PACKAGE,
-    CMD_PACKAGES,
+    CMD_PACKAGES, CMD_PING,
     CMD_PKG,
     CMD_PKGS,
     CMD_RESET_SERVER,
@@ -27,9 +27,11 @@ import {
 import consolePrint from './console-print';
 import PackageCommand from '../commands/PackageCommand';
 import store from '../../config/store';
-import parseError from '../errors/parseError';
+import parseError from '../errors/parse-error';
 import chalk = require('chalk');
-import UninstallCommand from "../commands/UninstallCommand";
+import UninstallCommand from '../commands/UninstallCommand';
+import { no } from './utils';
+import PingCommand from "../commands/PingCommand";
 
 const commandDispatcher = {
     dispatch: async (commandInfo: ICommandInfo) => {
@@ -38,10 +40,17 @@ const commandDispatcher = {
             store.savePkgNoticeTime();
         }
 
-        const mainCommand = commandInfo.name;
+        if (no(commandInfo.name)) {
+            if (true === commandInfo.options.disconnect) {
+                commandInfo.name = 'wifi';
+            }
+        }
+
+        let mainCommand = commandInfo.name;
 
         switch (true) {
             case /rm\s+/.test(mainCommand):
+            case /rmdir\s+/.test(mainCommand):
             case /del\s+/.test(mainCommand):
                 return;
         }
@@ -89,6 +98,10 @@ const commandDispatcher = {
 
             case CMD_UNINSTALL:
                 await new UninstallCommand(commandInfo).run();
+                break;
+
+            case CMD_PING:
+                await new PingCommand(commandInfo).run();
                 break;
 
             default:

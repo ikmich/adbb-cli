@@ -1,9 +1,8 @@
 import BaseCommand from './BaseCommand';
-import chalk = require('chalk');
-import buildAdbCommand from "../helpers/build-adb-command";
-import consolePrint from "../helpers/console-print";
-import {yes} from "../helpers/utils";
-import parseError from "../errors/parseError";
+import buildAdbCommand from '../helpers/build-adb-command';
+import consolePrint from '../helpers/console-print';
+import { yes } from '../helpers/utils';
+import parseError from '../errors/parse-error';
 
 class ListPackagesCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -19,7 +18,7 @@ class ListPackagesCommand extends BaseCommand {
             if (yes(output)) {
                 consolePrint.info(output);
             } else {
-                consolePrint.error('NO RESULTS!');
+                consolePrint.notice('No results');
             }
         } catch (e) {
             consolePrint.error(parseError(e).message);

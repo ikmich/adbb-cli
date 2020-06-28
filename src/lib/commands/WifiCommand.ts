@@ -13,7 +13,7 @@ import getDevices from '../helpers/get-devices';
 import Device from '../Device';
 import askSelect from '../ask/ask-select';
 import askInput from '../ask/ask-input';
-import parseError from '../errors/parseError';
+import parseError from '../errors/parse-error';
 
 class WifiCommand extends BaseCommand {
     constructor(commandInfo) {
@@ -98,10 +98,10 @@ class WifiCommand extends BaseCommand {
                 deviceIpParts[2] === hostIpParts[2]
             ) {
                 // => Same network
-
                 try {
-                    /*const result =*/ await this.listenTcp();
-                    setTimeout(async () => {
+                    /*const result =*/
+                    await this.listenTcp();
+                    await setTimeout(async () => {
                         await askInput('done', 'Unplug usb and press ENTER/RETURN');
                         await this.connectDeviceIp(deviceIp);
                     }, 400);
@@ -135,10 +135,10 @@ class WifiCommand extends BaseCommand {
                 error: function(e: Error) {
                     reject(e);
                 },
-                stderr: function(stderr: string) {
+                stderr: function(stream: Buffer, stderr: string) {
                     reject(new Error(stderr));
                 },
-                stdout: async function(tcpipOutput: string) {
+                stdout: async function(stream: Buffer, tcpipOutput: string) {
                     output += tcpipOutput;
                     consolePrint.info(tcpipOutput);
                 },
@@ -161,10 +161,10 @@ class WifiCommand extends BaseCommand {
                 error: function(e: Error) {
                     reject(e);
                 },
-                stderr: function(stderr: string) {
+                stderr: function(stream: Buffer, stderr: string) {
                     reject(new Error(stderr));
                 },
-                stdout: function(output: string) {
+                stdout: function(stream: Buffer, output: string) {
                     // Connected.
                     _output += output;
                     store.saveWifiIp(deviceIp);

@@ -1,6 +1,7 @@
 import {STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE} from '../constants';
 
 const config = {
+    appCommand: 'adbb',
     environment: process.env.NODE_ENV || 'production',
 
     isDev: function() {
@@ -14,6 +15,8 @@ const config = {
     ipRegex: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/,
 
     PORT_TCP: 5555,
+
+    PING_COUNT: 10,
 
     cmd_exec_delay: 200,
 

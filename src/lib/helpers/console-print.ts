@@ -7,9 +7,13 @@ const consolePrint = {
             console.log(chalk.blueBright(msg));
         }
     },
-    error: (msg: string) => {
-        if (yes(msg)) {
-            console.log(chalk.red(msg));
+    error: (msg: string | Error) => {
+        if (typeof msg === 'string') {
+            if (yes(msg)) {
+                console.log(chalk.red(msg));
+            }
+        } else {
+            console.log(chalk.red(msg.message));
         }
     },
     notice: (msg: string) => {
@@ -26,7 +30,7 @@ const consolePrint = {
         if (yes(msg)) {
             console.log(msg);
         }
-    }
+    },
 };
 
 export default consolePrint;

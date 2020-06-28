@@ -1,7 +1,7 @@
 import BaseCommand from './BaseCommand';
 import consolePrint from '../helpers/console-print';
 import execShellCmd from '../helpers/exec-shell-cmd';
-import parseError from '../errors/parseError';
+import parseError from '../errors/parse-error';
 
 class ResetServerCommand extends BaseCommand {
     constructor(commandInfo) {

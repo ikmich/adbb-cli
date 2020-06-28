@@ -1,4 +1,4 @@
-import IpStrategy from '../lib/IpStrategy';
+import IpStrategy from './IpStrategy';
 
 export default interface IpRequestPayload {
     strategy: IpStrategy;

@@ -2,7 +2,7 @@ import {ICommandOptions} from '../../types/ICommandOptions';
 import {ICommandInfo} from '../../types/ICommandInfo';
 import execShellCmd from '../helpers/exec-shell-cmd';
 import ifConcat from '../helpers/if-concat';
-import parseError from "../errors/parseError";
+import parseError from "../errors/parse-error";
 
 class BaseCommand {
     public commandInfo: ICommandInfo;
@@ -48,7 +48,7 @@ class BaseCommand {
         return ifConcat(cmd, [
             {
                 c: typeof this.options.filter !== 'undefined' && this.options.filter !== null,
-                s: ` | grep ${this.options.filter}`,
+                s: ` | grep "${this.options.filter}" || exit 0`,
             },
         ]);
     }

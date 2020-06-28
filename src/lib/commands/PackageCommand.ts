@@ -4,7 +4,7 @@ import consolePrint from '../helpers/console-print';
 import askEnterPackage from '../ask/ask-enter-package';
 import store from '../../config/store';
 import {CMD_UNSET_PACKAGE, CMD_UNSET_PKG} from '../../command-constants';
-import parseError from "../errors/parseError";
+import parseError from "../errors/parse-error";
 import chalk = require('chalk');
 
 class PackageCommand extends BaseCommand {

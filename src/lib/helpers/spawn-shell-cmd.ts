@@ -1,61 +1,68 @@
-import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+import { ChildProcessWithoutNullStreams, SendHandle, Serializable, spawn } from 'child_process';
 import { removeEndLines } from './utils';
+import { ISpawnCallbacks } from '../../types/ISpawnCallbacks';
+const os = require('os');
 
-export interface ISpawnCallbacks {
-    stdout: (data: string) => void;
-    stderr: (data: string) => void;
-    error: (error: Error) => void;
-    close: (code: number, signal: NodeJS.Signals) => void;
+const osType = os.platform();
+
+let defaultOpts: any = {
+    encoding: 'utf-8',
+};
+
+if (osType == 'win32') {
+    defaultOpts.shell = true;
 }
 
-const spawnShellCmd = (shellCmd: string, callbacks: ISpawnCallbacks, opts = {}) => {
+const spawnShellCmd = (
+    shellCmd: string,
+    callbacks: ISpawnCallbacks,
+    opts: any = defaultOpts,
+): ChildProcessWithoutNullStreams => {
     const parts = shellCmd.split(/\s+/);
     const main = parts[0];
     const args = parts.filter((entry, i) => {
         return i > 0;
     });
 
-    const listener: ChildProcessWithoutNullStreams = spawn(main, args, opts);
+    const childProcess: ChildProcessWithoutNullStreams = spawn(main, args, opts);
 
-    listener.stdout.on('data', (data: any) => {
-        // consolePrint.info(chalk.green(`stdout: ${data}`));
-        if (callbacks) {
-            callbacks.stdout(removeEndLines(data.toString(), 1));
+    childProcess.stdout.on('data', (data: Buffer) => {
+        if (callbacks && callbacks.stdout) {
+            callbacks.stdout(data, data.toString()); //removeEndLines(data.toString(), 1)
         }
     });
 
-    listener.stderr.on('data', (data: any) => {
-        // consolePrint.error(chalk.red(`stderr: ${data}`));
-        if (callbacks) {
-            callbacks.stderr(data.toString());
+    childProcess.stderr.on('data', (data: Buffer) => {
+        if (callbacks && callbacks.stderr) {
+            callbacks.stderr(data, data.toString());
         }
     });
 
-    listener.on('error', error => {
-        // consolePrint.error(chalk.red(`error: ${error.message}`));
-        if (callbacks) {
+    childProcess.on('error', error => {
+        if (callbacks && callbacks.error) {
             callbacks.error(error);
         }
     });
 
-    listener.on('close', (code: number, signal: NodeJS.Signals) => {
-        // consolePrint.notice(`child process exited with code ${code}`);
-        if (callbacks) {
+    childProcess.on('close', (code: number, signal: NodeJS.Signals) => {
+        if (callbacks && callbacks.close) {
             callbacks.close(code, signal);
         }
     });
 
-    // listener.on('exit', code => {
-    //     console.log(`child process exited with code ${code}`);
-    // });
+    childProcess.on('exit', (code: number, signal: NodeJS.Signals) => {
+        if (callbacks && callbacks.exit) {
+            callbacks.exit(code, signal);
+        }
+    });
 
-    // listener.on('message', ((message, sendHandle) => {
-    //     console.log(`>> message: ${message}`);
-    //     console.log(`>> sendHandle: ${sendHandle}`);
-    // }));
+    childProcess.on('message', (message: Serializable, sendHandle: SendHandle) => {
+        if (callbacks && callbacks.message) {
+            callbacks.message(message, sendHandle);
+        }
+    });
 
-    // console.log('>> child process:');
-    // console.log(listener);
+    return childProcess;
 };
 
 export default spawnShellCmd;

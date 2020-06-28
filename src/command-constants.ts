@@ -12,3 +12,4 @@ export const CMD_EMULATOR = 'emulator';
 export const CMD_IP = 'ip';
 export const CMD_RESET_SERVER = 'reset-server';
 export const CMD_UNINSTALL = 'uninstall';
+export const CMD_PING = 'ping';
