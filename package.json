@@ -8,8 +8,18 @@
     "build": "rm -rf ./dist && tsc",
     "deploy": "npm uninstall -g adbb && yarn build && npm install -g",
     "start": "link-module-alias node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit"
   },
+  "keywords": [
+    "adbb",
+    "adb",
+    "android adb",
+    "android debug bridge"
+  ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ikmich/adbb-cli"
+    },
   "author": "Ikenna Agbasimalo (michfx@gmail.com)",
   "license": "ISC",
   "dependencies": {

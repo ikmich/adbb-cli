@@ -11,7 +11,7 @@ class UninstallCommand extends BaseCommand {
         super(commandInfo);
     }
 
-    async run(): Promise<any> {
+    async run() {
         let pkg: string = '';
 
         switch (true) {
