@@ -28,7 +28,7 @@ List connected devices
     adbb devices -vg  
 
 ### `wifi`  
-`$ adbb wifi`
+`$ adbb wifi`  
 Connect a device for debugging via Wi-Fi connection.  
 
 ##### **Options**
@@ -70,7 +70,7 @@ Deletes a previously set reference package name.
     adbb unset-pkg  
 
 ### `clear <package>`
-Clear application data for specified package. If no package is specified, user will be asked to enter the intended application package.  
+Clear application data for specified package. If no package is specified, you will be prompted to input the intended application package.  
 
 ##### **Arguments**  
 * `package` | `pkg`  
