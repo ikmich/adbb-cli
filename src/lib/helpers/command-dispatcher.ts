@@ -15,7 +15,8 @@ import {
     CMD_EMULATOR,
     CMD_IP,
     CMD_PACKAGE,
-    CMD_PACKAGES, CMD_PING,
+    CMD_PACKAGES,
+    CMD_PING,
     CMD_PKG,
     CMD_PKGS,
     CMD_RESET_SERVER,
@@ -28,22 +29,15 @@ import consolePrint from './console-print';
 import PackageCommand from '../commands/PackageCommand';
 import store from './store';
 import parseError from '../errors/parse-error';
-import chalk = require('chalk');
 import UninstallCommand from '../commands/UninstallCommand';
-import { no } from './utils';
-import PingCommand from "../commands/PingCommand";
+import PingCommand from '../commands/PingCommand';
+import chalk = require('chalk');
 
 const commandDispatcher = {
     dispatch: async (commandInfo: ICommandInfo) => {
         if (store.hasPackage() && store.shouldShowPkgNotice()) {
             consolePrint.notice(`Current reference package: ${store.getPackage()}`);
             store.savePkgNoticeTime();
-        }
-
-        if (no(commandInfo.name)) {
-            if (true === commandInfo.options.disconnect) {
-                commandInfo.name = 'wifi';
-            }
         }
 
         let mainCommand = commandInfo.name;

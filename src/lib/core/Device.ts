@@ -1,5 +1,5 @@
 import { IDeviceInfo } from '../../types/IDeviceInfo';
-import config from "../../config/config";
+import config from '../../config/config';
 
 class Device implements IDeviceInfo {
     readonly device: string;
@@ -9,6 +9,7 @@ class Device implements IDeviceInfo {
     readonly specSheet: string;
     readonly transportId: string;
     readonly usbId?: string | any;
+    readonly state: string;
 
     constructor(info: IDeviceInfo) {
         this.device = info.device;
@@ -18,10 +19,15 @@ class Device implements IDeviceInfo {
         this.specSheet = info.specSheet;
         this.transportId = info.transportId;
         this.usbId = info.usbId;
+        this.state = info.state;
     }
 
-    isTcpConnection():boolean {
+    isTcpConnection(): boolean {
         return config.ipRegex.test(this.sid);
+    }
+
+    isOnline(): boolean {
+        return this.state.toLowerCase() == 'device';
     }
 }
 

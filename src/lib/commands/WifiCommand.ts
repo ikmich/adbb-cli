@@ -77,7 +77,7 @@ class WifiCommand extends BaseCommand {
         }
 
         try {
-            const hostIp = await ipManager.getHostIp();
+            const hostIp = await ipManager.getHostIpInNetwork(deviceIp); // Todo - Get host ip in same network as device ip
 
             if (no(hostIp)) {
                 consolePrint.error(EMPTY_HOST_IP_ADDRESS);
@@ -89,14 +89,15 @@ class WifiCommand extends BaseCommand {
                 console.log('>> host ip:', hostIp);
             }
 
-            const deviceIpParts = deviceIp.split('.');
+            /*const deviceIpParts = deviceIp.split('.');
             const hostIpParts = hostIp.split('.');
 
             if (
                 deviceIpParts[0] === hostIpParts[0] &&
                 deviceIpParts[1] === hostIpParts[1] &&
                 deviceIpParts[2] === hostIpParts[2]
-            ) {
+            )*/
+            if (await ipManager.checkAreIPsInSameNetwork(deviceIp, hostIp)) {
                 // => Same network
                 try {
                     /*const result =*/

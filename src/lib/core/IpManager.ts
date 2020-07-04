@@ -92,7 +92,7 @@ class IpManager {
         throw new DeviceNotConnectedError();
     }
 
-    async getHostIp() {
+    async getHostIps() {
         let ip = '';
         try {
             let ifconfig = await execShellCmd('ifconfig | grep inet');
@@ -105,11 +105,8 @@ class IpManager {
                 }
 
                 let rexIp = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/i;
-                let ipResults: any = configLine.match(rexIp);
-                if (ipResults && ipResults.length > 0) {
-                    //console.log('-->>>> ipResults', ipResults);
-                    ip = ipResults[1];
-                }
+                let ipResults: any = configLine.match(rexIp) || [];
+                return ipResults;
             }
         } catch (e) {
             console.log(chalk.red(`Could not get host ip: ${e.message}`));
@@ -121,6 +118,25 @@ class IpManager {
         }
 
         throw new HostNotConnectedError();
+    }
+
+    async getHostIpInNetwork(referenceIp: string) {
+        let hostIps = await this.getHostIps();
+        for (let hostIp of hostIps) {
+            if (this.checkAreIPsInSameNetwork(hostIp, referenceIp)) {
+                return hostIp;
+            }
+        }
+
+        // No host ip is in same network as device.
+        return '';
+    }
+
+    checkAreIPsInSameNetwork(ip1: string, ip2: string): boolean {
+        const ip1Parts = ip1.split('.');
+        const ip2Parts = ip2.split('.');
+
+        return ip1Parts[0] === ip2Parts[0] && ip1Parts[1] === ip2Parts[1] && ip1Parts[2] === ip2Parts[2];
     }
 
     /**

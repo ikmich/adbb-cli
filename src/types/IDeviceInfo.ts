@@ -6,4 +6,5 @@ export interface IDeviceInfo {
     model: string;
     device: string;
     transportId: string;
+    state: string;
 }

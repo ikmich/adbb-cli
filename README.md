@@ -24,8 +24,8 @@ List connected devices
 
 ##### **Example**
     adbb devices -v
-    adbb devices -vj
-    adbb devices -vg  
+    adbb devices -j
+    adbb devices -g  
 
 ### `wifi`  
 `$ adbb wifi`  
@@ -90,9 +90,11 @@ Get the device IP address(es).
 Kill and restart the adb server.  
 
 ### `uninstall [package]`  
-Uninstalls the application with the specified package argument. If no package argument is provided, user is asked to enter the intended application package. 
-If a reference package has been set (via `adbb pkg <package>`), user will be asked if they want to continue with that package.    
+Uninstalls the application with the specified package argument. If no package argument is provided, user is asked to 
+enter the intended application package. If a reference package has been set (via `adbb pkg <package>`), user will be 
+asked if they want to continue with that package.  
 
 ### `ping`  
-Pings the device's IP address.  
+Pings the device's IP address. You can run this command to check that the device can be reached over the network 
+for a tcp connection.  
 
