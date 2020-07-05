@@ -5,6 +5,7 @@ import askEnterPackage from '../ask/ask-enter-package';
 import consolePrint from '../helpers/console-print';
 import store from '../helpers/store';
 import askInput from '../ask/ask-input';
+import parseError from '../errors/parse-error';
 
 class UninstallCommand extends BaseCommand {
     constructor(commandInfo: ICommandInfo) {
@@ -29,7 +30,7 @@ class UninstallCommand extends BaseCommand {
                         `This application: "${store.getPackage()}" will be uninstalled. WOULD YOU LIKE TO CONTINUE? (y/n)`,
                     );
                     if (yes(answer) && answer.toLowerCase() === 'y') {
-                        pkg = answer;
+                        pkg = store.getPackage();
                     }
                 }
 
@@ -44,7 +45,10 @@ class UninstallCommand extends BaseCommand {
             try {
                 const output = await this.exec(`adb uninstall ${pkg}`);
                 consolePrint.info(output);
-            } catch (e) {}
+            } catch (e) {
+                e = parseError(e);
+                consolePrint.error(e.message);
+            }
         }
     }
 }
