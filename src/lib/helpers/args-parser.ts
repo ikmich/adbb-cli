@@ -29,7 +29,7 @@ const argsParser = {
         }
 
         if (config.isDev()) {
-            console.log('>>> flags', commandInfo.options);
+            console.log('>> options:', commandInfo.options);
         }
 
         return commandInfo;

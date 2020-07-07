@@ -8,6 +8,10 @@ const parseError = (e: Error | string): Error => {
     }
 
     if (e && e.message) {
+        if (e.message.toLowerCase().includes('command failed')) {
+            return new Error('Command failed');
+        }
+        
         if (e.message.toLowerCase().includes('device offline')) {
             return new DeviceOfflineError(e);
         }

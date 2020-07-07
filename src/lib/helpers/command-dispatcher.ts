@@ -32,12 +32,21 @@ import parseError from '../errors/parse-error';
 import UninstallCommand from '../commands/UninstallCommand';
 import PingCommand from '../commands/PingCommand';
 import chalk = require('chalk');
+import { arrayContainsAnyOf, isEmpty, no } from './utils';
+import { main } from 'ts-node/dist/bin';
 
 const commandDispatcher = {
     dispatch: async (commandInfo: ICommandInfo) => {
         if (store.hasPackage() && store.shouldShowPkgNotice()) {
             consolePrint.notice(`Current reference package: ${store.getPackage()}`);
             store.savePkgNoticeTime();
+        }
+
+        // If no argument and no options,
+        if (no(commandInfo.name)) {
+            if (isEmpty(commandInfo.options) || arrayContainsAnyOf(Object.keys(commandInfo.options), ['g', 'j', 'v'])) {
+                commandInfo.name = CMD_DEVICES;
+            }
         }
 
         let mainCommand = commandInfo.name;

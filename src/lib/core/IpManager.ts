@@ -17,11 +17,11 @@ class IpManager {
     async getDeviceNetworkConfigs(): Promise<NetConfig[]> {
         let commandString = 'shell ip -f inet addr | grep inet';
 
-        let shellCmd = await buildAdbCommand(commandString);
+        let shellCommand = await buildAdbCommand(commandString);
         let netConfigs: NetConfig[] = [];
 
         try {
-            let cmdOutput = await execShellCmd(shellCmd);
+            let cmdOutput = await execShellCmd(shellCommand);
 
             let rexConfigString = /(inet \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,3}\s+.*scope\s+\w+\s+\w+$)/gim;
             let allConfigsMatches: any = cmdOutput.match(rexConfigString);
