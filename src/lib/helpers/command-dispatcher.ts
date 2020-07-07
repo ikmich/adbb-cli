@@ -15,7 +15,7 @@ import {
     CMD_EMULATOR,
     CMD_IP,
     CMD_PACKAGE,
-    CMD_PACKAGES,
+    CMD_PACKAGES, CMD_PATH,
     CMD_PING,
     CMD_PKG,
     CMD_PKGS,
@@ -34,6 +34,7 @@ import PingCommand from '../commands/PingCommand';
 import chalk = require('chalk');
 import { arrayContainsAnyOf, isEmpty, no } from './utils';
 import { main } from 'ts-node/dist/bin';
+import PathCommand from "../commands/PathCommand";
 
 const commandDispatcher = {
     dispatch: async (commandInfo: ICommandInfo) => {
@@ -105,6 +106,10 @@ const commandDispatcher = {
 
             case CMD_PING:
                 await new PingCommand(commandInfo).run();
+                break;
+
+            case CMD_PATH:
+                await new PathCommand(commandInfo).run();
                 break;
 
             default:
