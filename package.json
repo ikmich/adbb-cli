@@ -16,10 +16,10 @@
     "android adb",
     "android debug bridge"
   ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ikmich/adbb-cli"
-    },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ikmich/adbb-cli"
+  },
   "author": "Ikenna Agbasimalo (michfx@gmail.com)",
   "license": "ISC",
   "dependencies": {
