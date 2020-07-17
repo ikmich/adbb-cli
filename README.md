@@ -5,10 +5,10 @@
 
 ## Installation  
 #### npm  
-    npm install -g adbb  (Not working yet)  
+    npm install -g adbb  
 
 #### yarn  
-    yarn add --global adbb  (Not working yet)  
+    yarn add --global adbb  
 
 ## Commands
 
