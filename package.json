@@ -11,16 +11,17 @@
     "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit"
   },
   "keywords": [
-    "adbb",
     "adb",
+    "adbb",
     "android adb",
-    "android debug bridge"
+    "android debug bridge",
+    "android"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ikmich/adbb-cli"
   },
-  "author": "Ikenna Agbasimalo (michfx@gmail.com)",
+  "author": "Ikenna Agbasimalo <michfx@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^14.0.13",
