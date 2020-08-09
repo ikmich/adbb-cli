@@ -3,21 +3,21 @@ import inquirer from 'inquirer';
 import Device from "../core/Device";
 
 const askSelectDevice = async () => {
-    const devices: Device[] = await getDevices();
-    if (devices && devices.length > 1) {
-        const deviceIds = devices.map(deviceInfo => {
-            return deviceInfo.sid;
-        });
+  const devices: Device[] = await getDevices();
+  if (devices && devices.length > 1) {
+    const deviceIds = devices.map(deviceInfo => {
+      return deviceInfo.sid;
+    });
 
-        const answer = await inquirer.prompt({
-            type: 'list',
-            name: 'device',
-            message: 'Select preferred device:',
-            choices: deviceIds,
-        });
+    const answer = await inquirer.prompt({
+      type: 'list',
+      name: 'device',
+      message: 'Select preferred device:',
+      choices: deviceIds,
+    });
 
-        return answer.device;
-    }
+    return answer.device;
+  }
 };
 
 export default askSelectDevice;

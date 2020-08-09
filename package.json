@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node src/index.ts",
     "build": "rm -rf ./dist && tsc",
+    "clean": "rm -rf ./dist",
     "deploy": "npm uninstall -g adbb && yarn build && npm install -g",
     "start": "link-module-alias node dist/index.js",
     "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit"

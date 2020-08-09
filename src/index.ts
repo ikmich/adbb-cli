@@ -6,14 +6,15 @@ import yargsOptions from './yargs-options';
 
 import yargs from 'yargs';
 import {
-    CMD_CLEAR,
-    CMD_DEVICES,
-    CMD_EMU,
-    CMD_EMULATOR,
-    CMD_IP,
-    CMD_PACKAGES,
-    CMD_PKGS, CMD_RESET_SERVER,
-    CMD_WIFI
+  CMD_CLEAR,
+  CMD_DEVICES,
+  CMD_EMU,
+  CMD_EMULATOR,
+  CMD_IP,
+  CMD_PACKAGES,
+  CMD_PKGS,
+  CMD_RESET_SERVER,
+  CMD_WIFI
 } from "./command-constants";
 
 const argv = yargs
@@ -32,13 +33,14 @@ const argv = yargs
 
 
     .options({
-        package: {},
+      package: {},
     })
     .help().argv;
 
 
 const commandInfo = argsParser.parse(argv);
-commandDispatcher.dispatch(commandInfo).then(() => {});
+commandDispatcher.dispatch(commandInfo).then(() => {
+});
 
 // getDevices().then(result => {
 //     console.log('>> devices output:', result);

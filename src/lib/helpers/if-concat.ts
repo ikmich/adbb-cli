@@ -1,18 +1,17 @@
-
 const ifConcat = (
     source: string = '',
     options: {
-        c: any;
-        s: string;
+      c: any;
+      s: string;
     }[],
 ) => {
-    for (let option of options) {
-        if (option.c) {
-            source += option.s;
-        }
+  for (let option of options) {
+    if (option.c) {
+      source += option.s;
     }
+  }
 
-    return source;
+  return source;
 };
 
 export default ifConcat;

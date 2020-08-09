@@ -1,7 +1,6 @@
-
 describe('Commands', () => {
-    test('test', () => {
-        const val = 'foo';
-        expect('foo').toBe(val);
-    });
+  test('test', () => {
+    const val = 'foo';
+    expect('foo').toBe(val);
+  });
 });
