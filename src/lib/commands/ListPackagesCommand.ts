@@ -1,7 +1,7 @@
 import BaseCommand from './BaseCommand';
 import buildAdbCommand from '../helpers/build-adb-command';
 import consolePrint from '../helpers/console-print';
-import {no, yes} from '../helpers/utils';
+import { no, yes } from '../helpers/utils';
 import parseError from '../errors/parse-error';
 
 class ListPackagesCommand extends BaseCommand {

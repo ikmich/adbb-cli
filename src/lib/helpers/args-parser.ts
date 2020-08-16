@@ -1,12 +1,12 @@
-import config from "../../config/config";
-import {ICommandInfo} from "../../types/ICommandInfo";
+import config from '../../config/config';
+import { ICommandInfo } from '../../types/ICommandInfo';
 
 const argsParser = {
   parse: (argv: any): ICommandInfo => {
     let commandInfo: ICommandInfo = {
       name: '',
       args: [],
-      options: {}
+      options: {},
     };
 
     const commands = argv._;
@@ -33,7 +33,7 @@ const argsParser = {
     }
 
     return commandInfo;
-  }
+  },
 };
 
 export default argsParser;

@@ -1,9 +1,9 @@
 import execShellCmd from './exec-shell-cmd';
 import buildAdbCommand from './build-adb-command';
-import {yes} from './utils';
+import { yes } from './utils';
 import consolePrint from './console-print';
 import parseError from '../errors/parse-error';
-import config from "../../config/config";
+import config from '../../config/config';
 
 const getPackages = async (filter: string): Promise<string[]> => {
   try {

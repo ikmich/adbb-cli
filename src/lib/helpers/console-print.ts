@@ -1,5 +1,5 @@
 import chalk = require('chalk');
-import {yes} from './utils';
+import { yes } from './utils';
 
 const consolePrint = {
   info: (msg: string) => {

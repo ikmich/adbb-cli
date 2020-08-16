@@ -1,5 +1,5 @@
 import getPackages from '../helpers/get-packages';
-import {isEmpty} from '../helpers/utils';
+import { isEmpty } from '../helpers/utils';
 import askSelectMultiple from './ask-select-multiple';
 import askSelect from './ask-select';
 

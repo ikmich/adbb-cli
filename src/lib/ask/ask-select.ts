@@ -1,11 +1,11 @@
 import inquirer from 'inquirer';
-import {yes} from '../helpers/utils';
+import { yes } from '../helpers/utils';
 
 const askSelect = async (
-    name: string = 'choice',
-    message: string = 'Select choice',
-    choices: any[],
-    multiple = false,
+  name: string = 'choice',
+  message: string = 'Select choice',
+  choices: any[],
+  multiple = false,
 ) => {
   if (choices && choices.length > 0) {
     const result = await inquirer.prompt({

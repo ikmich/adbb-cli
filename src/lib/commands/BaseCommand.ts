@@ -1,10 +1,10 @@
-import {ICommandOptions} from '../../types/ICommandOptions';
-import {ICommandInfo} from '../../types/ICommandInfo';
+import { ICommandOptions } from '../../types/ICommandOptions';
+import { ICommandInfo } from '../../types/ICommandInfo';
 import execShellCmd from '../helpers/exec-shell-cmd';
 import ifConcat from '../helpers/if-concat';
 import parseError from '../errors/parse-error';
 import config from '../../config/config';
-import {no} from '../helpers/utils';
+import { no } from '../helpers/utils';
 
 class BaseCommand {
   public commandInfo: ICommandInfo;
@@ -34,16 +34,14 @@ class BaseCommand {
   protected checkResolveArgFilter() {
     for (let arg of this.args) {
       if (no(this.options.filter) && config.filterDirectiveRegex.test(arg)) {
-        // => Filter directive used for arg1. Use this as the filter.
+        // => Filter directive used for this arg. Use this as the filter.
         this.options.filter = arg.replace(config.filterDirectiveRegex, '');
-        // consolePrint.notice(`>> filter: ${this.options.filter}`);
         break;
       }
     }
   }
 
-  async run() {
-  }
+  async run() {}
 
   protected async exec(cmd: string): Promise<string> {
     try {

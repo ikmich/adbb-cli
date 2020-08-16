@@ -11,4 +11,3 @@ const getCliCommandString = (): string => {
 };
 
 export default getCliCommandString;
-

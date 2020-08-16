@@ -1,4 +1,4 @@
-import {SendHandle, Serializable} from "child_process";
+import { SendHandle, Serializable } from 'child_process';
 
 export interface ISpawnCallbacks {
   stdout: (stream: Buffer, data: string) => void;
@@ -6,5 +6,5 @@ export interface ISpawnCallbacks {
   error: (error: Error) => void;
   close: (code: number, signal: NodeJS.Signals) => void;
   exit?: (code: number, signal: NodeJS.Signals) => void;
-  message?: (message: Serializable, sendHandle: SendHandle) => void
+  message?: (message: Serializable, sendHandle: SendHandle) => void;
 }

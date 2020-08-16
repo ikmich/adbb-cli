@@ -2,7 +2,7 @@ import BaseCommand from './BaseCommand';
 import buildAdbCommand from '../helpers/build-adb-command';
 import askEnterPackage from '../ask/ask-enter-package';
 import NoPackageError from '../errors/NoPackageError';
-import {isEmpty, yes} from '../helpers/utils';
+import { isEmpty, yes } from '../helpers/utils';
 import consolePrint from '../helpers/console-print';
 import store from '../helpers/store';
 import askSelectPackage from '../ask/ask-select-package';
@@ -21,10 +21,15 @@ class ClearCommand extends BaseCommand {
       case yes(this.options.package):
         pkgs.push(this.options.package!);
         break;
+
       case yes(this.options.filter):
-        consolePrint.notice(`>> filter: ${this.options.filter}`);
         pkgs = await askSelectPackage(this.options.filter!);
         break;
+
+      case yes(this.args[0]):
+        pkgs.push(this.args[0]);
+        break;
+
       default:
         // Check if a reference package has previously been set
         if (store.hasPackage()) {

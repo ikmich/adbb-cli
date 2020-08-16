@@ -1,6 +1,6 @@
-import {yes} from './utils';
+import { yes } from './utils';
 import config from '../../config/config';
-import {STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE} from '../../constants';
+import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE } from '../../constants';
 
 const Conf = require('conf');
 

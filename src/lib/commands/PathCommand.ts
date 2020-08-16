@@ -2,7 +2,7 @@ import BaseCommand from './BaseCommand';
 import consolePrint from '../helpers/console-print';
 import parseError from '../errors/parse-error';
 import buildAdbCommand from '../helpers/build-adb-command';
-import {no, yes} from '../helpers/utils';
+import { no, yes } from '../helpers/utils';
 import store from '../helpers/store';
 import askInput from '../ask/ask-input';
 
@@ -17,10 +17,7 @@ class PathCommand extends BaseCommand {
 
       switch (true) {
         case store.hasPackage():
-          const answer: string = await askInput(
-              'confirm',
-              `Show install path for: "${store.getPackage()}"? (y/n)`,
-          );
+          const answer: string = await askInput('confirm', `Show install path for: "${store.getPackage()}"? (y/n)`);
 
           if (yes(answer) && answer.toLowerCase() === 'y') {
             pkg = store.getPackage();

@@ -1,4 +1,4 @@
-import {ICommandOptions} from "./ICommandOptions";
+import { ICommandOptions } from './ICommandOptions';
 
 export interface ICommandInfo {
   name: string;

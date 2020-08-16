@@ -1,4 +1,4 @@
-import {ICommandInfo} from '../../types/ICommandInfo';
+import { ICommandInfo } from '../../types/ICommandInfo';
 import WifiCommand from '../commands/WifiCommand';
 import DevicesCommand from '../commands/DevicesCommand';
 import ListPackagesCommand from '../commands/ListPackagesCommand';
@@ -9,22 +9,22 @@ import LaunchEmulatorCommand from '../commands/LaunchEmulatorCommand';
 import IpCommand from '../commands/IpCommand';
 import ResetServerCommand from '../commands/ResetServerCommand';
 import {
-    CMD_CLEAR,
-    CMD_DEVICES,
-    CMD_EMU,
-    CMD_EMULATOR,
-    CMD_IP,
-    CMD_PACKAGE,
-    CMD_PACKAGES,
-    CMD_PATH,
-    CMD_PING,
-    CMD_PKG,
-    CMD_PKGS,
-    CMD_RESET_SERVER,
-    CMD_UNINSTALL,
-    CMD_UNSET_PACKAGE,
-    CMD_UNSET_PKG,
-    CMD_WIFI,
+  CMD_CLEAR,
+  CMD_DEVICES,
+  CMD_EMU,
+  CMD_EMULATOR,
+  CMD_IP,
+  CMD_PACKAGE,
+  CMD_PACKAGES,
+  CMD_PATH,
+  CMD_PING,
+  CMD_PKG,
+  CMD_PKGS,
+  CMD_RESET_SERVER,
+  CMD_UNINSTALL,
+  CMD_UNSET_PACKAGE,
+  CMD_UNSET_PKG,
+  CMD_WIFI,
 } from '../../command-constants';
 import consolePrint from './console-print';
 import PackageCommand from '../commands/PackageCommand';
@@ -32,8 +32,8 @@ import store from './store';
 import parseError from '../errors/parse-error';
 import UninstallCommand from '../commands/UninstallCommand';
 import PingCommand from '../commands/PingCommand';
-import {arrayContainsAnyOf, isEmpty, no} from './utils';
-import PathCommand from "../commands/PathCommand";
+import { arrayContainsAnyOf, isEmpty, no } from './utils';
+import PathCommand from '../commands/PathCommand';
 
 const commandDispatcher = {
   dispatch: async (commandInfo: ICommandInfo) => {

@@ -1,5 +1,5 @@
-import {ChildProcessWithoutNullStreams, SendHandle, Serializable, spawn} from 'child_process';
-import {ISpawnCallbacks} from '../../types/ISpawnCallbacks';
+import { ChildProcessWithoutNullStreams, SendHandle, Serializable, spawn } from 'child_process';
+import { ISpawnCallbacks } from '../../types/ISpawnCallbacks';
 
 const os = require('os');
 
@@ -14,9 +14,9 @@ if (osType == 'win32') {
 }
 
 const spawnShellCmd = (
-    shellCmd: string,
-    callbacks: ISpawnCallbacks,
-    opts: any = defaultOpts,
+  shellCmd: string,
+  callbacks: ISpawnCallbacks,
+  opts: any = defaultOpts,
 ): ChildProcessWithoutNullStreams => {
   const parts = shellCmd.split(/\s+/);
   const main = parts[0];

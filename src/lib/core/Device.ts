@@ -1,4 +1,4 @@
-import {IDeviceInfo} from '../../types/IDeviceInfo';
+import { IDeviceInfo } from '../../types/IDeviceInfo';
 import config from '../../config/config';
 
 class Device implements IDeviceInfo {

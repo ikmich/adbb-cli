@@ -3,8 +3,8 @@ import consolePrint from '../helpers/console-print';
 import IpManager from '../core/IpManager';
 import NetConfig from '../core/NetConfig';
 import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError';
-import {yes} from '../helpers/utils';
-import {NO_IP_ADDRESS_FOUND} from '../errors/error-constants';
+import { yes } from '../helpers/utils';
+import { NO_IP_ADDRESS_FOUND } from '../errors/error-constants';
 import parseError from '../errors/parse-error';
 
 /**
