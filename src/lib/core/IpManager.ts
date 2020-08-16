@@ -93,7 +93,15 @@ class IpManager {
   }
 
   async getHostIps() {
-    let ip = '';
+    if (config.isWindowsOs) {
+      throw new Error(`This Operating System is not currently supported for IP address features`);
+    } else {
+      return IpManager.os_nix_getHostIps();
+    }
+  }
+
+  private static async os_nix_getHostIps() {
+    let ips = [];
     try {
       let ifconfig = await execShellCmd(`ifconfig | ${config.cmd.grep} inet`);
       let rexConfigs = /inet (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gim;
@@ -113,12 +121,14 @@ class IpManager {
       throw parseError(e);
     }
 
-    if (yes(ip)) {
-      return ip;
+    if (yes(ips)) {
+      return ips;
     }
 
     throw new HostNotConnectedError();
   }
+
+  private static async os_win_getHostIps() {}
 
   async getHostIpInNetwork(referenceIp: string) {
     let hostIps = await this.getHostIps();
