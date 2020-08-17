@@ -3,15 +3,13 @@ import NetConfig from './NetConfig';
 import buildAdbCommand from '../helpers/build-adb-command';
 import config from '../../config/config';
 import execShellCmd from '../helpers/exec-shell-cmd';
-import { LOOPBACK_ADDRESS } from '../../constants';
-import { removeEndLines, yes } from '../helpers/utils';
-import HostNotConnectedError from '../errors/HostNotConnectedError';
+import { removeEndLines } from '../helpers/utils';
 import DeviceNotConnectedError from '../errors/DeviceNotConnectedError';
 import parseError from '../errors/parse-error';
 import spawnShellCmd from '../helpers/spawn-shell-cmd';
 import consolePrint from '../helpers/console-print';
 import { ChildProcessWithoutNullStreams } from 'child_process';
-import chalk = require('chalk');
+import ip = require('ip');
 
 class IpManager {
   async getDeviceNetworkConfigs(): Promise<NetConfig[]> {
@@ -92,50 +90,10 @@ class IpManager {
     throw new DeviceNotConnectedError();
   }
 
-  async getHostIps() {
-    if (config.isWindowsOs) {
-      throw new Error(`This Operating System is not currently supported for IP address features`);
-    } else {
-      return IpManager.os_nix_getHostIps();
-    }
-  }
-
-  private static async os_nix_getHostIps() {
-    let ips = [];
-    try {
-      let ifconfig = await execShellCmd(`ifconfig | ${config.cmd.grep} inet`);
-      let rexConfigs = /inet (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gim;
-      let configLineMatches: any = ifconfig.match(rexConfigs);
-
-      for (let configLine of configLineMatches) {
-        if (configLine.indexOf(LOOPBACK_ADDRESS) > -1) {
-          continue;
-        }
-
-        let rexIp = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/i;
-        let ipResults: any = configLine.match(rexIp) || [];
-        return ipResults;
-      }
-    } catch (e) {
-      console.log(chalk.red(`Could not get host ip: ${e.message}`));
-      throw parseError(e);
-    }
-
-    if (yes(ips)) {
-      return ips;
-    }
-
-    throw new HostNotConnectedError();
-  }
-
-  private static async os_win_getHostIps() {}
-
   async getHostIpInNetwork(referenceIp: string) {
-    let hostIps = await this.getHostIps();
-    for (let hostIp of hostIps) {
-      if (this.checkAreIPsInSameNetwork(hostIp, referenceIp)) {
-        return hostIp;
-      }
+    let hostIp = ip.address();
+    if (this.checkAreIPsInSameNetwork(hostIp, referenceIp)) {
+      return hostIp;
     }
 
     // No host ip is in same network as device.

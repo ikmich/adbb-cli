@@ -18,7 +18,17 @@ const config = {
     return this.environment === 'production';
   },
 
-  os: os.platform(),
+  os: (()=>{
+    // const values = {
+    //   homedir: os.homedir(),
+    //   hostname: os.hostname(),
+    //   arch: os.arch(),
+    //   networkInterfaces: os.networkInterfaces(),
+    //   //o: os.
+    // };
+    // console.log(values);
+    return os.platform();
+  })(),
 
   isWindowsOs: isWindowsOs,
 
@@ -33,8 +43,6 @@ const config = {
   cmd_exec_delay: 200,
 
   elapsed_mins_show_pkg_notice: 10,
-
-  elapsed_secs_show_pkg_notice: 10,
 
   storeSchema: {
     [STORE_REF_PACKAGE]: {

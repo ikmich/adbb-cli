@@ -25,6 +25,7 @@
   "author": "Ikenna Agbasimalo <michfx@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@types/ip": "^1.1.0",
     "@types/node": "^14.0.13",
     "@types/yargs": "^15.0.5",
     "chalk": "^4.1.0",
@@ -35,6 +36,7 @@
     "esm": "^3.2.25",
     "figlet": "^1.4.0",
     "inquirer": "^7.1.0",
+    "ip": "^1.1.5",
     "link-module-alias": "^1.2.0",
     "touch": "^3.1.0",
     "ts-node": "^8.10.2",

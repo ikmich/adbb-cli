@@ -3,7 +3,6 @@
 import argsParser from './lib/helpers/args-parser';
 import commandDispatcher from './lib/helpers/command-dispatcher';
 import yargsOptions from './yargs-options';
-
 import yargs from 'yargs';
 import {
   CMD_CLEAR,
