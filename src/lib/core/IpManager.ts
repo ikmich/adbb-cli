@@ -91,7 +91,7 @@ class IpManager {
   }
 
   async getHostIpInNetwork(referenceIp: string) {
-    let hostIp = ip.address();
+    let hostIp = ip.address('public', 'ipv4');
     if (this.checkAreIPsInSameNetwork(hostIp, referenceIp)) {
       return hostIp;
     }

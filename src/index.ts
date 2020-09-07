@@ -38,11 +38,5 @@ const argv = yargs
 const commandInfo = argsParser.parse(argv);
 commandDispatcher.dispatch(commandInfo).then(() => {});
 
-// getDevices().then(result => {
-//     console.log('>> devices output:', result);
-// });
-
 // console.log('>> process.argv:', process.argv);
 // console.log('>> argv:', argv);
-
-// console.log('>> cli command:', getCliCommandString());
