@@ -3,14 +3,18 @@
 
 ## Installation  
 #### npm  
-    npm install -g adbb  (Not working yet)  
+```
+npm install -g adbb  (Not working yet)
+```  
 
 #### yarn  
-    yarn add --global adbb  (Not working yet)  
+```
+yarn add --global adbb  (Not working yet)  
+```
 
 ## Commands
 
-### `devices`
+### `devices`  
 `$ adbb devices`  
 List connected devices  
 
@@ -23,9 +27,11 @@ List connected devices
   Display devices information in tabular format. Implies the `-v` option.  
 
 ##### **Example**
-    adbb devices -v
-    adbb devices -j
-    adbb devices -g  
+```
+adbb devices -v
+adbb devices -j
+adbb devices -g
+```  
 
 ### `wifi`  
 `$ adbb wifi`  
@@ -42,8 +48,15 @@ List application packages installed on the device.
 * `-f`, `--filter`  
   Applies filter to return packages that contain the specified string.  
 
-##### **Example**  
-    adbb pkgs -f org.app  
+**Example**  
+```
+adbb pkgs -f org.app
+```  
+You can also filter using the filter directive, `:`, as a prefix just before the filter string.  
+**Example**  
+```
+adbb pkgs :org.app
+```
 
 ### `emu` | `emulator`  
 Launch an emulator. You are prompted with the list of available emulators to select from.  
@@ -60,14 +73,18 @@ Specify the reference package name to use while using `adbb` to avoid having to 
   Deletes a previously set reference package.  
   
 ##### **Example**  
-    adbb pkg org.app.package  
-    adbb pkg --unset
+```
+adbb pkg org.app.package  
+adbb pkg --unset
+```
 
 ### `unset-package` | `unset-pkg`  
 Deletes a previously set reference package name.  
 
 ##### Example  
-    adbb unset-pkg  
+```
+adbb unset-pkg
+```
 
 ### `clear <package>`
 Clear application data for specified package. If no package is specified, you will be prompted to input the intended application package.  

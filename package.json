@@ -38,6 +38,7 @@
     "inquirer": "^7.1.0",
     "ip": "^1.1.5",
     "link-module-alias": "^1.2.0",
+    "moment": "^2.27.0",
     "touch": "^3.1.0",
     "ts-node": "^8.10.2",
     "ts-node-dev": "^1.0.0-pre.44",
