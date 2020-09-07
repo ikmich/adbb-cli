@@ -21,6 +21,8 @@ import {
   CMD_PKG,
   CMD_PKGS,
   CMD_RESET_SERVER,
+  CMD_SCREENSHOT,
+  CMD_SHOT,
   CMD_UNINSTALL,
   CMD_UNSET_PACKAGE,
   CMD_UNSET_PKG,
@@ -34,6 +36,7 @@ import UninstallCommand from '../commands/UninstallCommand';
 import PingCommand from '../commands/PingCommand';
 import { arrayContainsAnyOf, isEmpty, no } from './utils';
 import PathCommand from '../commands/PathCommand';
+import ScreenshotCommand from "../commands/ScreenshotCommand";
 
 const commandDispatcher = {
   dispatch: async (commandInfo: ICommandInfo) => {
@@ -110,6 +113,12 @@ const commandDispatcher = {
       case CMD_PATH:
         await new PathCommand(commandInfo).run();
         break;
+
+      case CMD_SCREENSHOT:
+      case CMD_SHOT: {
+        await new ScreenshotCommand(commandInfo).run();
+        break;
+      }
 
       default:
         const cliCommand = await getCliCommandString();

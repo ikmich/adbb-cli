@@ -47,6 +47,11 @@ const yargsOptions = {
     description: 'JSON display',
     type: 'boolean',
   },
+  destination: {
+    alias: ['p', 'dest'],
+    description: 'Destination path',
+    type: 'string'
+  }
 };
 
 export default yargsOptions;
