@@ -1,15 +1,17 @@
+`adbb` provides a little boost to the Android ADB command set to make your Android development work easier!
+
 ## Usage on Windows OS
 * Shell commands specific to Windows OS are **not currently implemented**. Support for Windows OS is planned for a future release.
 
 ## Installation  
 #### npm  
 ```
-npm install -g adbb  (Not working yet)
+npm install -g adbb
 ```  
 
 #### yarn  
 ```
-yarn add --global adbb  (Not working yet)  
+yarn add --global adbb
 ```
 
 ## Commands

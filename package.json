@@ -1,6 +1,6 @@
 {
   "name": "adbb",
-  "version": "1.0.0-beta",
+  "version": "1.0.2-beta",
   "description": "A little boost to the Android ADB command set to make your Android development work easier!",
   "main": "dist/index.js",
   "scripts": {
