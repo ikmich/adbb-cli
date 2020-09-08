@@ -10,4 +10,5 @@ export interface ICommandOptions {
   grid?: boolean;
   json?: boolean;
   destination?: string;
+  open?: boolean;
 }

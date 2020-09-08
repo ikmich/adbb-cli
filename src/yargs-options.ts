@@ -51,6 +51,10 @@ const yargsOptions = {
     alias: ['p', 'dest'],
     description: 'Destination path',
     type: 'string'
+  },
+  open: {
+    description: 'Open file or resource',
+    type: 'boolean'
   }
 };
 

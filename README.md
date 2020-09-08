@@ -26,7 +26,7 @@ List connected devices
 * `-j`, `--json`  
   Display devices information in json format. Implies the `-v` option.  
 * `-g`, `--grid`  
-  Display devices information in tabular format. Implies the `-v` option.  
+  Display devices information in a tabular format. Implies the `-v` option.  
 
 **Example**
 ```
