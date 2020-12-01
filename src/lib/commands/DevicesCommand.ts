@@ -20,7 +20,7 @@ class DevicesCommand extends BaseCommand {
           }
           case this.options.json: {
             const devices = await getDevices();
-            conprint.info(JSON.stringify(devices, null, 2));
+            conprint.success(JSON.stringify(devices, null, 2));
             break;
           }
           default: {
