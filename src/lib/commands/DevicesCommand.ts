@@ -1,6 +1,6 @@
 import BaseCommand from './BaseCommand';
 import buildAdbCommand from '../helpers/build-adb-command';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import getDevices from '../helpers/get-devices';
 import parseError from '../errors/parse-error';
 
@@ -20,7 +20,7 @@ class DevicesCommand extends BaseCommand {
           }
           case this.options.json: {
             const devices = await getDevices();
-            consolePrint.info(JSON.stringify(devices, null, 2));
+            conprint.info(JSON.stringify(devices, null, 2));
             break;
           }
           default: {
@@ -29,9 +29,9 @@ class DevicesCommand extends BaseCommand {
 
             try {
               const output = await this.exec(shellCmd);
-              consolePrint.info(output);
+              conprint.info(output);
             } catch (e) {
-              consolePrint.error(parseError(e).message);
+              conprint.error(parseError(e).message);
               return;
             }
             break;
@@ -43,14 +43,14 @@ class DevicesCommand extends BaseCommand {
         let output = '';
         try {
           output = await this.exec(shellCmd);
-          consolePrint.info(output);
+          conprint.info(output);
         } catch (e) {
-          consolePrint.error(parseError(e).message);
+          conprint.error(parseError(e).message);
           return;
         }
       }
     } catch (e) {
-      consolePrint.error(parseError(e).message);
+      conprint.error(parseError(e).message);
     }
   }
 }

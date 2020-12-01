@@ -1,7 +1,10 @@
 import chalk = require('chalk');
 import { yes } from './utils';
 
-const consolePrint = {
+/**
+ * Print to console.
+ */
+const conprint = {
   info: (msg: string) => {
     if (yes(msg)) {
       console.log(chalk.blueBright(msg));
@@ -33,4 +36,4 @@ const consolePrint = {
   },
 };
 
-export default consolePrint;
+export default conprint;

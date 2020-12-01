@@ -2,7 +2,7 @@ import { ICommandInfo } from '../../types/ICommandInfo';
 import WifiCommand from '../commands/WifiCommand';
 import DevicesCommand from '../commands/DevicesCommand';
 import ListPackagesCommand from '../commands/ListPackagesCommand';
-import getCliCommandString from './get-cli-command-string';
+import getCommandArgsString from './get-command-args-string';
 import ClearCommand from '../commands/ClearCommand';
 import execShellCmd from './exec-shell-cmd';
 import LaunchEmulatorCommand from '../commands/LaunchEmulatorCommand';
@@ -22,13 +22,13 @@ import {
   CMD_PKGS,
   CMD_RESET_SERVER,
   CMD_SCREENSHOT,
-  CMD_SHOT,
+  CMD_SCRSHOT,
   CMD_UNINSTALL,
   CMD_UNSET_PACKAGE,
   CMD_UNSET_PKG,
   CMD_WIFI,
 } from '../../command-constants';
-import consolePrint from './console-print';
+import conprint from './conprint';
 import PackageCommand from '../commands/PackageCommand';
 import store from './store';
 import parseError from '../errors/parse-error';
@@ -41,7 +41,7 @@ import ScreenshotCommand from "../commands/ScreenshotCommand";
 const commandDispatcher = {
   dispatch: async (commandInfo: ICommandInfo) => {
     if (store.hasPackage() && store.shouldShowPkgNotice()) {
-      consolePrint.notice(`Current reference package: ${store.getPackage()}`);
+      conprint.notice(`Current reference package: ${store.getPackage()}`);
       store.savePkgNoticeTime();
     }
 
@@ -115,28 +115,28 @@ const commandDispatcher = {
         break;
 
       case CMD_SCREENSHOT:
-      case CMD_SHOT: {
+      case CMD_SCRSHOT: {
         await new ScreenshotCommand(commandInfo).run();
         break;
       }
 
       default:
-        const cliCommand = await getCliCommandString();
+        const cliCommand = await getCommandArgsString();
 
         if (cliCommand) {
           if (cliCommand === 'shell') {
-            consolePrint.notice(`NOTICE: Run "adb shell" in your terminal`);
+            conprint.notice(`NOTICE: Run "adb shell" in your terminal`);
             break;
           }
 
-          consolePrint.info('Running regular adb command...');
+          conprint.info('Running regular adb command...');
 
           try {
             const shellCmd = `adb ${cliCommand}`;
             const output = await execShellCmd(shellCmd);
             console.log(output);
           } catch (e) {
-            consolePrint.error(parseError(e).message);
+            conprint.error(parseError(e).message);
           }
         } else {
           // console.log(chalk.red(`No such command: ${mainCommand}`));

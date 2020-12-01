@@ -2,7 +2,7 @@ import BaseCommand from './BaseCommand';
 import execShellCmd from '../helpers/exec-shell-cmd';
 import getEmulators from '../helpers/get-emulators';
 import askSelectEmulator from '../ask/ask-select-emulator';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import chalk = require('chalk');
 
 class LaunchEmulatorCommand extends BaseCommand {
@@ -21,8 +21,8 @@ class LaunchEmulatorCommand extends BaseCommand {
           for (let emulator of emulators) {
             lines.push(emulator);
           }
-          consolePrint.plain('Available emulators:');
-          consolePrint.info(lines.join('\n'));
+          conprint.plain('Available emulators:');
+          conprint.info(lines.join('\n'));
           return;
         }
       }

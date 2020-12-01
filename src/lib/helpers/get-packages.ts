@@ -1,7 +1,7 @@
 import execShellCmd from './exec-shell-cmd';
 import buildAdbCommand from './build-adb-command';
 import { yes } from './utils';
-import consolePrint from './console-print';
+import conprint from './conprint';
 import parseError from '../errors/parse-error';
 import config from '../../config/config';
 
@@ -31,7 +31,7 @@ const getPackages = async (filter: string): Promise<string[]> => {
 
     return results;
   } catch (e) {
-    consolePrint.error(parseError(e));
+    conprint.error(parseError(e));
     return [];
   }
 };

@@ -1,5 +1,5 @@
 import BaseCommand from './BaseCommand';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import IpManager from '../core/IpManager';
 import NetConfig from '../core/NetConfig';
 import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError';
@@ -26,19 +26,19 @@ class IpCommand extends BaseCommand {
         }
       } else {
         const e = new UndefinedNetworkConfigError();
-        consolePrint.error(e.message);
+        conprint.error(e.message);
         return;
       }
       output = output.replace(/\n+$/, '');
 
       if (yes(output)) {
-        consolePrint.info('Device IP address(es):');
-        consolePrint.info(output);
+        conprint.info('Device IP address(es):');
+        conprint.info(output);
       } else {
-        consolePrint.error(NO_IP_ADDRESS_FOUND);
+        conprint.error(NO_IP_ADDRESS_FOUND);
       }
     } catch (e) {
-      consolePrint.error(parseError(e));
+      conprint.error(parseError(e));
     }
   }
 }

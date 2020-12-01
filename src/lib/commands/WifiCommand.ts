@@ -3,7 +3,7 @@ import config from '../../config/config';
 import DifferentNetworksError from '../errors/DifferentNetworksError';
 import buildAdbCommand from '../helpers/build-adb-command';
 import IpManager from '../core/IpManager';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import { no } from '../helpers/utils';
 import spawnShellCmd from '../helpers/spawn-shell-cmd';
 import ShellExitError from '../errors/ShellExitError';
@@ -18,7 +18,6 @@ import parseError from '../errors/parse-error';
 class WifiCommand extends BaseCommand {
   constructor(commandInfo) {
     super(commandInfo);
-    this.printOutput = false;
   }
 
   async run() {
@@ -34,8 +33,8 @@ class WifiCommand extends BaseCommand {
       }
 
       if (tcpDevices.length > 0) {
-        // Only one device is currently connected via tcpip. Disconnect that one.
         if (tcpDevices.length === 1) {
+          // Only one device is currently connected via tcpip. Disconnect that one.
           return tcpDevices[0].sid;
         } else {
           // Multiple devices are currently connected via tcpip.
@@ -54,10 +53,10 @@ class WifiCommand extends BaseCommand {
       try {
         const adbCmd = await buildAdbCommand(`disconnect ${await getIpForDisconnect()}`);
         const output = await this.exec(adbCmd);
-        consolePrint.info(output);
+        conprint.info(output);
       } catch (e) {
         e = parseError(e);
-        consolePrint.error(e.message);
+        conprint.error(e.message);
       }
 
       return;
@@ -67,12 +66,12 @@ class WifiCommand extends BaseCommand {
     try {
       deviceIp = await ipManager.getDeviceIp();
     } catch (e) {
-      consolePrint.error(e.message);
+      conprint.error(e.message);
       return;
     }
 
     if (no(deviceIp)) {
-      consolePrint.error(EMPTY_DEVICE_IP_ADDRESS);
+      conprint.error(EMPTY_DEVICE_IP_ADDRESS);
       return;
     }
 
@@ -80,7 +79,7 @@ class WifiCommand extends BaseCommand {
       const hostIp = await ipManager.getHostIpInNetwork(deviceIp);
 
       if (no(hostIp)) {
-        consolePrint.error(NO_HOST_IP_IN_NETWORK);
+        conprint.error(NO_HOST_IP_IN_NETWORK);
         return;
       }
 
@@ -99,7 +98,7 @@ class WifiCommand extends BaseCommand {
             await this.connectDeviceIp(deviceIp);
           }, 400);
         } catch (e) {
-          consolePrint.error(parseError(e).message);
+          conprint.error(parseError(e).message);
           return;
         }
       } else {
@@ -107,7 +106,7 @@ class WifiCommand extends BaseCommand {
         throw new DifferentNetworksError();
       }
     } catch (e) {
-      consolePrint.error(parseError(e).message);
+      conprint.error(parseError(e).message);
     }
   }
 
@@ -133,7 +132,7 @@ class WifiCommand extends BaseCommand {
         },
         stdout: async function(stream: Buffer, tcpipOutput: string) {
           output += tcpipOutput;
-          consolePrint.info(tcpipOutput);
+          conprint.info(tcpipOutput);
         },
       });
     });
@@ -141,6 +140,7 @@ class WifiCommand extends BaseCommand {
 
   private async connectDeviceIp(deviceIp: string) {
     let _output = '';
+
     return new Promise(async (resolve, reject) => {
       const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:${config.PORT_TCP}`);
       spawnShellCmd(adbConnectCmd, {
@@ -161,7 +161,7 @@ class WifiCommand extends BaseCommand {
           // Connected.
           _output += output;
           store.saveWifiIp(deviceIp);
-          consolePrint.info(output);
+          conprint.info(output);
         },
       });
     });

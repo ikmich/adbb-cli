@@ -2,7 +2,7 @@ import BaseCommand from './BaseCommand';
 import { ICommandInfo } from '../../types/ICommandInfo';
 import { isEmpty, no, yes } from '../helpers/utils';
 import askEnterPackage from '../ask/ask-enter-package';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import store from '../helpers/store';
 import askInput from '../ask/ask-input';
 import parseError from '../errors/parse-error';
@@ -59,18 +59,18 @@ class UninstallCommand extends BaseCommand {
       let i = 0;
       for (let pkg of pkgs) {
         try {
-          consolePrint.plain(`Running ${++i} of ${pkgs.length}...`);
+          conprint.plain(`Running ${++i} of ${pkgs.length}...`);
 
           let adbCmdString = `uninstall ${pkg}`;
           let shellCmd = await buildAdbCommand(adbCmdString, this.options.sid);
           const output = await this.exec(shellCmd);
-          consolePrint.info(output);
+          conprint.info(output);
         } catch (e) {
           e = parseError(e);
-          consolePrint.error(e.message);
+          conprint.error(e.message);
         }
       }
-      consolePrint.info('DONE');
+      conprint.info('DONE');
     }
   }
 }

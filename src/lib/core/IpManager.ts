@@ -7,7 +7,7 @@ import { removeEndLines } from '../helpers/utils';
 import DeviceNotConnectedError from '../errors/DeviceNotConnectedError';
 import parseError from '../errors/parse-error';
 import spawnShellCmd from '../helpers/spawn-shell-cmd';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import { ChildProcessWithoutNullStreams } from 'child_process';
 import ip = require('ip');
 
@@ -64,7 +64,7 @@ class IpManager {
 
     // Priority 1 : 'wlan'
     for (let nc of networkConfigs) {
-      if (/wlan/.test(nc.netInterface) && nc.scope != 'lo') {
+      if (/wlan/i.test(nc.netInterface) && nc.scope != 'lo') {
         hasWlanInterface = true;
         choiceConfig = nc;
         break;
@@ -74,7 +74,7 @@ class IpManager {
     // Priority 2: 'rmnet'
     if (!choiceConfig) {
       for (let nc of networkConfigs) {
-        if (/rmnet/.test(nc.netInterface) && nc.scope != 'lo') {
+        if (/rmnet/i.test(nc.netInterface) && nc.scope != 'lo') {
           hasRmnetInterface = true;
           choiceConfig = nc;
           break;
@@ -136,7 +136,7 @@ class IpManager {
               resolve(resultPayload);
             } else {
               // Wrong exit code
-              consolePrint.notice(`Exited with code ${code}`);
+              conprint.notice(`Exited with code ${code}`);
               reject({
                 code,
                 message: `Exited with code ${code}`,
@@ -153,11 +153,11 @@ class IpManager {
           stdout: function(stream: Buffer, stdout: string) {
             output += stdout;
             // Print ping result line
-            consolePrint.info(removeEndLines(stdout, 1));
+            conprint.info(removeEndLines(stdout, 1));
           },
         });
       } catch (e) {
-        consolePrint.error(e.message);
+        conprint.error(e.message);
       }
     });
   }

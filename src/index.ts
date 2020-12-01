@@ -36,7 +36,9 @@ const argv = yargs
   .help().argv;
 
 const commandInfo = argsParser.parse(argv);
-commandDispatcher.dispatch(commandInfo).then(() => {});
+commandDispatcher.dispatch(commandInfo).catch(err => {
+  console.error(err);
+});
 
 // console.log('>> process.argv:', process.argv);
 // console.log('>> argv:', argv);

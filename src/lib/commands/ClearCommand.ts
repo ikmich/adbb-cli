@@ -3,7 +3,7 @@ import buildAdbCommand from '../helpers/build-adb-command';
 import askEnterPackage from '../ask/ask-enter-package';
 import NoPackageError from '../errors/NoPackageError';
 import { isEmpty, yes } from '../helpers/utils';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import store from '../helpers/store';
 import askSelectPackage from '../ask/ask-select-package';
 
@@ -52,16 +52,16 @@ class ClearCommand extends BaseCommand {
       if (!isEmpty(pkgs)) {
         let i = 0;
         for (let pkg of pkgs) {
-          consolePrint.plain(`Running ${++i} of ${pkgs.length}`);
+          conprint.plain(`Running ${++i} of ${pkgs.length}`);
           let adbCmdString = `shell pm clear ${pkg}`;
           let shellCmd = await buildAdbCommand(adbCmdString, this.options.sid);
           const output = await this.exec(shellCmd);
-          consolePrint.info(output);
+          conprint.info(output);
         }
-        consolePrint.info('DONE');
+        conprint.info('DONE');
       }
     } catch (e) {
-      consolePrint.error(e.message);
+      conprint.error(e.message);
     }
   }
 }

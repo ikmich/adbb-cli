@@ -1,6 +1,6 @@
 import BaseCommand from './BaseCommand';
 import { yes } from '../helpers/utils';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import askEnterPackage from '../ask/ask-enter-package';
 import store from '../helpers/store';
 import { CMD_UNSET_PACKAGE, CMD_UNSET_PKG } from '../../command-constants';
@@ -14,7 +14,7 @@ class PackageCommand extends BaseCommand {
 
   private static unsetPkg() {
     store.unsetPackage();
-    consolePrint.info('Reference package has been unset');
+    conprint.info('Reference package has been unset');
   }
 
   async run() {
@@ -52,9 +52,9 @@ class PackageCommand extends BaseCommand {
     if (yes(packageName)) {
       try {
         store.setPackage(packageName);
-        consolePrint.info(`${packageName} is now the default package`);
+        conprint.info(`${packageName} is now the default package`);
       } catch (e) {
-        consolePrint.error(parseError(e).message);
+        conprint.error(parseError(e).message);
       }
     }
   }

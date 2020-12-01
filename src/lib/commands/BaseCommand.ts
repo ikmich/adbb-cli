@@ -14,16 +14,6 @@ class BaseCommand {
     verbose: false,
   };
 
-  /**
-   * Override this in sub class to prevent default printing of error in console
-   * */
-  protected printError: boolean = true;
-
-  /**
-   * Override this in sub class to prevent default printing of output in console
-   */
-  protected printOutput: boolean = false;
-
   constructor(commandInfo: ICommandInfo) {
     this.commandInfo = commandInfo;
     this.name = commandInfo.name;
@@ -31,6 +21,20 @@ class BaseCommand {
     this.options = commandInfo.options;
   }
 
+  getArg1(): string {
+    return this.args[0] || '';
+  }
+
+  isArg1AFilterDirective() {
+    if (this.getArg1() !== null) {
+      return config.filterDirectiveRegex.test(this.getArg1());
+    }
+  }
+
+  /**
+   * Resolves argument filters for the case where a filter directive is used.
+   * @protected
+   */
   protected checkResolveArgFilter() {
     for (let arg of this.args) {
       if (no(this.options.filter) && config.filterDirectiveRegex.test(arg)) {

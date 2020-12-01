@@ -61,7 +61,7 @@ const config = {
       if (isWindowsOs) {
         return 'findstr';
       }
-      return 'grep';
+      return 'grep -i';
     })(),
   },
 };

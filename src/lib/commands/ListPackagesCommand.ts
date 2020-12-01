@@ -1,6 +1,6 @@
 import BaseCommand from './BaseCommand';
 import buildAdbCommand from '../helpers/build-adb-command';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import { no, yes } from '../helpers/utils';
 import parseError from '../errors/parse-error';
 
@@ -27,12 +27,12 @@ class ListPackagesCommand extends BaseCommand {
     try {
       const output = await this.exec(shellCmd);
       if (yes(output)) {
-        consolePrint.info(output);
+        conprint.info(output);
       } else {
-        consolePrint.notice('No results');
+        conprint.notice('No results');
       }
     } catch (e) {
-      consolePrint.error(parseError(e).message);
+      conprint.error(parseError(e).message);
     }
   }
 }

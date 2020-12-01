@@ -1,5 +1,5 @@
 import BaseCommand from './BaseCommand';
-import consolePrint from '../helpers/console-print';
+import conprint from '../helpers/conprint';
 import parseError from '../errors/parse-error';
 import IpManager, { TPingResult } from '../core/IpManager';
 
@@ -18,19 +18,19 @@ class PingCommand extends BaseCommand {
 
       switch (true) {
         case timeoutPct >= 0 && timeoutPct < 5: {
-          consolePrint.success(`pct timeout: ${timeoutPct}%`);
+          conprint.success(`pct timeout: ${timeoutPct}%`);
           break;
         }
         case timeoutPct >= 5 && timeoutPct < 20: {
-          consolePrint.notice(`pct timeout: ${timeoutPct}%`);
+          conprint.notice(`pct timeout: ${timeoutPct}%`);
           break;
         }
         default:
-          consolePrint.error(`pct timeout: ${timeoutPct}%`);
+          conprint.error(`pct timeout: ${timeoutPct}%`);
           break;
       }
     } catch (e) {
-      consolePrint.error(parseError(e).message);
+      conprint.error(parseError(e).message);
     }
   }
 }

@@ -15,5 +15,4 @@ export const CMD_UNINSTALL = 'uninstall';
 export const CMD_PING = 'ping';
 export const CMD_PATH = 'path';
 export const CMD_SCREENSHOT = 'screenshot';
-export const CMD_SHOT = 'shot';
-
+export const CMD_SCRSHOT = 'scrshot';
