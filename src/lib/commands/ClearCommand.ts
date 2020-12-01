@@ -23,7 +23,7 @@ class ClearCommand extends BaseCommand {
         break;
 
       case yes(this.options.filter):
-        pkgs = await askSelectPackage(this.options.filter!);
+        pkgs = await askSelectPackage(this.options.filter!, this.options.sid);
         break;
 
       case yes(this.args[0]):

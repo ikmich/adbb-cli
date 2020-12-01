@@ -1,5 +1,5 @@
 export function yes(o: any) {
-  let b = typeof o !== 'undefined' && o;
+  let b = typeof o !== 'undefined' && o !== null;
   if (o && typeof o === 'string') {
     b = b && o !== '';
   }
@@ -58,4 +58,8 @@ export function isEmpty(subject: any): boolean {
     default:
       return no(subject);
   }
+}
+
+export function _fn<T>(f:() => T) {
+  return f();
 }

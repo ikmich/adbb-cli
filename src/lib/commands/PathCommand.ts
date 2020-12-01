@@ -31,7 +31,7 @@ class PathCommand extends BaseCommand {
         }
 
         case yes(this.options.filter):
-          pkgs = await askSelectPackage(this.options.filter!);
+          pkgs = await askSelectPackage(this.options.filter!, this.options.sid);
           break;
 
         case yes(!this.isArg1AFilterDirective() && this.args[0]): {

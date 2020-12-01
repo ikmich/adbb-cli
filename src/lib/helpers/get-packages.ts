@@ -5,11 +5,11 @@ import conprint from './conprint';
 import parseError from '../errors/parse-error';
 import config from '../../config/config';
 
-const getPackages = async (filter: string): Promise<string[]> => {
+const getPackages = async (filter: string, sid?: string): Promise<string[]> => {
   try {
     let results: string[] = [];
 
-    let adbCommand = await buildAdbCommand(`shell pm list packages`);
+    let adbCommand = await buildAdbCommand(`shell pm list packages`, sid);
     if (yes(filter)) {
       adbCommand += ` | ${config.cmd.grep} -i ${filter} || exit 0`;
     }

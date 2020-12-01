@@ -5,10 +5,11 @@ import askSelect from './ask-select';
 
 /**
  * Asks user to select one or more packages from the list of packages that match the filter argument.
- * @param filter
+ * @param filter Filter string or filter directive
+ * @param sid The device serial id
  */
-const askSelectPackage = async (filter: string): Promise<string[]> => {
-  const packages = await getPackages(filter);
+const askSelectPackage = async (filter: string, sid?: string): Promise<string[]> => {
+  const packages = await getPackages(filter, sid);
   let pkgs: string[] = [];
   if (!isEmpty(packages)) {
     if (packages.length > 1) {
