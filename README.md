@@ -47,20 +47,14 @@ adbb devices
 
 # Running `adbb` alone also lists connected devices.
 adbb
-```
 
-**Options**
-
-- `-v` | `--verbose`  
-  Display a bit of extra information
-- `-j` | `--json`  
-  Display devices information in json format. Implies the `-v` option.
-- `-g` | `--grid`  
-  Display devices information in a tabular format. Implies the `-v` option.
-
-```shell script
+# Display extra information
 adbb devices -v
+
+# Display devices info in json format. Implies the `-v` option
 adbb devices -j
+
+# Display devices info in a tabular format. Implies the `-v` option
 adbb devices -g
 ```
 
