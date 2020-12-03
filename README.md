@@ -40,21 +40,24 @@ yarn add --global adbb
 
 ### `devices`
 
-`$ adbb devices`  
 List connected devices
+```shell script
+adbb devices
+
+# Running `adbb` alone also lists connected devices.
+adbb 
+```
 
 **Options**
 
-- `-v`|`--verbose`  
+- `-v` | `--verbose`  
   Display a bit of extra information
-- `-j`|`--json`  
+- `-j` | `--json`  
   Display devices information in json format. Implies the `-v` option.
-- `-g`|`--grid`  
+- `-g` | `--grid`  
   Display devices information in a tabular format. Implies the `-v` option.
 
-**Example**
-
-```
+```shell script
 adbb devices -v
 adbb devices -j
 adbb devices -g
@@ -62,8 +65,11 @@ adbb devices -g
 
 ### `wifi`
 
-`$ adbb wifi`  
 Connect a device for debugging via Wi-Fi connection.
+
+```shell script
+adbb wifi
+```
 
 **Options**
 
@@ -76,7 +82,7 @@ List application packages installed on the device.
 
 **Options**
 
-- `-f`, `--filter`  
+- `-f` | `--filter`  
   Applies filter to return packages that contain the specified string.
 
 ```shell script
@@ -96,7 +102,7 @@ Run `adbb emu` without any options to launch an emulator. You are prompted with 
 
 **Options**
 
-- `-l`|`--list`  
+- `-l` | `--list`  
   List the available emulators without launching any.
 
 ### `package` | `pkg`
@@ -106,7 +112,7 @@ Specify the reference package name to use while using `adbb` to avoid having to 
 **Options**
 
 - `--unset`  
-  Deletes a previously set reference package.
+  Passing this option deletes a previously set reference package.
 
 **Example**
 
@@ -127,20 +133,19 @@ adbb unset-pkg
 
 ### `clear <package>`
 
-Clear application data for specified package. If no package is specified, you will be prompted to input the intended application package.
-
-**Arguments**
-
-- `package` | `pkg`  
-  The package name of the application whose data is to be cleared.
+Clear application data for specified package. If no package is specified, you will be prompted to input the intended
+application package.
 
 **Options**
 
-- `--package`, `--pkg`  
+- `--package` | `--pkg`  
   The package name of the application whose data is to be cleared. This option can be used to specify the package if the **package** argument is not passed.
 
-**Example**  
- adbb clear org.app.package
+**Example**
+
+```shell script
+adbb clear org.app.package
+```
 
 **Applying a filter**  
 Using the `clear` command with a filter, you are shown a list of packages to choose from, to apply the `clear` command to.
@@ -164,25 +169,21 @@ Get the device IP address(es).
 
 Kill and restart the adb server.
 
-### `uninstall [package]`
+### `uninstall <package>`
 
 Uninstalls the application with the specified package argument. If you don't provide a package argument, you will be prompted to
 enter the intended application package. If a reference package has been set (via `adbb pkg <package>`), user will be
 asked if they want to continue with that package.
 
 **Applying a filter**  
-Using the `uninstall` command together with a filter, you are shown a list of packages to choose from, to apply the
-`uninstall` command to.
+Using the `uninstall` command together with a filter, you are shown a list of packages (that match the filter string) 
+to choose from, to apply the `uninstall` command to.
 
 ```shell script
 adbb uninstall -f org.app.pack
-```
 
-**Usage with the filter directive**  
-You can use the more convenient `:` filter directive to apply a filter to the `uninstall` command:
-
-```shell script
-adbb uninstall :org.app.pa
+# Or use with the more convenient ':' filter directive
+adbb uninstall :org.app.pack
 ```
 
 ### `ping`
@@ -194,7 +195,7 @@ for a tcp connection.
 adbb ping
 ```
 
-### `screenshot` | `shot`
+### `screenshot` | `scrshot`
 
 Take a screenshot of the device's currently active screen. The image file will be saved in the current directory from
 which this command was run.
