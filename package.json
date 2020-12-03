@@ -1,6 +1,6 @@
 {
   "name": "adbb",
-  "version": "1.0.2-beta",
+  "version": "1.1.0-beta",
   "description": "A little boost to the Android ADB command set to make your Android development work easier!",
   "main": "dist/index.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "clean": "rm -rf ./dist",
     "deploy": "npm uninstall -g adbb && yarn build && npm install -g",
     "start": "link-module-alias node dist/index.js",
-    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit"
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit",
+    "tscheck": "tsc --noEmit"
   },
   "keywords": [
     "adb",
