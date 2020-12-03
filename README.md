@@ -1,20 +1,25 @@
 `adbb` provides a little boost to the Android ADB command set to make your Android development work easier!
 
 ## Usage on Windows OS
-* Shell commands specific to Windows OS are **not currently implemented**. Support for Windows OS is planned for a future release.
 
-## Installation  
-#### npm  
-```
+- Shell commands specific to Windows OS are **not currently implemented**. Full support for Windows OS is planned for a future release.
+
+## Installation
+
+#### npm
+
+```shell script
 npm install -g adbb
-```  
-
-#### yarn  
 ```
+
+#### yarn
+
+```shell script
 yarn add --global adbb
 ```
 
-## Options 
+# Options
+
 ```
       --version                Show version number                     [boolean]
   -v, --verbose                Long output                             [boolean]
@@ -31,147 +36,183 @@ yarn add --global adbb
       --help                   Show help                               [boolean]
 ```
 
-## Commands
+# Commands
 
-### `devices`  
+### `devices`
+
 `$ adbb devices`  
-List connected devices  
+List connected devices
 
-**Options**  
-* `-v`, `--verbose`  
-  Display a bit of extra information  
-* `-j`, `--json`  
-  Display devices information in json format. Implies the `-v` option.  
-* `-g`, `--grid`  
-  Display devices information in a tabular format. Implies the `-v` option.  
+**Options**
+
+- `-v`|`--verbose`  
+  Display a bit of extra information
+- `-j`|`--json`  
+  Display devices information in json format. Implies the `-v` option.
+- `-g`|`--grid`  
+  Display devices information in a tabular format. Implies the `-v` option.
 
 **Example**
+
 ```
 adbb devices -v
 adbb devices -j
 adbb devices -g
-```  
+```
 
-### `wifi`  
+### `wifi`
+
 `$ adbb wifi`  
-Connect a device for debugging via Wi-Fi connection.  
+Connect a device for debugging via Wi-Fi connection.
 
-**Options**  
-* `-x` | `--disconnect`  
-  Disconnect the device from the Wi-Fi connection.  
+**Options**
 
-### `pkgs` | `packages`  
-List application packages installed on the device.  
+- `-x` | `--disconnect`  
+  Disconnect the device from the Wi-Fi connection.
 
-**Options**  
-* `-f`, `--filter`  
-  Applies filter to return packages that contain the specified string.  
+### `pkgs` | `packages`
 
-**Example**  
-```
+List application packages installed on the device.
+
+**Options**
+
+- `-f`, `--filter`  
+  Applies filter to return packages that contain the specified string.
+
+```shell script
 adbb pkgs -f org.app
-```  
-You can also filter using the more convenient filter directive, `:`, as a prefix just before the filter string.  
-**Example**  
 ```
+
+You can also filter using the more convenient filter directive, `:`, as a prefix just before the filter string.  
+**Example**
+
+```shell script
 adbb pkgs :org.app
 ```
 
-### `emu` | `emulator`  
-Launch an emulator. You are prompted with the list of available emulators to select from.  
+### `emu` | `emulator`
 
-**Options**  
-* `-l`, `--list`  
-  List the available emulators without launching any.  
+Run `adbb emu` without any options to launch an emulator. You are prompted with the list of available emulators to select from.
 
-### `package` | `pkg`  
-Specify the reference package name to use while using `adbb` to avoid having to type the package name every time.  
+**Options**
 
-**Options**  
-* `--unset`  
-  Deletes a previously set reference package.  
-  
-**Example**  
-```
-adbb pkg org.app.package  
+- `-l`|`--list`  
+  List the available emulators without launching any.
+
+### `package` | `pkg`
+
+Specify the reference package name to use while using `adbb` to avoid having to type the package name every time.
+
+**Options**
+
+- `--unset`  
+  Deletes a previously set reference package.
+
+**Example**
+
+```shell script
+adbb pkg org.app.package
 adbb pkg --unset
 ```
 
-### `unset-package` | `unset-pkg`  
-Deletes a previously set reference package name.  
+### `unset-package` | `unset-pkg`
 
-##### Example  
-```
+Deletes a previously set reference package name.
+
+##### Example
+
+```shell script
 adbb unset-pkg
 ```
 
 ### `clear <package>`
-Clear application data for specified package. If no package is specified, you will be prompted to input the intended application package.  
 
-**Arguments**  
-* `package` | `pkg`  
-  The package name of the application whose data is to be cleared.  
+Clear application data for specified package. If no package is specified, you will be prompted to input the intended application package.
 
-**Options**  
-* `--package`, `--pkg`  
-  The package name of the application whose data is to be cleared. This option can be used to specify the package if the **package** argument is not passed.  
+**Arguments**
+
+- `package` | `pkg`  
+  The package name of the application whose data is to be cleared.
+
+**Options**
+
+- `--package`, `--pkg`  
+  The package name of the application whose data is to be cleared. This option can be used to specify the package if the **package** argument is not passed.
 
 **Example**  
-    adbb clear org.app.package  
+ adbb clear org.app.package
 
 **Applying a filter**  
-Using the `clear` command with a filter, you are shown a list of packages to choose from, to apply the `clear` command to.  
-```
+Using the `clear` command with a filter, you are shown a list of packages to choose from, to apply the `clear` command to.
+
+```shell script
 adbb clear -f org.app.pack
 ```
+
 **Usage with the filter directive**  
-You can use the more convenient `:` filter directive to apply a filter to the `clear` command:  
-```
+You can use the more convenient `:` filter directive to apply a filter to the `clear` command:
+
+```shell script
 adbb clear :org.app.pa
 ```
 
-### `ip`  
-Get the device IP address(es).  
+### `ip`
 
-### `reset-server`  
-Kill and restart the adb server.  
+Get the device IP address(es).
 
-### `uninstall [package]`  
-Uninstalls the application with the specified package argument. If you don't provide a package argument, you will be prompted to 
-enter the intended application package. If a reference package has been set (via `adbb pkg <package>`), user will be 
-asked if they want to continue with that package.  
+### `reset-server`
+
+Kill and restart the adb server.
+
+### `uninstall [package]`
+
+Uninstalls the application with the specified package argument. If you don't provide a package argument, you will be prompted to
+enter the intended application package. If a reference package has been set (via `adbb pkg <package>`), user will be
+asked if they want to continue with that package.
 
 **Applying a filter**  
-Using the `uninstall` command together with a filter, you are shown a list of packages to choose from, to apply the 
-`uninstall` command to.  
-```
+Using the `uninstall` command together with a filter, you are shown a list of packages to choose from, to apply the
+`uninstall` command to.
+
+```shell script
 adbb uninstall -f org.app.pack
 ```
 
 **Usage with the filter directive**  
-You can use the more convenient `:` filter directive to apply a filter to the `uninstall` command:  
-```
+You can use the more convenient `:` filter directive to apply a filter to the `uninstall` command:
+
+```shell script
 adbb uninstall :org.app.pa
 ```
 
-### `ping`  
-Pings the device's IP address. You can run this command to check that the device can be reached over the network 
-for a tcp connection.  
+### `ping`
 
-### `screenshot` | `shot`  
-Take a screenshot of the device's currently active screen. The image file will be saved in the current directory from
-which this command is run.  
-**Example**  
+Pings the device's IP address. You can run this command to check that the device can be reached over the network
+for a tcp connection.
+
+```shell script
+adbb ping
 ```
+
+### `screenshot` | `shot`
+
+Take a screenshot of the device's currently active screen. The image file will be saved in the current directory from
+which this command was run.
+
+```shell script
 adbb screenshot
 ```
 
-### `path`  
+### `path`
+
 Gets the installed path for the specified application package.
-```
+
+```shell script
 adbb path org.app.package
 ```
+
 Use with a filter directive to get paths for packages that match the filter:
-```
+
+```shell script
 adbb path :org.app
 ```
