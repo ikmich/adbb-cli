@@ -14,6 +14,23 @@ npm install -g adbb
 yarn add --global adbb
 ```
 
+## Options 
+```
+      --version                Show version number                     [boolean]
+  -v, --verbose                Long output                             [boolean]
+  -f, --filter                 Filter to apply to command output        [string]
+      --wifi                   Connect adb via wifi                    [boolean]
+  -x, --disconnect             Disconnect device connected via tcpip (wifi)
+                                                                       [boolean]
+  -s, --sid, --serialId        Device serial id                         [string]
+      --package, --pkg, --pkg                                           [string]
+      --unset                  Unset a value                           [boolean]
+  -l, --list                   Display items                           [boolean]
+  -p, --destination, --dest    Destination path                         [string]
+      --open                   Open file or resource                   [boolean]
+      --help                   Show help                               [boolean]
+```
+
 ## Commands
 
 ### `devices`  
@@ -147,4 +164,14 @@ which this command is run.
 **Example**  
 ```
 adbb screenshot
+```
+
+### `path`  
+Gets the installed path for the specified application package.
+```
+adbb path org.app.package
+```
+Use with a filter directive to get paths for packages that match the filter:
+```
+adbb path :org.app
 ```

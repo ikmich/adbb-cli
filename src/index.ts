@@ -10,9 +10,17 @@ import {
   CMD_EMU,
   CMD_EMULATOR,
   CMD_IP,
+  CMD_PACKAGE,
   CMD_PACKAGES,
+  CMD_PATH,
+  CMD_PING,
+  CMD_PKG,
   CMD_PKGS,
   CMD_RESET_SERVER,
+  CMD_SCREENSHOT,
+  CMD_UNINSTALL,
+  CMD_UNSET_PACKAGE,
+  CMD_UNSET_PKG,
   CMD_WIFI,
 } from './command-constants';
 
@@ -26,6 +34,15 @@ const argv = yargs
   .alias(CMD_EMULATOR, CMD_EMU)
   .command(CMD_IP, 'Show the device IP address(es)')
   .command(CMD_RESET_SERVER, 'Reset adb server')
+  .command(CMD_SCREENSHOT, 'Take screenshot of the device screen')
+  .command(CMD_PATH, 'Get path of installed application package')
+  .command(CMD_PING, 'Ping the device ip address to check the wifi connection')
+  .command(CMD_UNSET_PACKAGE, 'Unset currently set default reference package')
+  .alias(CMD_UNSET_PACKAGE, CMD_UNSET_PKG)
+  .command(CMD_PACKAGE, 'Set default reference package for commands')
+  .alias(CMD_PACKAGE, CMD_PKG)
+  .command(CMD_RESET_SERVER, 'Reset the adb connection')
+  .command(CMD_UNINSTALL, 'Uninstall an application')
 
   // @ts-ignore
   .options(yargsOptions)
