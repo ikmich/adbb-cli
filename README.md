@@ -6,16 +6,16 @@
 
 ## Installation
 
-#### npm
+#### Install with npm
 
 ```shell script
 npm install -g adbb
 ```
 
-#### yarn
+#### Install with yarn
 
 ```shell script
-yarn add --global adbb
+yarn global add adbb
 ```
 
 # Options
@@ -41,11 +41,12 @@ yarn add --global adbb
 ### `devices`
 
 List connected devices
+
 ```shell script
 adbb devices
 
 # Running `adbb` alone also lists connected devices.
-adbb 
+adbb
 ```
 
 **Options**
@@ -117,7 +118,8 @@ Specify the reference package name to use while using `adbb` to avoid having to 
 **Example**
 
 ```shell script
-adbb pkg org.app.package
+# Set 
+adbb pkg org.app.cool_app
 adbb pkg --unset
 ```
 
@@ -144,21 +146,18 @@ application package.
 **Example**
 
 ```shell script
-adbb clear org.app.package
+adbb clear org.app.cool_app
 ```
 
 **Applying a filter**  
 Using the `clear` command with a filter, you are shown a list of packages to choose from, to apply the `clear` command to.
 
 ```shell script
-adbb clear -f org.app.pack
-```
+# Apply filter  
+adbb clear -f cool_
 
-**Usage with the filter directive**  
-You can use the more convenient `:` filter directive to apply a filter to the `clear` command:
-
-```shell script
-adbb clear :org.app.pa
+# Apply filter using the ':' filter directive  
+adbb clear :cool_
 ```
 
 ### `ip`
@@ -176,7 +175,7 @@ enter the intended application package. If a reference package has been set (via
 asked if they want to continue with that package.
 
 **Applying a filter**  
-Using the `uninstall` command together with a filter, you are shown a list of packages (that match the filter string) 
+Using the `uninstall` command together with a filter, you are shown a list of packages (that match the filter string)
 to choose from, to apply the `uninstall` command to.
 
 ```shell script
@@ -202,6 +201,10 @@ which this command was run.
 
 ```shell script
 adbb screenshot
+adbb scrshot
+
+# Open the image file after screen capture
+adbb screenshot --open
 ```
 
 ### `path`
@@ -209,11 +212,8 @@ adbb screenshot
 Gets the installed path for the specified application package.
 
 ```shell script
-adbb path org.app.package
-```
+adbb path org.app.cool_app
 
-Use with a filter directive to get paths for packages that match the filter:
-
-```shell script
-adbb path :org.app
+# Get path for applications that match a filter
+adbb path :cool
 ```
