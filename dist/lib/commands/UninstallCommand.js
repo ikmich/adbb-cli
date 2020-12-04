@@ -15,18 +15,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const BaseCommand_1 = __importDefault(require("./BaseCommand"));
 const utils_1 = require("../helpers/utils");
 const ask_enter_package_1 = __importDefault(require("../ask/ask-enter-package"));
-const console_print_1 = __importDefault(require("../helpers/console-print"));
+const conprint_1 = __importDefault(require("../helpers/conprint"));
 const store_1 = __importDefault(require("../helpers/store"));
 const ask_input_1 = __importDefault(require("../ask/ask-input"));
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
-const get_packages_1 = __importDefault(require("../helpers/get-packages"));
-const ask_select_multiple_1 = __importDefault(require("../ask/ask-select-multiple"));
+const ask_select_package_1 = __importDefault(require("../ask/ask-select-package"));
+const build_adb_command_1 = __importDefault(require("../helpers/build-adb-command"));
 class UninstallCommand extends BaseCommand_1.default {
     constructor(commandInfo) {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
+            this.checkResolveArgFilter();
             let pkg = '';
             let pkgs = [];
             switch (true) {
@@ -34,15 +39,12 @@ class UninstallCommand extends BaseCommand_1.default {
                     pkg = this.options.package;
                     pkgs.push(pkg);
                     break;
+                case utils_1.yes(this.options.filter):
+                    pkgs = yield ask_select_package_1.default(this.options.filter, this.options.sid);
+                    break;
                 case utils_1.yes(this.args[0]):
                     pkg = this.args[0];
                     pkgs.push(pkg);
-                    break;
-                case utils_1.yes(this.options.filter):
-                    // Let user select from packages that match the filter...
-                    const packages = yield get_packages_1.default(this.options.filter);
-                    // pkg = await askSelect('package', 'Select package', packages);
-                    pkgs = yield ask_select_multiple_1.default('package', 'Select package', packages);
                     break;
                 default:
                     // Check if a reference package has previously been set
@@ -60,16 +62,21 @@ class UninstallCommand extends BaseCommand_1.default {
                     break;
             }
             if (!utils_1.isEmpty(pkgs)) {
+                let i = 0;
                 for (let pkg of pkgs) {
                     try {
-                        const output = yield this.exec(`adb uninstall ${pkg}`);
-                        console_print_1.default.info(output);
+                        conprint_1.default.plain(`Running ${++i} of ${pkgs.length}...`);
+                        let adbCmdString = `uninstall ${pkg}`;
+                        let shellCmd = yield build_adb_command_1.default(adbCmdString, this.options.sid);
+                        const output = yield this.exec(shellCmd);
+                        conprint_1.default.info(output);
                     }
                     catch (e) {
                         e = parse_error_1.default(e);
-                        console_print_1.default.error(e.message);
+                        conprint_1.default.error(e.message);
                     }
                 }
+                conprint_1.default.info('DONE');
             }
         });
     }

@@ -2,33 +2,33 @@ import { IDeviceInfo } from '../../types/IDeviceInfo';
 import config from '../../config/config';
 
 class Device implements IDeviceInfo {
-    readonly device: string;
-    readonly model: string;
-    readonly product: string;
-    readonly sid: string;
-    readonly specSheet: string;
-    readonly transportId: string;
-    readonly usbId?: string | any;
-    readonly state: string;
+  readonly device: string;
+  readonly model: string;
+  readonly product: string;
+  readonly sid: string;
+  readonly specSheet: string;
+  readonly transportId: string;
+  readonly usbId?: string | any;
+  readonly state: string;
 
-    constructor(info: IDeviceInfo) {
-        this.device = info.device;
-        this.model = info.model;
-        this.product = info.product;
-        this.sid = info.sid;
-        this.specSheet = info.specSheet;
-        this.transportId = info.transportId;
-        this.usbId = info.usbId;
-        this.state = info.state;
-    }
+  constructor(info: IDeviceInfo) {
+    this.device = info.device;
+    this.model = info.model;
+    this.product = info.product;
+    this.sid = info.sid;
+    this.specSheet = info.specSheet;
+    this.transportId = info.transportId;
+    this.usbId = info.usbId;
+    this.state = info.state;
+  }
 
-    isTcpConnection(): boolean {
-        return config.ipRegex.test(this.sid);
-    }
+  isTcpConnection(): boolean {
+    return config.ipRegex.test(this.sid);
+  }
 
-    isOnline(): boolean {
-        return this.state.toLowerCase() == 'device';
-    }
+  isOnline(): boolean {
+    return this.state.toLowerCase() == 'device';
+  }
 }
 
 export default Device;

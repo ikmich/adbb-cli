@@ -15,14 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const exec_shell_cmd_1 = __importDefault(require("./exec-shell-cmd"));
 const build_adb_command_1 = __importDefault(require("./build-adb-command"));
 const utils_1 = require("./utils");
-const console_print_1 = __importDefault(require("./console-print"));
+const conprint_1 = __importDefault(require("./conprint"));
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
-const getPackages = (filter) => __awaiter(void 0, void 0, void 0, function* () {
+const config_1 = __importDefault(require("../../config/config"));
+const getPackages = (filter, sid) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let results = [];
-        let adbCommand = yield build_adb_command_1.default(`shell pm list packages`);
+        let adbCommand = yield build_adb_command_1.default(`shell pm list packages`, sid);
         if (utils_1.yes(filter)) {
-            adbCommand += ` | grep -i ${filter} || exit 0`;
+            adbCommand += ` | ${config_1.default.cmd.grep} -i ${filter} || exit 0`;
         }
         let output = yield exec_shell_cmd_1.default(adbCommand);
         // separate each line with comma
@@ -40,7 +41,7 @@ const getPackages = (filter) => __awaiter(void 0, void 0, void 0, function* () {
         return results;
     }
     catch (e) {
-        console_print_1.default.error(parse_error_1.default(e));
+        conprint_1.default.error(parse_error_1.default(e));
         return [];
     }
 });

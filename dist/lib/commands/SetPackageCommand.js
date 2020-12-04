@@ -14,33 +14,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseCommand_1 = __importDefault(require("./BaseCommand"));
 const utils_1 = require("../helpers/utils");
-const console_print_1 = __importDefault(require("../helpers/console-print"));
+const conprint_1 = __importDefault(require("../helpers/conprint"));
 const ask_enter_package_1 = __importDefault(require("../ask/ask-enter-package"));
 const store_1 = __importDefault(require("../helpers/store"));
 const command_constants_1 = require("../../command-constants");
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
 const chalk = require("chalk");
-class PackageCommand extends BaseCommand_1.default {
+class SetPackageCommand extends BaseCommand_1.default {
     constructor(commandInfo) {
         super(commandInfo);
     }
     static unsetPkg() {
         store_1.default.unsetPackage();
-        console_print_1.default.info('Reference package has been unset');
+        conprint_1.default.info('Reference package has been unset');
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             switch (this.name) {
                 case command_constants_1.CMD_UNSET_PACKAGE:
                 case command_constants_1.CMD_UNSET_PKG:
                     store_1.default.unsetPackage();
-                    PackageCommand.unsetPkg();
+                    SetPackageCommand.unsetPkg();
                     return;
             }
             switch (true) {
                 case this.options.unset:
                 case this.options.disconnect:
-                    PackageCommand.unsetPkg();
+                    SetPackageCommand.unsetPkg();
                     return;
             }
             let packageName = null;
@@ -60,13 +64,13 @@ class PackageCommand extends BaseCommand_1.default {
             if (utils_1.yes(packageName)) {
                 try {
                     store_1.default.setPackage(packageName);
-                    console_print_1.default.info(`${packageName} is now the default package`);
+                    conprint_1.default.info(`${packageName} is now the default package`);
                 }
                 catch (e) {
-                    console_print_1.default.error(parse_error_1.default(e).message);
+                    conprint_1.default.error(parse_error_1.default(e).message);
                 }
             }
         });
     }
 }
-exports.default = PackageCommand;
+exports.default = SetPackageCommand;

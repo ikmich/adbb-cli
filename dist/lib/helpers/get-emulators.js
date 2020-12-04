@@ -16,7 +16,7 @@ const exec_shell_cmd_1 = __importDefault(require("./exec-shell-cmd"));
 const getEmulators = () => __awaiter(void 0, void 0, void 0, function* () {
     let results = [];
     const output = yield exec_shell_cmd_1.default('emulator -list-avds');
-    const rexGlobal = /\w+/gmi;
+    const rexGlobal = /\w+/gim;
     const emulators = output.match(rexGlobal);
     if (emulators && emulators.length > 0) {
         results = emulators;

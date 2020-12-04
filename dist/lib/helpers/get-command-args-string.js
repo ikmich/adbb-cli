@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const getCliCommandString = () => {
+/**
+ * Get the arguments passed to the cli command for the calling context.
+ */
+const getCommandArgsString = () => {
     let command = '';
     process.argv.forEach((entry, i) => {
         if (i > 1) {
@@ -9,4 +12,4 @@ const getCliCommandString = () => {
     });
     return command.replace(/\s+$/, '');
 };
-exports.default = getCliCommandString;
+exports.default = getCommandArgsString;

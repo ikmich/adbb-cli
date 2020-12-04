@@ -17,19 +17,17 @@ const NetConfig_1 = __importDefault(require("./NetConfig"));
 const build_adb_command_1 = __importDefault(require("../helpers/build-adb-command"));
 const config_1 = __importDefault(require("../../config/config"));
 const exec_shell_cmd_1 = __importDefault(require("../helpers/exec-shell-cmd"));
-const constants_1 = require("../../constants");
 const utils_1 = require("../helpers/utils");
-const HostNotConnectedError_1 = __importDefault(require("../errors/HostNotConnectedError"));
 const DeviceNotConnectedError_1 = __importDefault(require("../errors/DeviceNotConnectedError"));
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
 const spawn_shell_cmd_1 = __importDefault(require("../helpers/spawn-shell-cmd"));
-const console_print_1 = __importDefault(require("../helpers/console-print"));
-const chalk = require("chalk");
+const conprint_1 = __importDefault(require("../helpers/conprint"));
+const ip = require("ip");
 class IpManager {
-    getDeviceNetworkConfigs() {
+    getDeviceNetworkConfigs(deviceSid) {
         return __awaiter(this, void 0, void 0, function* () {
-            let commandString = 'shell ip -f inet addr | grep inet';
-            let shellCommand = yield build_adb_command_1.default(commandString);
+            let commandString = `shell ip -f inet addr | ${config_1.default.cmd.grep} inet`;
+            let shellCommand = yield build_adb_command_1.default(commandString, deviceSid);
             let netConfigs = [];
             try {
                 let cmdOutput = yield exec_shell_cmd_1.default(shellCommand);
@@ -61,9 +59,9 @@ class IpManager {
             return netConfigs;
         });
     }
-    getDeviceIp() {
+    getDeviceIp(deviceSid) {
         return __awaiter(this, void 0, void 0, function* () {
-            let networkConfigs = yield this.getDeviceNetworkConfigs();
+            let networkConfigs = yield this.getDeviceNetworkConfigs(deviceSid);
             if (!networkConfigs) {
                 throw new UndefinedNetworkConfigError_1.default();
             }
@@ -72,7 +70,7 @@ class IpManager {
             let hasRmnetInterface = false;
             // Priority 1 : 'wlan'
             for (let nc of networkConfigs) {
-                if (/wlan/.test(nc.netInterface) && nc.scope != 'lo') {
+                if (/wlan/i.test(nc.netInterface) && nc.scope != 'lo') {
                     hasWlanInterface = true;
                     choiceConfig = nc;
                     break;
@@ -81,7 +79,7 @@ class IpManager {
             // Priority 2: 'rmnet'
             if (!choiceConfig) {
                 for (let nc of networkConfigs) {
-                    if (/rmnet/.test(nc.netInterface) && nc.scope != 'lo') {
+                    if (/rmnet/i.test(nc.netInterface) && nc.scope != 'lo') {
                         hasRmnetInterface = true;
                         choiceConfig = nc;
                         break;
@@ -95,39 +93,11 @@ class IpManager {
             throw new DeviceNotConnectedError_1.default();
         });
     }
-    getHostIps() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let ip = '';
-            try {
-                let ifconfig = yield exec_shell_cmd_1.default('ifconfig | grep inet');
-                let rexConfigs = /inet (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gim;
-                let configLineMatches = ifconfig.match(rexConfigs);
-                for (let configLine of configLineMatches) {
-                    if (configLine.indexOf(constants_1.LOOPBACK_ADDRESS) > -1) {
-                        continue;
-                    }
-                    let rexIp = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/i;
-                    let ipResults = configLine.match(rexIp) || [];
-                    return ipResults;
-                }
-            }
-            catch (e) {
-                console.log(chalk.red(`Could not get host ip: ${e.message}`));
-                throw parse_error_1.default(e);
-            }
-            if (utils_1.yes(ip)) {
-                return ip;
-            }
-            throw new HostNotConnectedError_1.default();
-        });
-    }
     getHostIpInNetwork(referenceIp) {
         return __awaiter(this, void 0, void 0, function* () {
-            let hostIps = yield this.getHostIps();
-            for (let hostIp of hostIps) {
-                if (this.checkAreIPsInSameNetwork(hostIp, referenceIp)) {
-                    return hostIp;
-                }
+            let hostIp = ip.address('public', 'ipv4');
+            if (this.checkAreIPsInSameNetwork(hostIp, referenceIp)) {
+                return hostIp;
             }
             // No host ip is in same network as device.
             return '';
@@ -167,7 +137,7 @@ class IpManager {
                             }
                             else {
                                 // Wrong exit code
-                                console_print_1.default.notice(`Exited with code ${code}`);
+                                conprint_1.default.notice(`Exited with code ${code}`);
                                 reject({
                                     code,
                                     message: `Exited with code ${code}`,
@@ -184,12 +154,12 @@ class IpManager {
                         stdout: function (stream, stdout) {
                             output += stdout;
                             // Print ping result line
-                            console_print_1.default.info(utils_1.removeEndLines(stdout, 1));
+                            conprint_1.default.info(utils_1.removeEndLines(stdout, 1));
                         },
                     });
                 }
                 catch (e) {
-                    console_print_1.default.error(e.message);
+                    conprint_1.default.error(e.message);
                 }
             });
         });

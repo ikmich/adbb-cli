@@ -19,17 +19,20 @@ const argv = yargs_1.default
     .alias(command_constants_1.CMD_EMULATOR, command_constants_1.CMD_EMU)
     .command(command_constants_1.CMD_IP, 'Show the device IP address(es)')
     .command(command_constants_1.CMD_RESET_SERVER, 'Reset adb server')
-    // @ts-ignore
+    .command(command_constants_1.CMD_SCREENSHOT, 'Take screenshot of the device screen')
+    .command(command_constants_1.CMD_PATH, 'Get path of installed application package')
+    .command(command_constants_1.CMD_PING, 'Ping the device ip address to check the wifi connection')
+    .command(command_constants_1.CMD_UNSET_PACKAGE, 'Unset currently set default reference package')
+    .alias(command_constants_1.CMD_UNSET_PACKAGE, command_constants_1.CMD_UNSET_PKG)
+    .command(command_constants_1.CMD_SET_PACKAGE, 'Set default reference package for commands')
+    .alias(command_constants_1.CMD_SET_PACKAGE, command_constants_1.CMD_SET_PKG)
+    .command(command_constants_1.CMD_RESET_SERVER, 'Reset the adb connection')
+    .command(command_constants_1.CMD_UNINSTALL, 'Uninstall an application')
     .options(yargs_options_1.default)
-    .options({
-    package: {},
-})
     .help().argv;
 const commandInfo = args_parser_1.default.parse(argv);
-command_dispatcher_1.default.dispatch(commandInfo).then(() => { });
-// getDevices().then(result => {
-//     console.log('>> devices output:', result);
-// });
+command_dispatcher_1.default.dispatch(commandInfo).catch(err => {
+    console.error(err);
+});
 // console.log('>> process.argv:', process.argv);
 // console.log('>> argv:', argv);
-// console.log('>> cli command:', getCliCommandString());

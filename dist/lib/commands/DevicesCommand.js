@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseCommand_1 = __importDefault(require("./BaseCommand"));
 const build_adb_command_1 = __importDefault(require("../helpers/build-adb-command"));
-const console_print_1 = __importDefault(require("../helpers/console-print"));
+const conprint_1 = __importDefault(require("../helpers/conprint"));
 const get_devices_1 = __importDefault(require("../helpers/get-devices"));
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
 class DevicesCommand extends BaseCommand_1.default {
@@ -22,7 +22,11 @@ class DevicesCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             try {
                 if (this.options.verbose || this.options.json || this.options.grid) {
                     switch (true) {
@@ -33,7 +37,7 @@ class DevicesCommand extends BaseCommand_1.default {
                         }
                         case this.options.json: {
                             const devices = yield get_devices_1.default();
-                            console_print_1.default.info(JSON.stringify(devices, null, 2));
+                            conprint_1.default.success(JSON.stringify(devices, null, 2));
                             break;
                         }
                         default: {
@@ -41,10 +45,10 @@ class DevicesCommand extends BaseCommand_1.default {
                             shellCmd = this.applyFilter(shellCmd);
                             try {
                                 const output = yield this.exec(shellCmd);
-                                console_print_1.default.info(output);
+                                conprint_1.default.info(output);
                             }
                             catch (e) {
-                                console_print_1.default.error(parse_error_1.default(e).message);
+                                conprint_1.default.error(parse_error_1.default(e).message);
                                 return;
                             }
                             break;
@@ -57,16 +61,16 @@ class DevicesCommand extends BaseCommand_1.default {
                     let output = '';
                     try {
                         output = yield this.exec(shellCmd);
-                        console_print_1.default.info(output);
+                        conprint_1.default.info(output);
                     }
                     catch (e) {
-                        console_print_1.default.error(parse_error_1.default(e).message);
+                        conprint_1.default.error(parse_error_1.default(e).message);
                         return;
                     }
                 }
             }
             catch (e) {
-                console_print_1.default.error(parse_error_1.default(e).message);
+                conprint_1.default.error(parse_error_1.default(e).message);
             }
         });
     }

@@ -1,32 +1,49 @@
 import getDevices from './get-devices';
 import askSelectDevice from '../ask/ask-select-device';
-import Device from "../core/Device";
-import chalk = require('chalk');
+import Device from '../core/Device';
+import conprint from './conprint';
+import { isEmpty, yes } from './utils';
+import store from './store';
+import config from '../../config/config';
 
-const buildAdbCommand = async (optsString: string, sid: string = '') => {
-    let commandString = 'adb';
+/**
+ *
+ * @param argsString The string of options passed to the adb command
+ * @param sid The device sid
+ */
+const buildAdbCommand = async (argsString: string, sid?: string) => {
+  let cachedSid = store.getTargetSid();
+  if (config.isDev()) {
+    console.log({ cachedSid });
+  }
 
-    let flag_devices: boolean = /devices/gi.test(optsString);
-    let flag_disconnect: boolean = /disconnect/gi.test(optsString);
+  if (yes(cachedSid)) {
+    sid = cachedSid;
+  }
 
-    if (sid && sid.trim() !== '') {
-        commandString += ` -s ${sid}`;
-    } else if (!flag_devices && !flag_disconnect) {
-        // If multiple devices, show options to select device id
-        const devices: Device[] = await getDevices();
-        if (devices && devices.length > 1) {
-            console.log(chalk.yellow('Multiple devices/emulators connected.'));
+  let commandString = 'adb';
 
-            const device = await askSelectDevice();
-            if (device) {
-                commandString += ` -s ${device}`;
-            }
-        }
+  let isDevicesCmd: boolean = /devices/gi.test(argsString);
+  let isDisconnectCmd: boolean = /disconnect/gi.test(argsString);
+
+  if (!isEmpty(sid)) {
+    commandString += ` -s ${sid}`;
+  } else if (!isDevicesCmd && !isDisconnectCmd) {
+    // If multiple devices, show options to select device id
+    const devices: Device[] = await getDevices();
+    if (devices && devices.length > 1) {
+      conprint.notice('Multiple devices/emulators connected.');
+
+      const device = await askSelectDevice();
+      if (device) {
+        commandString += ` -s ${device}`;
+      }
     }
+  }
 
-    commandString += ` ${optsString}`;
-    // console.log('>> command:', commandString);
-    return commandString;
+  commandString += ` ${argsString}`;
+  // console.log('>> command:', commandString);
+  return commandString;
 };
 
 export default buildAdbCommand;

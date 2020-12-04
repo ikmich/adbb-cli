@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseCommand_1 = __importDefault(require("./BaseCommand"));
 const build_adb_command_1 = __importDefault(require("../helpers/build-adb-command"));
-const console_print_1 = __importDefault(require("../helpers/console-print"));
+const conprint_1 = __importDefault(require("../helpers/conprint"));
 const utils_1 = require("../helpers/utils");
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
 class ListPackagesCommand extends BaseCommand_1.default {
@@ -22,26 +22,33 @@ class ListPackagesCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             let shellCmd = yield build_adb_command_1.default('shell pm list packages', this.options.sid);
             if (utils_1.no(this.options.filter)) {
-                if (utils_1.yes(this.args[0])) {
-                    // The first command is the package filter
-                    this.options.filter = this.args[0];
+                // The first command is the package filter
+                let filterArg = this.args[0];
+                if (utils_1.yes(filterArg)) {
+                    // Remove filter directive if exists
+                    filterArg = filterArg.replace(/^[:*]+/, '');
+                    this.options.filter = filterArg;
                 }
             }
             shellCmd = this.applyFilter(shellCmd);
             try {
                 const output = yield this.exec(shellCmd);
                 if (utils_1.yes(output)) {
-                    console_print_1.default.info(output);
+                    conprint_1.default.info(output);
                 }
                 else {
-                    console_print_1.default.notice('No results');
+                    conprint_1.default.notice('No results');
                 }
             }
             catch (e) {
-                console_print_1.default.error(parse_error_1.default(e).message);
+                conprint_1.default.error(parse_error_1.default(e).message);
             }
         });
     }

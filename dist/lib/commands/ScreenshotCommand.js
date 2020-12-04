@@ -14,15 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseCommand_1 = __importDefault(require("./BaseCommand"));
 const conprint_1 = __importDefault(require("../helpers/conprint"));
-const IpManager_1 = __importDefault(require("../core/IpManager"));
-const UndefinedNetworkConfigError_1 = __importDefault(require("../errors/UndefinedNetworkConfigError"));
-const utils_1 = require("../helpers/utils");
-const error_constants_1 = require("../errors/error-constants");
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
-/**
- * Command to get the device's IP address.
- */
-class IpCommand extends BaseCommand_1.default {
+const build_adb_command_1 = __importDefault(require("../helpers/build-adb-command"));
+const exec_shell_cmd_1 = __importDefault(require("../helpers/exec-shell-cmd"));
+const moment_1 = __importDefault(require("moment"));
+const path_1 = __importDefault(require("path"));
+const config_1 = __importDefault(require("../../config/config"));
+class ScreenshotCommand extends BaseCommand_1.default {
     constructor(commandInfo) {
         super(commandInfo);
     }
@@ -33,26 +31,20 @@ class IpCommand extends BaseCommand_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             yield _super.run.call(this);
             try {
-                const ipManager = new IpManager_1.default();
-                const netConfigs = yield ipManager.getDeviceNetworkConfigs(this.options.sid);
-                let output = '';
-                if (netConfigs && netConfigs.length > 0) {
-                    for (let netConfig of netConfigs) {
-                        output += netConfig.ip + '\n';
+                const formattedDate = moment_1.default().format('YYYYMMDD_hhmmss_SSSS');
+                let fileName = `Screenshot_${formattedDate}.png`;
+                let shellCommand = yield build_adb_command_1.default(`exec-out screencap -p > ${fileName}`, this.options.sid);
+                const result = yield exec_shell_cmd_1.default(shellCommand);
+                const dest = path_1.default.resolve(__dirname, fileName);
+                conprint_1.default.info(`Your screenshot image file is saved at ${dest}`);
+                conprint_1.default.info(result);
+                if (true === this.options.open) {
+                    if (config_1.default.isWindowsOs) {
+                        conprint_1.default.notice('"open" option is currently not available for Windows');
+                        return;
                     }
-                }
-                else {
-                    const e = new UndefinedNetworkConfigError_1.default();
-                    conprint_1.default.error(e.message);
-                    return;
-                }
-                output = output.replace(/\n+$/, '');
-                if (utils_1.yes(output)) {
-                    conprint_1.default.info('Device IP address(es):');
-                    conprint_1.default.info(output);
-                }
-                else {
-                    conprint_1.default.error(error_constants_1.NO_IP_ADDRESS_FOUND);
+                    console.log('Opening file...');
+                    yield exec_shell_cmd_1.default(`open "./${fileName}"`);
                 }
             }
             catch (e) {
@@ -61,4 +53,4 @@ class IpCommand extends BaseCommand_1.default {
         });
     }
 }
-exports.default = IpCommand;
+exports.default = ScreenshotCommand;

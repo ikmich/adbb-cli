@@ -22,7 +22,7 @@ const askSelect = (name = 'choice', message = 'Select choice', choices, multiple
             message,
             choices,
         });
-        return result[name];
+        return result[name] || '';
     }
     return '';
 });

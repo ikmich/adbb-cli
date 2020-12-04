@@ -2,7 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk = require("chalk");
 const utils_1 = require("./utils");
-const consolePrint = {
+/**
+ * Print to console.
+ */
+const conprint = {
     info: (msg) => {
         if (utils_1.yes(msg)) {
             console.log(chalk.blueBright(msg));
@@ -34,4 +37,4 @@ const consolePrint = {
         }
     },
 };
-exports.default = consolePrint;
+exports.default = conprint;

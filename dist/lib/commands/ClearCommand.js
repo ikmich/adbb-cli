@@ -17,34 +17,42 @@ const build_adb_command_1 = __importDefault(require("../helpers/build-adb-comman
 const ask_enter_package_1 = __importDefault(require("../ask/ask-enter-package"));
 const NoPackageError_1 = __importDefault(require("../errors/NoPackageError"));
 const utils_1 = require("../helpers/utils");
-const console_print_1 = __importDefault(require("../helpers/console-print"));
+const conprint_1 = __importDefault(require("../helpers/conprint"));
 const store_1 = __importDefault(require("../helpers/store"));
+const ask_select_package_1 = __importDefault(require("../ask/ask-select-package"));
 class ClearCommand extends BaseCommand_1.default {
     constructor(commandInfo) {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
-            let adbCmdString = 'shell pm clear';
+            yield _super.run.call(this);
+            this.checkResolveArgFilter();
+            let pkgs = [];
             switch (true) {
-                case utils_1.yes(this.args[0]):
-                    // This is the package to be cleared
-                    adbCmdString += ` ${this.args[0]}`;
-                    break;
                 case utils_1.yes(this.options.package):
-                    adbCmdString += ` ${this.options.package}`;
+                    pkgs.push(this.options.package);
+                    break;
+                case utils_1.yes(this.options.filter):
+                    pkgs = yield ask_select_package_1.default(this.options.filter, this.options.sid);
+                    break;
+                case utils_1.yes(this.args[0]):
+                    pkgs.push(this.args[0]);
                     break;
                 default:
                     // Check if a reference package has previously been set
                     if (store_1.default.hasPackage()) {
                         const pkg = store_1.default.getPackage();
-                        adbCmdString += ` ${pkg}`;
+                        pkgs.push(pkg);
                     }
                     else {
                         // Request for package
                         const pkg = yield ask_enter_package_1.default();
                         if (utils_1.yes(pkg) && pkg.trim() !== '') {
-                            adbCmdString += ` ${pkg}`;
+                            pkgs.push(pkg);
                         }
                         else {
                             throw new NoPackageError_1.default();
@@ -52,13 +60,21 @@ class ClearCommand extends BaseCommand_1.default {
                     }
                     break;
             }
-            let shellCmd = yield build_adb_command_1.default(adbCmdString, this.options.sid);
             try {
-                const output = yield this.exec(shellCmd);
-                console_print_1.default.info(output);
+                if (!utils_1.isEmpty(pkgs)) {
+                    let i = 0;
+                    for (let pkg of pkgs) {
+                        conprint_1.default.plain(`Running ${++i} of ${pkgs.length}`);
+                        let adbCmdString = `shell pm clear ${pkg}`;
+                        let shellCmd = yield build_adb_command_1.default(adbCmdString, this.options.sid);
+                        const output = yield this.exec(shellCmd);
+                        conprint_1.default.info(output);
+                    }
+                    conprint_1.default.info('DONE');
+                }
             }
             catch (e) {
-                console_print_1.default.error(e.message);
+                conprint_1.default.error(e.message);
             }
         });
     }

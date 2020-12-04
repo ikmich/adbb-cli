@@ -16,14 +16,18 @@ const BaseCommand_1 = __importDefault(require("./BaseCommand"));
 const exec_shell_cmd_1 = __importDefault(require("../helpers/exec-shell-cmd"));
 const get_emulators_1 = __importDefault(require("../helpers/get-emulators"));
 const ask_select_emulator_1 = __importDefault(require("../ask/ask-select-emulator"));
+const conprint_1 = __importDefault(require("../helpers/conprint"));
 const chalk = require("chalk");
-const console_print_1 = __importDefault(require("../helpers/console-print"));
 class LaunchEmulatorCommand extends BaseCommand_1.default {
     constructor(commandInfo) {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             try {
                 const emulators = yield get_emulators_1.default();
                 if (this.options.list) {
@@ -33,8 +37,8 @@ class LaunchEmulatorCommand extends BaseCommand_1.default {
                         for (let emulator of emulators) {
                             lines.push(emulator);
                         }
-                        console_print_1.default.plain('Available emulators:');
-                        console_print_1.default.info(lines.join('\n'));
+                        conprint_1.default.plain('Available emulators:');
+                        conprint_1.default.info(lines.join('\n'));
                         return;
                     }
                 }
