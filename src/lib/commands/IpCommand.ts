@@ -16,9 +16,11 @@ class IpCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     try {
       const ipManager = new IpManager();
-      const netConfigs: NetConfig[] = await ipManager.getDeviceNetworkConfigs();
+      const netConfigs: NetConfig[] = await ipManager.getDeviceNetworkConfigs(this.options.sid);
       let output = '';
       if (netConfigs && netConfigs.length > 0) {
         for (let netConfig of netConfigs) {

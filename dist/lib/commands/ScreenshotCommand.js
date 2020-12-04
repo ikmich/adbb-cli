@@ -25,11 +25,15 @@ class ScreenshotCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             try {
                 const formattedDate = moment_1.default().format('YYYYMMDD_hhmmss_SSSS');
                 let fileName = `Screenshot_${formattedDate}.png`;
-                let shellCommand = yield build_adb_command_1.default(`exec-out screencap -p > ${fileName}`);
+                let shellCommand = yield build_adb_command_1.default(`exec-out screencap -p > ${fileName}`, this.options.sid);
                 const result = yield exec_shell_cmd_1.default(shellCommand);
                 const dest = path_1.default.resolve(__dirname, fileName);
                 conprint_1.default.info(`Your screenshot image file is saved at ${dest}`);

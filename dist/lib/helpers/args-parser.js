@@ -13,13 +13,16 @@ const argsParser = {
         };
         const commands = argv._;
         commandInfo.name = (commands && commands.length > 0 ? commands[0] : '').trim();
+        if (config_1.default.isDev()) {
+            console.log({ name: commandInfo.name });
+        }
         argv._.forEach((arg, idx) => {
             if (idx > 0) {
                 commandInfo.args.push(arg);
             }
         });
         if (config_1.default.isDev()) {
-            console.log('>> args:', commandInfo.args);
+            console.log({ args: commandInfo.args });
         }
         for (let o in argv) {
             if (argv.hasOwnProperty(o) && o !== '_' && o !== '$0') {
@@ -27,7 +30,7 @@ const argsParser = {
             }
         }
         if (config_1.default.isDev()) {
-            console.log('>> options:', commandInfo.options);
+            console.log({ options: commandInfo.options });
         }
         return commandInfo;
     },

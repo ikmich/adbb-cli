@@ -13,6 +13,8 @@ class ClearCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     this.checkResolveArgFilter();
 
     let pkgs: string[] = [];

@@ -15,7 +15,7 @@ const askSelect = async (
       choices,
     });
 
-    return result[name];
+    return result[name] || '';
   }
   return '';
 };

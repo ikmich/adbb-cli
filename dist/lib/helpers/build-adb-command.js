@@ -16,12 +16,21 @@ const get_devices_1 = __importDefault(require("./get-devices"));
 const ask_select_device_1 = __importDefault(require("../ask/ask-select-device"));
 const conprint_1 = __importDefault(require("./conprint"));
 const utils_1 = require("./utils");
+const store_1 = __importDefault(require("./store"));
+const config_1 = __importDefault(require("../../config/config"));
 /**
  *
  * @param argsString The string of options passed to the adb command
  * @param sid The device sid
  */
 const buildAdbCommand = (argsString, sid) => __awaiter(void 0, void 0, void 0, function* () {
+    let cachedSid = store_1.default.getTargetSid();
+    if (config_1.default.isDev()) {
+        console.log({ cachedSid });
+    }
+    if (utils_1.yes(cachedSid)) {
+        sid = cachedSid;
+    }
     let commandString = 'adb';
     let isDevicesCmd = /devices/gi.test(argsString);
     let isDisconnectCmd = /disconnect/gi.test(argsString);

@@ -21,11 +21,15 @@ class PingCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             try {
                 // Ping the device ip to "wake up" the connection (in case it's in lazy mode)
                 const ipManager = new IpManager_1.default();
-                const deviceIp = yield ipManager.getDeviceIp();
+                const deviceIp = yield ipManager.getDeviceIp(this.options.sid);
                 const pingResults = yield ipManager.ping(deviceIp);
                 const { timeoutPct } = pingResults;
                 switch (true) {

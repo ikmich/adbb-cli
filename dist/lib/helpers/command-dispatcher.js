@@ -23,7 +23,7 @@ const IpCommand_1 = __importDefault(require("../commands/IpCommand"));
 const ResetServerCommand_1 = __importDefault(require("../commands/ResetServerCommand"));
 const command_constants_1 = require("../../command-constants");
 const conprint_1 = __importDefault(require("./conprint"));
-const PackageCommand_1 = __importDefault(require("../commands/PackageCommand"));
+const SetPackageCommand_1 = __importDefault(require("../commands/SetPackageCommand"));
 const store_1 = __importDefault(require("./store"));
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
 const UninstallCommand_1 = __importDefault(require("../commands/UninstallCommand"));
@@ -31,6 +31,7 @@ const PingCommand_1 = __importDefault(require("../commands/PingCommand"));
 const utils_1 = require("./utils");
 const PathCommand_1 = __importDefault(require("../commands/PathCommand"));
 const ScreenshotCommand_1 = __importDefault(require("../commands/ScreenshotCommand"));
+const config_1 = __importDefault(require("../../config/config"));
 const commandDispatcher = {
     dispatch: (commandInfo) => __awaiter(void 0, void 0, void 0, function* () {
         if (store_1.default.hasPackage() && store_1.default.shouldShowPkgNotice()) {
@@ -41,6 +42,12 @@ const commandDispatcher = {
         if (utils_1.no(commandInfo.name)) {
             if (utils_1.isEmpty(commandInfo.options) || utils_1.arrayContainsAnyOf(Object.keys(commandInfo.options), ['g', 'j', 'v'])) {
                 commandInfo.name = command_constants_1.CMD_DEVICES;
+                if (config_1.default.isDev()) {
+                    console.log({
+                        notice: 'No command name entered',
+                        msg: 'Using default command: "devices"',
+                    });
+                }
             }
         }
         let mainCommand = commandInfo.name;
@@ -74,13 +81,11 @@ const commandDispatcher = {
             case command_constants_1.CMD_RESET_SERVER:
                 yield new ResetServerCommand_1.default(commandInfo).run();
                 break;
-            case command_constants_1.CMD_PACKAGE:
-            case command_constants_1.CMD_PKG:
-                yield new PackageCommand_1.default(commandInfo).run();
-                break;
+            case command_constants_1.CMD_SET_PACKAGE:
+            case command_constants_1.CMD_SET_PKG:
             case command_constants_1.CMD_UNSET_PKG:
             case command_constants_1.CMD_UNSET_PACKAGE:
-                yield new PackageCommand_1.default(commandInfo).run();
+                yield new SetPackageCommand_1.default(commandInfo).run();
                 break;
             case command_constants_1.CMD_UNINSTALL:
                 yield new UninstallCommand_1.default(commandInfo).run();

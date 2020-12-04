@@ -10,6 +10,8 @@ class DevicesCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     try {
       if (this.options.verbose || this.options.json || this.options.grid) {
         switch (true) {

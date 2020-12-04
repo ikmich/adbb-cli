@@ -14,8 +14,8 @@ const store = {
     save(key, value) {
         conf.set(key, value);
     },
-    get(key, value) {
-        conf.get(key, value);
+    get(key, defaultValue) {
+        return conf.get(key, defaultValue);
     },
     del(key) {
         conf.delete(key);
@@ -23,7 +23,7 @@ const store = {
     clear() {
         conf.clear();
     },
-    // PACKAGES
+    // ====
     setPackage(packageName) {
         conf.set(constants_1.STORE_REF_PACKAGE, packageName);
     },
@@ -59,6 +59,15 @@ const store = {
     },
     hasWifiDevice() {
         return utils_1.yes(this.getLastWifiIp());
+    },
+    saveTargetSid(sid) {
+        this.save(constants_1.STORE_TARGET_SID, sid);
+    },
+    getTargetSid() {
+        return (this.get(constants_1.STORE_TARGET_SID) || '').trim();
+    },
+    clearTargetSid() {
+        this.del(constants_1.STORE_TARGET_SID);
     },
 };
 exports.default = store;

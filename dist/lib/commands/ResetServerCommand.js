@@ -21,7 +21,11 @@ class ResetServerCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             try {
                 const output1 = yield exec_shell_cmd_1.default('adb kill-server');
                 conprint_1.default.info(output1);

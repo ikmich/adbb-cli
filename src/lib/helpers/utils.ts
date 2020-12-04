@@ -1,6 +1,6 @@
 export function yes(o: any) {
-  let b = typeof o !== 'undefined' && o !== null;
-  if (o && typeof o === 'string') {
+  let b = o !== undefined && o !== null;
+  if (b && typeof o === 'string') {
     b = b && o !== '';
   }
 

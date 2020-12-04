@@ -20,7 +20,7 @@ const store_1 = __importDefault(require("../helpers/store"));
 const command_constants_1 = require("../../command-constants");
 const parse_error_1 = __importDefault(require("../errors/parse-error"));
 const chalk = require("chalk");
-class PackageCommand extends BaseCommand_1.default {
+class SetPackageCommand extends BaseCommand_1.default {
     constructor(commandInfo) {
         super(commandInfo);
     }
@@ -29,18 +29,22 @@ class PackageCommand extends BaseCommand_1.default {
         conprint_1.default.info('Reference package has been unset');
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             switch (this.name) {
                 case command_constants_1.CMD_UNSET_PACKAGE:
                 case command_constants_1.CMD_UNSET_PKG:
                     store_1.default.unsetPackage();
-                    PackageCommand.unsetPkg();
+                    SetPackageCommand.unsetPkg();
                     return;
             }
             switch (true) {
                 case this.options.unset:
                 case this.options.disconnect:
-                    PackageCommand.unsetPkg();
+                    SetPackageCommand.unsetPkg();
                     return;
             }
             let packageName = null;
@@ -69,4 +73,4 @@ class PackageCommand extends BaseCommand_1.default {
         });
     }
 }
-exports.default = PackageCommand;
+exports.default = SetPackageCommand;

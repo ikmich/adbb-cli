@@ -1,6 +1,7 @@
 import { yes } from './utils';
 import config from '../../config/config';
-import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE } from '../../constants';
+import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE, STORE_TARGET_SID } from '../../constants';
+import BaseCommand from '../commands/BaseCommand';
 
 const Conf = require('conf');
 
@@ -13,8 +14,8 @@ const store = {
     conf.set(key, value);
   },
 
-  get(key, value) {
-    conf.get(key, value);
+  get(key, defaultValue?: any) {
+    return conf.get(key, defaultValue);
   },
 
   del(key) {
@@ -25,7 +26,8 @@ const store = {
     conf.clear();
   },
 
-  // PACKAGES
+  // ====
+
   setPackage(packageName: string) {
     conf.set(STORE_REF_PACKAGE, packageName);
   },
@@ -70,6 +72,18 @@ const store = {
 
   hasWifiDevice(): boolean {
     return yes(this.getLastWifiIp());
+  },
+
+  saveTargetSid(sid: string) {
+    this.save(STORE_TARGET_SID, sid);
+  },
+
+  getTargetSid(): string {
+    return (<string>this.get(STORE_TARGET_SID) || '').trim();
+  },
+
+  clearTargetSid() {
+    this.del(STORE_TARGET_SID);
   },
 };
 

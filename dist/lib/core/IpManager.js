@@ -24,10 +24,10 @@ const spawn_shell_cmd_1 = __importDefault(require("../helpers/spawn-shell-cmd"))
 const conprint_1 = __importDefault(require("../helpers/conprint"));
 const ip = require("ip");
 class IpManager {
-    getDeviceNetworkConfigs() {
+    getDeviceNetworkConfigs(deviceSid) {
         return __awaiter(this, void 0, void 0, function* () {
             let commandString = `shell ip -f inet addr | ${config_1.default.cmd.grep} inet`;
-            let shellCommand = yield build_adb_command_1.default(commandString);
+            let shellCommand = yield build_adb_command_1.default(commandString, deviceSid);
             let netConfigs = [];
             try {
                 let cmdOutput = yield exec_shell_cmd_1.default(shellCommand);
@@ -59,9 +59,9 @@ class IpManager {
             return netConfigs;
         });
     }
-    getDeviceIp() {
+    getDeviceIp(deviceSid) {
         return __awaiter(this, void 0, void 0, function* () {
-            let networkConfigs = yield this.getDeviceNetworkConfigs();
+            let networkConfigs = yield this.getDeviceNetworkConfigs(deviceSid);
             if (!networkConfigs) {
                 throw new UndefinedNetworkConfigError_1.default();
             }

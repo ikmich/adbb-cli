@@ -12,10 +12,10 @@ import { ChildProcessWithoutNullStreams } from 'child_process';
 import ip = require('ip');
 
 class IpManager {
-  async getDeviceNetworkConfigs(): Promise<NetConfig[]> {
+  async getDeviceNetworkConfigs(deviceSid?: string): Promise<NetConfig[]> {
     let commandString = `shell ip -f inet addr | ${config.cmd.grep} inet`;
 
-    let shellCommand = await buildAdbCommand(commandString);
+    let shellCommand = await buildAdbCommand(commandString, deviceSid);
     let netConfigs: NetConfig[] = [];
 
     try {
@@ -52,8 +52,8 @@ class IpManager {
     return netConfigs;
   }
 
-  async getDeviceIp(): Promise<string> {
-    let networkConfigs = await this.getDeviceNetworkConfigs();
+  async getDeviceIp(deviceSid?:string): Promise<string> {
+    let networkConfigs = await this.getDeviceNetworkConfigs(deviceSid);
     if (!networkConfigs) {
       throw new UndefinedNetworkConfigError();
     }

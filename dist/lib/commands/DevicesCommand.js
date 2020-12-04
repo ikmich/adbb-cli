@@ -22,7 +22,11 @@ class DevicesCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             try {
                 if (this.options.verbose || this.options.json || this.options.grid) {
                     switch (true) {

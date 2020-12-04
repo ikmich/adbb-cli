@@ -26,7 +26,11 @@ class UninstallCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             this.checkResolveArgFilter();
             let pkg = '';
             let pkgs = [];

@@ -1,6 +1,5 @@
 const yargsOptions = {
   verbose: {
-    alias: 'v',
     description: 'Long output',
     type: 'boolean',
   },
@@ -25,7 +24,7 @@ const yargsOptions = {
   },
   package: {
     alias: ['pkg'],
-    description: 'Target application package',
+    description: 'Set the target application package',
     type: 'string',
   },
   unset: {
@@ -46,11 +45,6 @@ const yargsOptions = {
     alias: ['j', 'json'],
     description: 'JSON display',
     type: 'boolean',
-  },
-  destination: {
-    alias: ['p', 'dest'],
-    description: 'Destination path',
-    type: 'string'
   },
   open: {
     description: 'Open file or resource',

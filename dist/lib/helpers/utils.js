@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._fn = exports.isEmpty = exports.arrayContainsAnyOf = exports.arrayContains = exports.removeEndLines = exports.no = exports.yes = void 0;
 function yes(o) {
-    let b = typeof o !== 'undefined' && o !== null;
-    if (o && typeof o === 'string') {
+    let b = o !== undefined && o !== null;
+    if (b && typeof o === 'string') {
         b = b && o !== '';
     }
     return b;

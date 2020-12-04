@@ -15,6 +15,8 @@ class UninstallCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     this.checkResolveArgFilter();
     let pkg: string = '';
     let pkgs: string[] = [];

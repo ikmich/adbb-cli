@@ -32,36 +32,38 @@ class WifiCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             const ipManager = new IpManager_1.default();
-            function getIpForDisconnect() {
-                return __awaiter(this, void 0, void 0, function* () {
-                    const devices = yield get_devices_1.default();
-                    const tcpDevices = [];
-                    for (let d of devices) {
-                        if (d.isTcpConnection()) {
-                            tcpDevices.push(d);
-                        }
+            const getIpForDisconnect = () => __awaiter(this, void 0, void 0, function* () {
+                const devices = yield get_devices_1.default();
+                const tcpDevices = [];
+                for (let d of devices) {
+                    if (d.isTcpConnection()) {
+                        tcpDevices.push(d);
                     }
-                    if (tcpDevices.length > 0) {
-                        if (tcpDevices.length === 1) {
-                            // Only one device is currently connected via tcpip. Disconnect that one.
-                            return tcpDevices[0].sid;
-                        }
-                        else {
-                            // Multiple devices are currently connected via tcpip.
-                            // Ask user to select device to disconnect:
-                            const choices = tcpDevices.map((d) => d.sid);
-                            return yield ask_select_1.default('tcpDevice', 'Select tcp-connected device', choices);
-                        }
+                }
+                if (tcpDevices.length > 0) {
+                    if (tcpDevices.length === 1) {
+                        // Only one device is currently connected via tcpip. Disconnect that one.
+                        return tcpDevices[0].sid;
                     }
-                    return ipManager.getDeviceIp();
-                });
-            }
+                    else {
+                        // Multiple devices are currently connected via tcpip.
+                        // Ask user to select device to disconnect:
+                        const choices = tcpDevices.map((d) => d.sid);
+                        return yield ask_select_1.default('tcpDevice', 'Select tcp-connected device', choices);
+                    }
+                }
+                return ipManager.getDeviceIp();
+            });
             if (this.options.disconnect) {
                 console.log('Disconnecting...');
                 try {
-                    const adbCmd = yield build_adb_command_1.default(`disconnect ${yield getIpForDisconnect()}`);
+                    const adbCmd = yield build_adb_command_1.default(`disconnect ${yield getIpForDisconnect()}`, this.options.sid);
                     const output = yield this.exec(adbCmd);
                     conprint_1.default.info(output);
                 }
@@ -122,7 +124,7 @@ class WifiCommand extends BaseCommand_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             let output = '';
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-                const adbTcpipCmd = yield build_adb_command_1.default(`tcpip ${config_1.default.PORT_TCP}`);
+                const adbTcpipCmd = yield build_adb_command_1.default(`tcpip ${config_1.default.PORT_TCP}`, this.options.sid);
                 spawn_shell_cmd_1.default(adbTcpipCmd, {
                     close: (code, signal) => __awaiter(this, void 0, void 0, function* () {
                         if (code !== 0) {
@@ -151,7 +153,7 @@ class WifiCommand extends BaseCommand_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             let _output = '';
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-                const adbConnectCmd = yield build_adb_command_1.default(`connect ${deviceIp}:${config_1.default.PORT_TCP}`);
+                const adbConnectCmd = yield build_adb_command_1.default(`connect ${deviceIp}:${config_1.default.PORT_TCP}`, this.options.sid);
                 spawn_shell_cmd_1.default(adbConnectCmd, {
                     close: function (code, signal) {
                         if (code !== 0) {

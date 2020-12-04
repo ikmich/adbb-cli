@@ -7,7 +7,7 @@ import { CMD_UNSET_PACKAGE, CMD_UNSET_PKG } from '../../command-constants';
 import parseError from '../errors/parse-error';
 import chalk = require('chalk');
 
-class PackageCommand extends BaseCommand {
+class SetPackageCommand extends BaseCommand {
   constructor(commandInfo) {
     super(commandInfo);
   }
@@ -18,18 +18,20 @@ class PackageCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     switch (this.name) {
       case CMD_UNSET_PACKAGE:
       case CMD_UNSET_PKG:
         store.unsetPackage();
-        PackageCommand.unsetPkg();
+        SetPackageCommand.unsetPkg();
         return;
     }
 
     switch (true) {
       case this.options.unset:
       case this.options.disconnect:
-        PackageCommand.unsetPkg();
+        SetPackageCommand.unsetPkg();
         return;
     }
 
@@ -60,4 +62,4 @@ class PackageCommand extends BaseCommand {
   }
 }
 
-export default PackageCommand;
+export default SetPackageCommand;

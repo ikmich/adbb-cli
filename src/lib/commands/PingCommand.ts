@@ -9,10 +9,12 @@ class PingCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     try {
       // Ping the device ip to "wake up" the connection (in case it's in lazy mode)
       const ipManager = new IpManager();
-      const deviceIp = await ipManager.getDeviceIp();
+      const deviceIp = await ipManager.getDeviceIp(this.options.sid);
       const pingResults: TPingResult = await ipManager.ping(deviceIp);
       const { timeoutPct } = pingResults;
 

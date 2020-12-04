@@ -21,19 +21,17 @@ yarn global add adbb
 # Options
 
 ```
-      --version                Show version number                     [boolean]
-  -v, --verbose                Long output                             [boolean]
-  -f, --filter                 Filter to apply to command output        [string]
-      --wifi                   Connect adb via wifi                    [boolean]
-  -x, --disconnect             Disconnect device connected via tcpip (wifi)
-                                                                       [boolean]
-  -s, --sid, --serialId        Device serial id                         [string]
-      --package, --pkg, --pkg                                           [string]
-      --unset                  Unset a value                           [boolean]
-  -l, --list                   Display items                           [boolean]
-  -p, --destination, --dest    Destination path                         [string]
-      --open                   Open file or resource                   [boolean]
-      --help                   Show help                               [boolean]
+      --version          Show version number                           [boolean]
+      --verbose          Long output                                   [boolean]
+  -f, --filter           Filter to apply to command output              [string]
+      --wifi             Connect adb via wifi                          [boolean]
+  -x, --disconnect       Disconnect device connected via tcpip (wifi)  [boolean]
+  -s, --sid, --serialId  Device serial id                               [string]
+      --package, --pkg   Set the target application package             [string]
+      --unset            Unset a value                                 [boolean]
+  -l, --list             Display items                                 [boolean]
+      --open             Open file or resource                         [boolean]
+      --help             Show help                                     [boolean]
 ```
 
 # Commands
@@ -100,7 +98,7 @@ Run `adbb emu` without any options to launch an emulator. You are prompted with 
 - `-l` | `--list`  
   List the available emulators without launching any.
 
-### `package` | `pkg`
+### `set-package` | `set-pkg`
 
 Specify the reference package name to use while using `adbb` to avoid having to type the package name every time.
 
@@ -112,9 +110,9 @@ Specify the reference package name to use while using `adbb` to avoid having to 
 **Example**
 
 ```shell script
-# Set 
-adbb pkg org.app.cool_app
-adbb pkg --unset
+# Set
+adbb set-pkg org.app.cool_app
+adbb set-pkg --unset
 ```
 
 ### `unset-package` | `unset-pkg`
@@ -147,10 +145,10 @@ adbb clear org.app.cool_app
 Using the `clear` command with a filter, you are shown a list of packages to choose from, to apply the `clear` command to.
 
 ```shell script
-# Apply filter  
+# Apply filter
 adbb clear -f cool_
 
-# Apply filter using the ':' filter directive  
+# Apply filter using the ':' filter directive
 adbb clear :cool_
 ```
 

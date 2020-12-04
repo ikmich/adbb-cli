@@ -2,7 +2,9 @@ import getDevices from './get-devices';
 import askSelectDevice from '../ask/ask-select-device';
 import Device from '../core/Device';
 import conprint from './conprint';
-import { isEmpty } from './utils';
+import { isEmpty, yes } from './utils';
+import store from './store';
+import config from '../../config/config';
 
 /**
  *
@@ -10,6 +12,15 @@ import { isEmpty } from './utils';
  * @param sid The device sid
  */
 const buildAdbCommand = async (argsString: string, sid?: string) => {
+  let cachedSid = store.getTargetSid();
+  if (config.isDev()) {
+    console.log({ cachedSid });
+  }
+
+  if (yes(cachedSid)) {
+    sid = cachedSid;
+  }
+
   let commandString = 'adb';
 
   let isDevicesCmd: boolean = /devices/gi.test(argsString);

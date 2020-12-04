@@ -10,6 +10,8 @@ class ListPackagesCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     let shellCmd = await buildAdbCommand('shell pm list packages', this.options.sid);
 
     if (no(this.options.filter)) {

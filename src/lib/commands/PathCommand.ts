@@ -13,6 +13,8 @@ class PathCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     this.checkResolveArgFilter();
 
     try {

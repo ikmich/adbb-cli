@@ -21,9 +21,11 @@ class WifiCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     const ipManager = new IpManager();
 
-    async function getIpForDisconnect() {
+    const getIpForDisconnect = async () => {
       const devices: Device[] = await getDevices();
       const tcpDevices: Device[] = [];
       for (let d of devices) {
@@ -51,7 +53,7 @@ class WifiCommand extends BaseCommand {
       console.log('Disconnecting...');
 
       try {
-        const adbCmd = await buildAdbCommand(`disconnect ${await getIpForDisconnect()}`);
+        const adbCmd = await buildAdbCommand(`disconnect ${await getIpForDisconnect()}`, this.options.sid);
         const output = await this.exec(adbCmd);
         conprint.info(output);
       } catch (e) {
@@ -113,7 +115,7 @@ class WifiCommand extends BaseCommand {
   private async listenTcp(): Promise<{ code: number; output: string }> {
     let output = '';
     return new Promise(async (resolve, reject) => {
-      const adbTcpipCmd = await buildAdbCommand(`tcpip ${config.PORT_TCP}`);
+      const adbTcpipCmd = await buildAdbCommand(`tcpip ${config.PORT_TCP}`, this.options.sid);
 
       spawnShellCmd(adbTcpipCmd, {
         close: async (code: number, signal: NodeJS.Signals) => {
@@ -142,7 +144,7 @@ class WifiCommand extends BaseCommand {
     let _output = '';
 
     return new Promise(async (resolve, reject) => {
-      const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:${config.PORT_TCP}`);
+      const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:${config.PORT_TCP}`, this.options.sid);
       spawnShellCmd(adbConnectCmd, {
         close: function(code: number, signal: NodeJS.Signals) {
           if (code !== 0) {

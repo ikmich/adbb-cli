@@ -13,11 +13,13 @@ class ScreenshotCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     try {
       const formattedDate = moment().format('YYYYMMDD_hhmmss_SSSS');
       let fileName = `Screenshot_${formattedDate}.png`;
 
-      let shellCommand = await buildAdbCommand(`exec-out screencap -p > ${fileName}`);
+      let shellCommand = await buildAdbCommand(`exec-out screencap -p > ${fileName}`, this.options.sid);
       const result = await execShellCmd(shellCommand);
 
       const dest = path.resolve(__dirname, fileName);

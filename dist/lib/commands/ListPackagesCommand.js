@@ -22,7 +22,11 @@ class ListPackagesCommand extends BaseCommand_1.default {
         super(commandInfo);
     }
     run() {
+        const _super = Object.create(null, {
+            run: { get: () => super.run }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            yield _super.run.call(this);
             let shellCmd = yield build_adb_command_1.default('shell pm list packages', this.options.sid);
             if (utils_1.no(this.options.filter)) {
                 // The first command is the package filter

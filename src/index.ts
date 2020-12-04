@@ -10,11 +10,11 @@ import {
   CMD_EMU,
   CMD_EMULATOR,
   CMD_IP,
-  CMD_PACKAGE,
+  CMD_SET_PACKAGE,
   CMD_PACKAGES,
   CMD_PATH,
   CMD_PING,
-  CMD_PKG,
+  CMD_SET_PKG,
   CMD_PKGS,
   CMD_RESET_SERVER,
   CMD_SCREENSHOT,
@@ -39,20 +39,17 @@ const argv = yargs
   .command(CMD_PING, 'Ping the device ip address to check the wifi connection')
   .command(CMD_UNSET_PACKAGE, 'Unset currently set default reference package')
   .alias(CMD_UNSET_PACKAGE, CMD_UNSET_PKG)
-  .command(CMD_PACKAGE, 'Set default reference package for commands')
-  .alias(CMD_PACKAGE, CMD_PKG)
+  .command(CMD_SET_PACKAGE, 'Set default reference package for commands')
+  .alias(CMD_SET_PACKAGE, CMD_SET_PKG)
   .command(CMD_RESET_SERVER, 'Reset the adb connection')
   .command(CMD_UNINSTALL, 'Uninstall an application')
 
-  // @ts-ignore
-  .options(yargsOptions)
+  .options(<any>yargsOptions)
 
-  .options({
-    package: {},
-  })
   .help().argv;
 
 const commandInfo = argsParser.parse(argv);
+
 commandDispatcher.dispatch(commandInfo).catch(err => {
   console.error(err);
 });

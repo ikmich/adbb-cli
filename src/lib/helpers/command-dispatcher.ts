@@ -14,11 +14,11 @@ import {
   CMD_EMU,
   CMD_EMULATOR,
   CMD_IP,
-  CMD_PACKAGE,
+  CMD_SET_PACKAGE,
   CMD_PACKAGES,
   CMD_PATH,
   CMD_PING,
-  CMD_PKG,
+  CMD_SET_PKG,
   CMD_PKGS,
   CMD_RESET_SERVER,
   CMD_SCREENSHOT,
@@ -29,14 +29,15 @@ import {
   CMD_WIFI,
 } from '../../command-constants';
 import conprint from './conprint';
-import PackageCommand from '../commands/PackageCommand';
+import SetPackageCommand from '../commands/SetPackageCommand';
 import store from './store';
 import parseError from '../errors/parse-error';
 import UninstallCommand from '../commands/UninstallCommand';
 import PingCommand from '../commands/PingCommand';
 import { arrayContainsAnyOf, isEmpty, no } from './utils';
 import PathCommand from '../commands/PathCommand';
-import ScreenshotCommand from "../commands/ScreenshotCommand";
+import ScreenshotCommand from '../commands/ScreenshotCommand';
+import config from '../../config/config';
 
 const commandDispatcher = {
   dispatch: async (commandInfo: ICommandInfo) => {
@@ -49,6 +50,12 @@ const commandDispatcher = {
     if (no(commandInfo.name)) {
       if (isEmpty(commandInfo.options) || arrayContainsAnyOf(Object.keys(commandInfo.options), ['g', 'j', 'v'])) {
         commandInfo.name = CMD_DEVICES;
+        if (config.isDev()) {
+          console.log({
+            notice: 'No command name entered',
+            msg: 'Using default command: "devices"',
+          });
+        }
       }
     }
 
@@ -92,14 +99,11 @@ const commandDispatcher = {
         await new ResetServerCommand(commandInfo).run();
         break;
 
-      case CMD_PACKAGE:
-      case CMD_PKG:
-        await new PackageCommand(commandInfo).run();
-        break;
-
+      case CMD_SET_PACKAGE:
+      case CMD_SET_PKG:
       case CMD_UNSET_PKG:
       case CMD_UNSET_PACKAGE:
-        await new PackageCommand(commandInfo).run();
+        await new SetPackageCommand(commandInfo).run();
         break;
 
       case CMD_UNINSTALL:

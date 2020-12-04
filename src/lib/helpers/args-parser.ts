@@ -12,6 +12,10 @@ const argsParser = {
     const commands = argv._;
     commandInfo.name = (commands && commands.length > 0 ? commands[0] : '').trim();
 
+    if (config.isDev()) {
+      console.log({ name: commandInfo.name });
+    }
+
     argv._.forEach((arg: string, idx: number) => {
       if (idx > 0) {
         commandInfo.args.push(arg);
@@ -19,7 +23,7 @@ const argsParser = {
     });
 
     if (config.isDev()) {
-      console.log('>> args:', commandInfo.args);
+      console.log({ args: commandInfo.args });
     }
 
     for (let o in argv) {
@@ -29,7 +33,7 @@ const argsParser = {
     }
 
     if (config.isDev()) {
-      console.log('>> options:', commandInfo.options);
+      console.log({ options: commandInfo.options });
     }
 
     return commandInfo;

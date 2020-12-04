@@ -9,6 +9,8 @@ class ResetServerCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     try {
       const output1 = await execShellCmd('adb kill-server');
       conprint.info(output1);

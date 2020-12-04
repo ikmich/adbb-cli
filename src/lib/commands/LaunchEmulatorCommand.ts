@@ -11,6 +11,8 @@ class LaunchEmulatorCommand extends BaseCommand {
   }
 
   async run() {
+    await super.run();
+
     try {
       const emulators = await getEmulators();
 
