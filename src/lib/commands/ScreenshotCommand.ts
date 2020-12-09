@@ -22,9 +22,7 @@ class ScreenshotCommand extends BaseCommand {
       let shellCommand = await buildAdbCommand(`exec-out screencap -p > ${fileName}`, this.options.sid);
       const result = await execShellCmd(shellCommand);
 
-      const dest = path.resolve(__dirname, fileName);
-
-      conprint.info(`Your screenshot image file is saved at ${dest}`);
+      conprint.info(`Your screenshot image file is saved at ${process.cwd()}/${fileName}`);
       conprint.info(result);
 
       if (true === this.options.open) {

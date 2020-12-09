@@ -3,6 +3,11 @@
   "version": "1.1.0-beta",
   "description": "A little boost to the Android ADB command set to make your Android development work easier!",
   "main": "dist/index.js",
+  "homepage": "https://github.com/ikmich/adbb-cli#readme",
+  "bugs": {
+    "email": "michfx@gmail.com",
+    "url": "https://github.com/ikmich/adbb-cli/issues"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node src/index.ts",
     "build": "rm -rf ./dist && tsc",

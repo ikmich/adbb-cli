@@ -18,7 +18,6 @@ const parse_error_1 = __importDefault(require("../errors/parse-error"));
 const build_adb_command_1 = __importDefault(require("../helpers/build-adb-command"));
 const exec_shell_cmd_1 = __importDefault(require("../helpers/exec-shell-cmd"));
 const moment_1 = __importDefault(require("moment"));
-const path_1 = __importDefault(require("path"));
 const config_1 = __importDefault(require("../../config/config"));
 class ScreenshotCommand extends BaseCommand_1.default {
     constructor(commandInfo) {
@@ -35,8 +34,7 @@ class ScreenshotCommand extends BaseCommand_1.default {
                 let fileName = `Screenshot_${formattedDate}.png`;
                 let shellCommand = yield build_adb_command_1.default(`exec-out screencap -p > ${fileName}`, this.options.sid);
                 const result = yield exec_shell_cmd_1.default(shellCommand);
-                const dest = path_1.default.resolve(__dirname, fileName);
-                conprint_1.default.info(`Your screenshot image file is saved at ${dest}`);
+                conprint_1.default.info(`Your screenshot image file is saved at ${process.cwd()}/${fileName}`);
                 conprint_1.default.info(result);
                 if (true === this.options.open) {
                     if (config_1.default.isWindowsOs) {
