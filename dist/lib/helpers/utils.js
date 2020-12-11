@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._fn = exports.isEmpty = exports.arrayContainsAnyOf = exports.arrayContains = exports.removeEndLines = exports.no = exports.yes = void 0;
+exports.wait = exports._fn = exports.isEmpty = exports.arrayContainsAnyOf = exports.arrayContains = exports.removeEndLines = exports.no = exports.yes = void 0;
 function yes(o) {
     let b = o !== undefined && o !== null;
     if (b && typeof o === 'string') {
@@ -63,3 +63,11 @@ function _fn(f) {
     return f();
 }
 exports._fn = _fn;
+function wait(ms) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, ms);
+    });
+}
+exports.wait = wait;
