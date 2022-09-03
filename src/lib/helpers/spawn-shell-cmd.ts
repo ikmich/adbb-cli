@@ -1,7 +1,8 @@
 import { ChildProcessWithoutNullStreams, SendHandle, Serializable, spawn } from 'child_process';
 import { ISpawnCallbacks } from '../../types/ISpawnCallbacks';
 
-const os = require('os');
+// const os = require('os');
+import os from 'os';
 
 const osType = os.platform();
 
@@ -38,7 +39,7 @@ const spawnShellCmd = (
     }
   });
 
-  childProcess.on('error', error => {
+  childProcess.on('error', (error) => {
     if (callbacks && callbacks.error) {
       callbacks.error(error);
     }

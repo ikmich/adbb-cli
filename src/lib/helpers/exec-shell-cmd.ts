@@ -1,6 +1,6 @@
 import { exec, ExecException } from 'child_process';
-import config from '../../config/config';
-import { removeEndLines } from './utils';
+import config from '../../config/config.js';
+import { removeEndLines } from './utils.js';
 
 const execShellCmd = async (cmd: string): Promise<string> => {
   return new Promise((resolve, reject) => {

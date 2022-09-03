@@ -1,9 +1,9 @@
-import BaseCommand from './BaseCommand';
-import conprint from '../helpers/conprint';
-import execShellCmd from '../helpers/exec-shell-cmd';
-import parseError from '../errors/parse-error';
-import {wait, yes} from "../helpers/utils";
-import getDevices from "../helpers/get-devices";
+import BaseCommand from './BaseCommand.js';
+import conprint from '../helpers/conprint.js';
+import execShellCmd from '../helpers/exec-shell-cmd.js';
+import parseError from '../errors/parse-error.js';
+import { wait, yes } from '../helpers/utils.js';
+import getDevices from '../helpers/get-devices.js';
 
 class ResetServerCommand extends BaseCommand {
   constructor(commandInfo) {

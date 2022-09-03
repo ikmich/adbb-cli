@@ -1,4 +1,8 @@
-.idea
-.idea/**/*
+.idea/
 node_modules
+dist
+_developer
+install_dev.sh
 .help.txt
+*.tgz
+package/

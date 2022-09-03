@@ -37,7 +37,7 @@ const yargsOptions = {
     type: 'boolean',
   },
   grid: {
-    alias: ['g', 'grid', 'grid'],
+    alias: ['g', 'grid'],
     description: 'Grid/tabular display',
     type: 'boolean',
   },
@@ -48,8 +48,8 @@ const yargsOptions = {
   },
   open: {
     description: 'Open file or resource',
-    type: 'boolean'
-  }
+    type: 'boolean',
+  },
 };
 
 export default yargsOptions;

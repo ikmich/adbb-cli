@@ -1,43 +1,43 @@
-import { ICommandInfo } from '../../types/ICommandInfo';
-import WifiCommand from '../commands/WifiCommand';
-import DevicesCommand from '../commands/DevicesCommand';
-import ListPackagesCommand from '../commands/ListPackagesCommand';
-import getCommandArgsString from './get-command-args-string';
-import ClearCommand from '../commands/ClearCommand';
-import execShellCmd from './exec-shell-cmd';
-import LaunchEmulatorCommand from '../commands/LaunchEmulatorCommand';
-import IpCommand from '../commands/IpCommand';
-import ResetServerCommand from '../commands/ResetServerCommand';
+import { ICommandInfo } from '../../types/ICommandInfo.js';
+import WifiCommand from '../commands/WifiCommand.js';
+import DevicesCommand from '../commands/DevicesCommand.js';
+import ListPackagesCommand from '../commands/ListPackagesCommand.js';
+import getCommandArgsString from './get-command-args-string.js';
+import ClearCommand from '../commands/ClearCommand.js';
+import execShellCmd from './exec-shell-cmd.js';
+import LaunchEmulatorCommand from '../commands/LaunchEmulatorCommand.js';
+import IpCommand from '../commands/IpCommand.js';
+import ResetServerCommand from '../commands/ResetServerCommand.js';
 import {
   CMD_CLEAR,
   CMD_DEVICES,
   CMD_EMU,
   CMD_EMULATOR,
   CMD_IP,
-  CMD_SET_PACKAGE,
+  CMD_SET_DEFAULT_PACKAGE,
   CMD_PACKAGES,
   CMD_PATH,
   CMD_PING,
-  CMD_SET_PKG,
+  CMD_SET_DEFAULT_PKG,
   CMD_PKGS,
   CMD_RESET_SERVER,
   CMD_SCREENSHOT,
   CMD_SCRSHOT,
   CMD_UNINSTALL,
-  CMD_UNSET_PACKAGE,
-  CMD_UNSET_PKG,
+  CMD_UNSET_DEFAULT_PACKAGE,
+  CMD_UNSET_DEFAULT_PKG,
   CMD_WIFI,
-} from '../../command-constants';
-import conprint from './conprint';
-import SetPackageCommand from '../commands/SetPackageCommand';
-import store from './store';
-import parseError from '../errors/parse-error';
-import UninstallCommand from '../commands/UninstallCommand';
-import PingCommand from '../commands/PingCommand';
-import { arrayContainsAnyOf, isEmpty, no } from './utils';
-import PathCommand from '../commands/PathCommand';
-import ScreenshotCommand from '../commands/ScreenshotCommand';
-import config from '../../config/config';
+} from '../../command-constants.js';
+import conprint from './conprint.js';
+import SetPackageCommand from '../commands/SetPackageCommand.js';
+import store from './store.js';
+import parseError from '../errors/parse-error.js';
+import UninstallCommand from '../commands/UninstallCommand.js';
+import PingCommand from '../commands/PingCommand.js';
+import { arrayContainsAnyOf, isEmpty, no } from './utils.js';
+import PathCommand from '../commands/PathCommand.js';
+import ScreenshotCommand from '../commands/ScreenshotCommand.js';
+import config from '../../config/config.js';
 
 const commandDispatcher = {
   dispatch: async (commandInfo: ICommandInfo) => {
@@ -99,10 +99,10 @@ const commandDispatcher = {
         await new ResetServerCommand(commandInfo).run();
         break;
 
-      case CMD_SET_PACKAGE:
-      case CMD_SET_PKG:
-      case CMD_UNSET_PKG:
-      case CMD_UNSET_PACKAGE:
+      case CMD_SET_DEFAULT_PACKAGE:
+      case CMD_SET_DEFAULT_PKG:
+      case CMD_UNSET_DEFAULT_PKG:
+      case CMD_UNSET_DEFAULT_PACKAGE:
         await new SetPackageCommand(commandInfo).run();
         break;
 

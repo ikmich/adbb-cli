@@ -2,7 +2,8 @@
 
 ## Usage on Windows OS
 
-- Shell commands specific to Windows OS are **not currently implemented**. Full support for Windows OS is planned for a future release.
+- Shell commands specific to Windows OS are **not currently implemented**. Full support for Windows OS is planned for a
+  future release.
 
 ## Installation
 
@@ -18,9 +19,28 @@ npm install -g adbb
 yarn global add adbb
 ```
 
-# Options
+## Command summary
 
 ```
+Commands:
+  adbb devices                List connected devices
+  adbb packages               List installed packages
+  adbb wifi                   Connect the device via wifi
+  adbb clear                  Clear data for application
+  adbb emulator               Start an emulator. Shows available emulators for u
+                              ser to select
+  adbb ip                     Show the device IP address(es)
+  adbb reset-server           Reset adb server
+  adbb screenshot             Take screenshot of the device screen
+  adbb path                   Get path of installed application package
+  adbb ping                   Ping the device ip address to check the wifi conne
+                              ction
+  adbb unset-default-package  Unset currently set default reference package
+  adbb set-default-package    Set default reference package for commands
+  adbb reset-server           Reset the adb connection
+  adbb uninstall              Uninstall an application
+
+Options:
       --version          Show version number                           [boolean]
       --verbose          Long output                                   [boolean]
   -f, --filter           Filter to apply to command output              [string]
@@ -34,9 +54,9 @@ yarn global add adbb
       --help             Show help                                     [boolean]
 ```
 
-# Commands
+## Commands
 
-### `devices`
+#### `devices`
 
 List connected devices
 
@@ -56,7 +76,7 @@ adbb devices -j
 adbb devices -g
 ```
 
-### `wifi`
+#### `wifi`
 
 Connect a device for debugging via Wi-Fi connection.
 
@@ -69,7 +89,7 @@ adbb wifi
 - `-x` | `--disconnect`  
   Disconnect the device from the Wi-Fi connection.
 
-### `pkgs` | `packages`
+#### `pkgs` | `packages`
 
 List application packages installed on the device.
 
@@ -89,16 +109,17 @@ You can also filter using the more convenient filter directive, `:`, as a prefix
 adbb pkgs :org.app
 ```
 
-### `emu` | `emulator`
+#### `emu` | `emulator`
 
-Run `adbb emu` without any options to launch an emulator. You are prompted with the list of available emulators to select from.
+Run `adbb emu` without any options to launch an emulator. You are prompted with the list of available emulators to
+select from.
 
 **Options**
 
 - `-l` | `--list`  
   List the available emulators without launching any.
 
-### `set-package` | `set-pkg`
+#### `set-default-package` | `set-default-pkg`
 
 Specify the reference package name to use while using `adbb` to avoid having to type the package name every time.
 
@@ -115,7 +136,7 @@ adbb set-pkg org.app.cool_app
 adbb set-pkg --unset
 ```
 
-### `unset-package` | `unset-pkg`
+#### `unset-default-package` | `unset-default-pkg`
 
 Deletes a previously set reference package name.
 
@@ -125,7 +146,7 @@ Deletes a previously set reference package name.
 adbb unset-pkg
 ```
 
-### `clear <package>`
+#### `clear <package>`
 
 Clear application data for specified package. If no package is specified, you will be prompted to input the intended
 application package.
@@ -133,7 +154,8 @@ application package.
 **Options**
 
 - `--package` | `--pkg`  
-  The package name of the application whose data is to be cleared. This option can be used to specify the package if the **package** argument is not passed.
+  The package name of the application whose data is to be cleared. This option can be used to specify the package if
+  the **package** argument is not passed.
 
 **Example**
 
@@ -142,7 +164,8 @@ adbb clear org.app.cool_app
 ```
 
 **Applying a filter**  
-Using the `clear` command with a filter, you are shown a list of packages to choose from, to apply the `clear` command to.
+Using the `clear` command with a filter, you are shown a list of packages to choose from, to apply the `clear` command
+to.
 
 ```shell script
 # Apply filter
@@ -152,19 +175,19 @@ adbb clear -f cool_
 adbb clear :cool_
 ```
 
-### `ip`
+#### `ip`
 
 Get the device IP address(es).
 
-### `reset-server`
+#### `reset-server`
 
-Kill and restart the adb server.
+Kill and restart the adb server. It's recommended to run this with the device connected via USB.
 
-### `uninstall <package>`
+#### `uninstall <package>`
 
-Uninstalls the application with the specified package argument. If you don't provide a package argument, you will be prompted to
-enter the intended application package. If a reference package has been set (via `adbb pkg <package>`), user will be
-asked if they want to continue with that package.
+Uninstalls the application with the specified package argument. If you don't provide a package argument, you will be
+prompted to enter the intended application package. If a reference package has been set (via `adbb pkg <package>`), user
+will be asked if they want to continue with that package.
 
 **Applying a filter**  
 Using the `uninstall` command together with a filter, you are shown a list of packages (that match the filter string)
@@ -177,16 +200,16 @@ adbb uninstall -f org.app.pack
 adbb uninstall :org.app.pack
 ```
 
-### `ping`
+#### `ping`
 
-Pings the device's IP address. You can run this command to check that the device can be reached over the network
-for a tcp connection.
+Pings the device's IP address. You can run this command to check that the device can be reached over the network for a
+tcp connection.
 
 ```shell script
 adbb ping
 ```
 
-### `screenshot` | `scrshot`
+#### `screenshot` | `scrshot`
 
 Take a screenshot of the device's currently active screen. The image file will be saved in the current directory from
 which this command was run.
@@ -199,7 +222,7 @@ adbb scrshot
 adbb screenshot --open
 ```
 
-### `path`
+#### `path <package>`
 
 Gets the installed path for the specified application package.
 

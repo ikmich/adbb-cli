@@ -1,10 +1,10 @@
-import getDevices from './get-devices';
-import askSelectDevice from '../ask/ask-select-device';
-import Device from '../core/Device';
-import conprint from './conprint';
-import { isEmpty, yes } from './utils';
-import store from './store';
-import config from '../../config/config';
+import getDevices from './get-devices.js';
+import askSelectDevice from '../ask/ask-select-device.js';
+import Device from '../core/Device.js';
+import conprint from './conprint.js';
+import { isEmpty, yes } from './utils.js';
+import store from './store.js';
+import config from '../../config/config.js';
 
 /**
  *

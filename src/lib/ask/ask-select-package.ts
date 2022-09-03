@@ -1,7 +1,7 @@
-import getPackages from '../helpers/get-packages';
-import { isEmpty } from '../helpers/utils';
-import askSelectMultiple from './ask-select-multiple';
-import askSelect from './ask-select';
+import getPackages from '../helpers/get-packages.js';
+import { isEmpty } from '../helpers/utils.js';
+import askSelectMultiple from './ask-select-multiple.js';
+import askSelect from './ask-select.js';
 
 /**
  * Asks user to select one or more packages from the list of packages that match the filter argument.

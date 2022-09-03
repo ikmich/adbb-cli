@@ -1,16 +1,21 @@
-import { ICommandOptions } from '../../types/ICommandOptions';
-import { ICommandInfo } from '../../types/ICommandInfo';
-import execShellCmd from '../helpers/exec-shell-cmd';
-import ifConcat from '../helpers/if-concat';
-import parseError from '../errors/parse-error';
-import config from '../../config/config';
-import { no, yes } from '../helpers/utils';
-import store from '../helpers/store';
-import getDevices from '../helpers/get-devices';
-import Device from '../core/Device';
-import askSelectDevice from '../ask/ask-select-device';
-import conprint from '../helpers/conprint';
-import { CMD_SET_PACKAGE, CMD_SET_PKG, CMD_UNSET_PACKAGE, CMD_UNSET_PKG } from '../../command-constants';
+import { ICommandOptions } from '../../types/ICommandOptions.js';
+import { ICommandInfo } from '../../types/ICommandInfo.js';
+import execShellCmd from '../helpers/exec-shell-cmd.js';
+import ifConcat from '../helpers/if-concat.js';
+import parseError from '../errors/parse-error.js';
+import config from '../../config/config.js';
+import { no, yes } from '../helpers/utils.js';
+import store from '../helpers/store.js';
+import getDevices from '../helpers/get-devices.js';
+import Device from '../core/Device.js';
+import askSelectDevice from '../ask/ask-select-device.js';
+import conprint from '../helpers/conprint.js';
+import {
+  CMD_SET_DEFAULT_PACKAGE,
+  CMD_SET_DEFAULT_PKG,
+  CMD_UNSET_DEFAULT_PACKAGE,
+  CMD_UNSET_DEFAULT_PKG,
+} from '../../command-constants.js';
 
 class BaseCommand {
   public commandInfo: ICommandInfo;
@@ -52,7 +57,7 @@ class BaseCommand {
   }
 
   isDisconnectAction() {
-    const has_disconnect_arg = this.args.some(arg => {
+    const has_disconnect_arg = this.args.some((arg) => {
       return arg === 'disconnect';
     });
 
@@ -63,8 +68,8 @@ class BaseCommand {
   async isSidRequired() {
     const is_devices_command = this.name === 'devices';
     const is_disconnect_action = this.isDisconnectAction();
-    const is_set_pkg = [CMD_SET_PACKAGE, CMD_SET_PKG].includes(this.name);
-    const is_unset_pkg = [CMD_UNSET_PACKAGE, CMD_UNSET_PKG].includes(this.name);
+    const is_set_pkg = [CMD_SET_DEFAULT_PACKAGE, CMD_SET_DEFAULT_PKG].includes(this.name);
+    const is_unset_pkg = [CMD_UNSET_DEFAULT_PACKAGE, CMD_UNSET_DEFAULT_PKG].includes(this.name);
 
     return !is_devices_command && !is_disconnect_action && !is_set_pkg && !is_unset_pkg;
   }

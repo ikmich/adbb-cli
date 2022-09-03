@@ -1,11 +1,11 @@
-import BaseCommand from './BaseCommand';
-import conprint from '../helpers/conprint';
-import IpManager from '../core/IpManager';
-import NetConfig from '../core/NetConfig';
-import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError';
-import { yes } from '../helpers/utils';
-import { NO_IP_ADDRESS_FOUND } from '../errors/error-constants';
-import parseError from '../errors/parse-error';
+import BaseCommand from './BaseCommand.js';
+import conprint from '../helpers/conprint.js';
+import IpManager from '../core/IpManager.js';
+import NetConfig from '../core/NetConfig.js';
+import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError.js';
+import { yes } from '../helpers/utils.js';
+import { NO_IP_ADDRESS_FOUND } from '../errors/error-constants.js';
+import parseError from '../errors/parse-error.js';
 
 /**
  * Command to get the device's IP address.

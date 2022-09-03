@@ -65,7 +65,7 @@ export function _fn<T>(f: () => T) {
 }
 
 export function wait(ms: number) {
-  return new Promise(resolve => {
+  return new Promise<void>((resolve) => {
     setTimeout(() => {
       resolve();
     }, ms);

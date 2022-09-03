@@ -1,13 +1,13 @@
-import BaseCommand from './BaseCommand';
-import { ICommandInfo } from '../../types/ICommandInfo';
-import { isEmpty, no, yes } from '../helpers/utils';
-import askEnterPackage from '../ask/ask-enter-package';
-import conprint from '../helpers/conprint';
-import store from '../helpers/store';
-import askInput from '../ask/ask-input';
-import parseError from '../errors/parse-error';
-import askSelectPackage from '../ask/ask-select-package';
-import buildAdbCommand from '../helpers/build-adb-command';
+import BaseCommand from './BaseCommand.js';
+import { ICommandInfo } from '../../types/ICommandInfo.js';
+import { isEmpty, no, yes } from '../helpers/utils.js';
+import askEnterPackage from '../ask/ask-enter-package.js';
+import conprint from '../helpers/conprint.js';
+import store from '../helpers/store.js';
+import askInput from '../ask/ask-input.js';
+import parseError from '../errors/parse-error.js';
+import askSelectPackage from '../ask/ask-select-package.js';
+import buildAdbCommand from '../helpers/build-adb-command.js';
 
 class UninstallCommand extends BaseCommand {
   constructor(commandInfo: ICommandInfo) {
@@ -44,7 +44,7 @@ class UninstallCommand extends BaseCommand {
             `This application: "${store.getPackage()}" will be uninstalled. WOULD YOU LIKE TO CONTINUE? (y/n)`,
           );
           if (yes(answer) && answer.toLowerCase() === 'y') {
-            pkg = store.getPackage();
+            pkg = store.getPackage() as string;
             pkgs.push(pkg);
           }
         }

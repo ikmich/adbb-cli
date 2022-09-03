@@ -1,24 +1,23 @@
-const os = require('os');
+// const os = require('os');
+import os from 'os';
+import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE } from '../constants.js';
 
-// const osType = os.platform();
 const isWindowsOs = os.platform() == 'win32';
-
-import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE } from '../constants';
 
 const config = {
   appCommand: 'adbb',
 
   environment: process.env.NODE_ENV || 'production',
 
-  isDev: function() {
+  isDev: function () {
     return this.environment === 'development';
   },
 
-  isProduction: function() {
+  isProduction: function () {
     return this.environment === 'production';
   },
 
-  os: (()=>{
+  os: (() => {
     // const values = {
     //   homedir: os.homedir(),
     //   hostname: os.hostname(),
@@ -57,7 +56,7 @@ const config = {
   },
 
   cmd: {
-    grep: (function() {
+    grep: (function () {
       if (isWindowsOs) {
         return 'findstr';
       }

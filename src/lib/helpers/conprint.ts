@@ -1,5 +1,5 @@
-import chalk = require('chalk');
-import { yes } from './utils';
+import chalk from 'chalk';
+import { yes } from './utils.js';
 
 /**
  * Print to console.

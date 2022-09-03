@@ -1,7 +1,7 @@
-import BaseCommand from './BaseCommand';
-import conprint from '../helpers/conprint';
-import parseError from '../errors/parse-error';
-import IpManager, { TPingResult } from '../core/IpManager';
+import BaseCommand from './BaseCommand.js';
+import conprint from '../helpers/conprint.js';
+import parseError from '../errors/parse-error.js';
+import IpManager, { TPingResult } from '../core/IpManager.js';
 
 class PingCommand extends BaseCommand {
   constructor(commandInfo) {

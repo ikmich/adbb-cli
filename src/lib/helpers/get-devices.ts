@@ -1,18 +1,20 @@
-import execShellCmd from './exec-shell-cmd';
-import { IDeviceInfo } from '../../types/IDeviceInfo';
-import Device from '../core/Device';
+import execShellCmd from './exec-shell-cmd.js';
+import { IDeviceInfo } from '../../types/IDeviceInfo.js';
+import Device from '../core/Device.js';
 
 const getDevices = async (): Promise<Device[]> => {
   let results: Device[] = [];
   const output = await execShellCmd('adb devices -l');
 
-  const regexConnectedGlobal = /[a-z0-9.:]+\s+\w+(\s+usb:\w+)?\s+product:\w+\s+model:\w+\s+device:\w+\s+transport_id:\w+/gim;
+  const regexConnectedGlobal =
+    /[a-z0-9.:]+\s+\w+(\s+usb:\w+)?\s+product:\w+\s+model:\w+\s+device:\w+\s+transport_id:\w+/gim;
   const connectedGlobalMatches: any = output.match(regexConnectedGlobal);
   if (connectedGlobalMatches && connectedGlobalMatches.length > 0) {
     // console.log('\nglobalMatches:', globalMatches);
     connectedGlobalMatches.forEach((resultLine: string, index: number) => {
       // console.log(`\ndevice result line ${index}`);
-      const rexTokens = /([a-z0-9.:]+)\s+(\w+)\s+(usb:(\w+))?\s*product:(\w+)\s+model:(\w+)\s+device:(\w+)\s+transport_id:(\w+)/i;
+      const rexTokens =
+        /([a-z0-9.:]+)\s+(\w+)\s+(usb:(\w+))?\s*product:(\w+)\s+model:(\w+)\s+device:(\w+)\s+transport_id:(\w+)/i;
       const tokensMatches: any = resultLine.match(rexTokens);
       if (tokensMatches && tokensMatches.length > 0) {
         let matchIds = {

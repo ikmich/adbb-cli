@@ -1,5 +1,5 @@
-import { IDeviceInfo } from '../../types/IDeviceInfo';
-import config from '../../config/config';
+import { IDeviceInfo } from '../../types/IDeviceInfo.js';
+import config from '../../config/config.js';
 
 class Device implements IDeviceInfo {
   readonly device: string;

@@ -1,15 +1,16 @@
-import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError';
-import NetConfig from './NetConfig';
-import buildAdbCommand from '../helpers/build-adb-command';
-import config from '../../config/config';
-import execShellCmd from '../helpers/exec-shell-cmd';
-import { removeEndLines } from '../helpers/utils';
-import DeviceNotConnectedError from '../errors/DeviceNotConnectedError';
-import parseError from '../errors/parse-error';
-import spawnShellCmd from '../helpers/spawn-shell-cmd';
-import conprint from '../helpers/conprint';
+import UndefinedNetworkConfigError from '../errors/UndefinedNetworkConfigError.js';
+import NetConfig from './NetConfig.js';
+import buildAdbCommand from '../helpers/build-adb-command.js';
+import config from '../../config/config.js';
+import execShellCmd from '../helpers/exec-shell-cmd.js';
+import { removeEndLines } from '../helpers/utils.js';
+import DeviceNotConnectedError from '../errors/DeviceNotConnectedError.js';
+import parseError from '../errors/parse-error.js';
+import spawnShellCmd from '../helpers/spawn-shell-cmd.js';
+import conprint from '../helpers/conprint.js';
 import { ChildProcessWithoutNullStreams } from 'child_process';
-import ip = require('ip');
+// const ip = require('ip');
+import ip from 'ip';
 
 class IpManager {
   async getDeviceNetworkConfigs(deviceSid?: string): Promise<NetConfig[]> {
@@ -52,7 +53,7 @@ class IpManager {
     return netConfigs;
   }
 
-  async getDeviceIp(deviceSid?:string): Promise<string> {
+  async getDeviceIp(deviceSid?: string): Promise<string> {
     let networkConfigs = await this.getDeviceNetworkConfigs(deviceSid);
     if (!networkConfigs) {
       throw new UndefinedNetworkConfigError();
@@ -116,7 +117,7 @@ class IpManager {
       let output = '';
       try {
         let childProcess: ChildProcessWithoutNullStreams = spawnShellCmd(`ping -c ${config.PING_COUNT} ${ip}`, {
-          close: function(code: number, p2: NodeJS.Signals) {
+          close: function (code: number, p2: NodeJS.Signals) {
             if (code === 0) {
               let lines: string[] = output.split(/\n|\r\n/);
               // First line is a summary info line, and not relevant in ping results for calculating timeout rate
@@ -125,7 +126,7 @@ class IpManager {
               let timeouts = 0;
 
               // Calculate timeout rate
-              lines.forEach(line => {
+              lines.forEach((line) => {
                 if (/timeout/.test(line)) {
                   ++timeouts;
                 }
@@ -143,14 +144,14 @@ class IpManager {
               });
             }
           },
-          error: function(e: Error) {
+          error: function (e: Error) {
             reject(e);
           },
           // message: function(ser: Serializable, sh: SendHandle) {},
-          stderr: function(stream: Buffer, stderr: string) {
+          stderr: function (stream: Buffer, stderr: string) {
             reject(new Error(stderr));
           },
-          stdout: function(stream: Buffer, stdout: string) {
+          stdout: function (stream: Buffer, stdout: string) {
             output += stdout;
             // Print ping result line
             conprint.info(removeEndLines(stdout, 1));

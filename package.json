@@ -1,22 +1,23 @@
 {
   "name": "adbb",
-  "version": "1.1.0-beta",
-  "description": "A little boost to the Android ADB command set to make your Android development work easier!",
+  "version": "1.0.0",
+  "description": "A little boost to the Android ADB command set, to make your Android development work easier.",
   "main": "dist/index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development ts-node src/index.ts",
+    "build": "rm -rf ./dist && tsc",
+    "clean": "rm -rf ./dist",
+    "install-dev": "install_dev.sh",
+    "tscheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
+  },
   "homepage": "https://github.com/ikmich/adbb-cli#readme",
   "bugs": {
     "email": "michfx@gmail.com",
     "url": "https://github.com/ikmich/adbb-cli/issues"
   },
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development ts-node src/index.ts",
-    "build": "rm -rf ./dist && tsc",
-    "clean": "rm -rf ./dist",
-    "deploy": "npm uninstall -g adbb && yarn build && npm install -g",
-    "start": "link-module-alias node dist/index.js",
-    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit",
-    "tscheck": "tsc --noEmit"
-  },
+  "type": "module",
   "keywords": [
     "adb",
     "adbb",
@@ -30,38 +31,33 @@
   },
   "author": "Ikenna Agbasimalo <michfx@gmail.com>",
   "license": "ISC",
-  "dependencies": {
-    "@types/ip": "^1.1.0",
-    "@types/node": "^14.0.13",
-    "@types/yargs": "^15.0.5",
-    "chalk": "^4.1.0",
-    "clear": "^0.1.0",
-    "clui": "^0.3.6",
-    "conf": "^6.2.4",
-    "cross-env": "^7.0.2",
-    "esm": "^3.2.25",
-    "figlet": "^1.4.0",
-    "inquirer": "^7.1.0",
-    "ip": "^1.1.5",
-    "link-module-alias": "^1.2.0",
-    "moment": "^2.27.0",
-    "touch": "^3.1.0",
-    "ts-node": "^8.10.2",
-    "ts-node-dev": "^1.0.0-pre.44",
-    "tsc": "^1.20150623.0",
-    "tsconfig-paths": "^3.9.0",
-    "tspath": "^1.3.7",
-    "typescript": "^3.9.5",
-    "yargs": "^16.1.1"
-  },
   "bin": {
     "adbb": "dist/index.js"
   },
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "clear": "^0.1.0",
+    "clui": "^0.3.6",
+    "conf": "^10.2.0",
+    "cross-env": "^7.0.3",
+    "date-fns": "^2.29.2",
+    "inquirer": "^9.1.1",
+    "ip": "^1.1.8",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.8.2",
+    "yargs": "^17.5.1"
+  },
   "devDependencies": {
-    "@types/jest": "^26.0.3",
-    "babel-jest": "^26.1.0",
-    "jest": "^26.1.0",
-    "jest-config": "^26.1.0",
-    "ts-jest": "^26.1.1"
-  }
+    "@types/ip": "^1.1.0",
+    "@types/node": "^18.7.14",
+    "@types/yargs": "^17.0.12"
+  },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ]
 }

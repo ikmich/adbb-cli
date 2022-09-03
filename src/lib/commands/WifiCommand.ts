@@ -1,19 +1,19 @@
-import BaseCommand from './BaseCommand';
-import config from '../../config/config';
-import DifferentNetworksError from '../errors/DifferentNetworksError';
-import buildAdbCommand from '../helpers/build-adb-command';
-import IpManager from '../core/IpManager';
-import conprint from '../helpers/conprint';
-import { no } from '../helpers/utils';
-import spawnShellCmd from '../helpers/spawn-shell-cmd';
-import ShellExitError from '../errors/ShellExitError';
-import { EMPTY_DEVICE_IP_ADDRESS, EMPTY_HOST_IP_ADDRESS, NO_HOST_IP_IN_NETWORK } from '../errors/error-constants';
-import store from '../helpers/store';
-import getDevices from '../helpers/get-devices';
-import Device from '../core/Device';
-import askSelect from '../ask/ask-select';
-import askInput from '../ask/ask-input';
-import parseError from '../errors/parse-error';
+import BaseCommand from './BaseCommand.js';
+import config from '../../config/config.js';
+import DifferentNetworksError from '../errors/DifferentNetworksError.js';
+import buildAdbCommand from '../helpers/build-adb-command.js';
+import IpManager from '../core/IpManager.js';
+import conprint from '../helpers/conprint.js';
+import { no } from '../helpers/utils.js';
+import spawnShellCmd from '../helpers/spawn-shell-cmd.js';
+import ShellExitError from '../errors/ShellExitError.js';
+import { EMPTY_DEVICE_IP_ADDRESS, EMPTY_HOST_IP_ADDRESS, NO_HOST_IP_IN_NETWORK } from '../errors/error-constants.js';
+import store from '../helpers/store.js';
+import getDevices from '../helpers/get-devices.js';
+import Device from '../core/Device.js';
+import askSelect from '../ask/ask-select.js';
+import askInput from '../ask/ask-input.js';
+import parseError from '../errors/parse-error.js';
 
 class WifiCommand extends BaseCommand {
   constructor(commandInfo) {
@@ -47,7 +47,7 @@ class WifiCommand extends BaseCommand {
       }
 
       return ipManager.getDeviceIp();
-    }
+    };
 
     if (this.options.disconnect) {
       console.log('Disconnecting...');
@@ -126,13 +126,13 @@ class WifiCommand extends BaseCommand {
 
           resolve({ code, output });
         },
-        error: function(e: Error) {
+        error: function (e: Error) {
           reject(e);
         },
-        stderr: function(stream: Buffer, stderr: string) {
+        stderr: function (stream: Buffer, stderr: string) {
           reject(new Error(stderr));
         },
-        stdout: async function(stream: Buffer, tcpipOutput: string) {
+        stdout: async function (stream: Buffer, tcpipOutput: string) {
           output += tcpipOutput;
           conprint.info(tcpipOutput);
         },
@@ -146,20 +146,20 @@ class WifiCommand extends BaseCommand {
     return new Promise(async (resolve, reject) => {
       const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:${config.PORT_TCP}`, this.options.sid);
       spawnShellCmd(adbConnectCmd, {
-        close: function(code: number, signal: NodeJS.Signals) {
+        close: function (code: number, signal: NodeJS.Signals) {
           if (code !== 0) {
             throw new ShellExitError(code);
           }
 
           resolve({ code, output: _output });
         },
-        error: function(e: Error) {
+        error: function (e: Error) {
           reject(e);
         },
-        stderr: function(stream: Buffer, stderr: string) {
+        stderr: function (stream: Buffer, stderr: string) {
           reject(new Error(stderr));
         },
-        stdout: function(stream: Buffer, output: string) {
+        stdout: function (stream: Buffer, output: string) {
           // Connected.
           _output += output;
           store.saveWifiIp(deviceIp);
