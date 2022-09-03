@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import getEmulators from '../helpers/get-emulators';
+import getEmulators from '../helpers/get-emulators.js';
 
 const askSelectEmulator = async (label: string = 'Select emulator') => {
   const emulators: string[] = await getEmulators();

@@ -1,11 +1,11 @@
-import BaseCommand from './BaseCommand';
-import buildAdbCommand from '../helpers/build-adb-command';
-import askEnterPackage from '../ask/ask-enter-package';
-import NoPackageError from '../errors/NoPackageError';
-import { isEmpty, yes } from '../helpers/utils';
-import conprint from '../helpers/conprint';
-import store from '../helpers/store';
-import askSelectPackage from '../ask/ask-select-package';
+import BaseCommand from './BaseCommand.js';
+import buildAdbCommand from '../helpers/build-adb-command.js';
+import askEnterPackage from '../ask/ask-enter-package.js';
+import NoPackageError from '../errors/NoPackageError.js';
+import { isEmpty, yes } from '../helpers/utils.js';
+import conprint from '../helpers/conprint.js';
+import store from '../helpers/store.js';
+import askSelectPackage from '../ask/ask-select-package.js';
 
 class ClearCommand extends BaseCommand {
   constructor(commandInfo) {

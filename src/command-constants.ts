@@ -1,10 +1,11 @@
 export const CMD_DEVICES = 'devices';
 export const CMD_CLEAR = 'clear';
 export const CMD_WIFI = 'wifi';
-export const CMD_UNSET_PKG = 'unset-pkg';
-export const CMD_UNSET_PACKAGE = 'unset-package';
-export const CMD_SET_PKG = 'set-pkg';
-export const CMD_SET_PACKAGE = 'set-package';
+export const CMD_UNSET_DEFAULT_PKG = 'unset-default-pkg';
+export const CMD_UNSET_DEFAULT_PACKAGE = 'unset-default-package';
+export const CMD_SET_DEFAULT_PKG = 'set-default-pkg';
+export const CMD_SET_DEFAULT_PACKAGE = 'set-default-package';
+export const CMD_PKG = 'pkg';
 export const CMD_PKGS = 'pkgs';
 export const CMD_PACKAGES = 'packages';
 export const CMD_EMU = 'emu';

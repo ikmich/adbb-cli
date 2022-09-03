@@ -1,8 +1,8 @@
-import BaseCommand from './BaseCommand';
-import buildAdbCommand from '../helpers/build-adb-command';
-import conprint from '../helpers/conprint';
-import { no, yes } from '../helpers/utils';
-import parseError from '../errors/parse-error';
+import BaseCommand from './BaseCommand.js';
+import buildAdbCommand from '../helpers/build-adb-command.js';
+import conprint from '../helpers/conprint.js';
+import { no, yes } from '../helpers/utils.js';
+import parseError from '../errors/parse-error.js';
 
 class ListPackagesCommand extends BaseCommand {
   constructor(commandInfo) {

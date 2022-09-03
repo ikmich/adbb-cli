@@ -1,6 +1,6 @@
-import DeviceOfflineError from './DeviceOfflineError';
-import MultipleDevicesError from './MultipleDevicesError';
-import NoDevicesFoundError from './NoDevicesFoundError';
+import DeviceOfflineError from './DeviceOfflineError.js';
+import MultipleDevicesError from './MultipleDevicesError.js';
+import NoDevicesFoundError from './NoDevicesFoundError.js';
 
 const parseError = (e: Error | string): Error => {
   if (typeof e === 'string') {

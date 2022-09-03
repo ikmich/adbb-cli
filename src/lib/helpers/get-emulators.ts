@@ -1,4 +1,4 @@
-import execShellCmd from './exec-shell-cmd';
+import execShellCmd from './exec-shell-cmd.js';
 
 const getEmulators = async (): Promise<string[]> => {
   let results: string[] = [];

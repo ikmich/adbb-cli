@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { yes } from '../helpers/utils';
+import { yes } from '../helpers/utils.js';
 
 const askSelect = async (
   name: string = 'choice',

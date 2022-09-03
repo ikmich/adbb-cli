@@ -1,11 +1,11 @@
-import BaseCommand from './BaseCommand';
-import conprint from '../helpers/conprint';
-import parseError from '../errors/parse-error';
-import buildAdbCommand from '../helpers/build-adb-command';
-import { isEmpty, no, yes } from '../helpers/utils';
-import store from '../helpers/store';
-import askInput from '../ask/ask-input';
-import askSelectPackage from '../ask/ask-select-package';
+import BaseCommand from './BaseCommand.js';
+import conprint from '../helpers/conprint.js';
+import parseError from '../errors/parse-error.js';
+import buildAdbCommand from '../helpers/build-adb-command.js';
+import { isEmpty, no, yes } from '../helpers/utils.js';
+import store from '../helpers/store.js';
+import askInput from '../ask/ask-input.js';
+import askSelectPackage from '../ask/ask-select-package.js';
 
 class PathCommand extends BaseCommand {
   constructor(commandInfo) {

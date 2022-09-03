@@ -1,12 +1,17 @@
-import { yes } from './utils';
-import config from '../../config/config';
-import { STORE_LAST_PKG_NOTICE_TIME, STORE_LAST_WIFI_IP, STORE_REF_PACKAGE, STORE_TARGET_SID } from '../../constants';
-import BaseCommand from '../commands/BaseCommand';
+import { yes } from './utils.js';
+import config from '../../config/config.js';
+import {
+  STORE_LAST_PKG_NOTICE_TIME,
+  STORE_LAST_WIFI_IP,
+  STORE_REF_PACKAGE,
+  STORE_TARGET_SID,
+} from '../../constants.js';
 
-const Conf = require('conf');
+import Conf, { Schema } from 'conf';
 
 const conf = new Conf({
-  schema: config.storeSchema,
+  schema: config.storeSchema as Schema<any>,
+  projectName: 'adbb',
 });
 
 const store = {
@@ -45,7 +50,7 @@ const store = {
   },
 
   getLastPkgNoticeTime(): number {
-    return conf.get(STORE_LAST_PKG_NOTICE_TIME, 0);
+    return conf.get(STORE_LAST_PKG_NOTICE_TIME, 0) as number;
   },
 
   savePkgNoticeTime() {

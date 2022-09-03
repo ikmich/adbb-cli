@@ -1,8 +1,8 @@
-import BaseCommand from './BaseCommand';
-import buildAdbCommand from '../helpers/build-adb-command';
-import conprint from '../helpers/conprint';
-import getDevices from '../helpers/get-devices';
-import parseError from '../errors/parse-error';
+import BaseCommand from './BaseCommand.js';
+import buildAdbCommand from '../helpers/build-adb-command.js';
+import conprint from '../helpers/conprint.js';
+import getDevices from '../helpers/get-devices.js';
+import parseError from '../errors/parse-error.js';
 
 class DevicesCommand extends BaseCommand {
   constructor(commandInfo) {

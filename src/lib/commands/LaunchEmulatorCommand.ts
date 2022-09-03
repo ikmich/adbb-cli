@@ -1,9 +1,9 @@
-import BaseCommand from './BaseCommand';
-import execShellCmd from '../helpers/exec-shell-cmd';
-import getEmulators from '../helpers/get-emulators';
-import askSelectEmulator from '../ask/ask-select-emulator';
-import conprint from '../helpers/conprint';
-import chalk = require('chalk');
+import BaseCommand from './BaseCommand.js';
+import execShellCmd from '../helpers/exec-shell-cmd.js';
+import getEmulators from '../helpers/get-emulators.js';
+import askSelectEmulator from '../ask/ask-select-emulator.js';
+import conprint from '../helpers/conprint.js';
+import chalk from 'chalk';
 
 class LaunchEmulatorCommand extends BaseCommand {
   constructor(commandInfo) {
@@ -29,7 +29,7 @@ class LaunchEmulatorCommand extends BaseCommand {
         }
       }
 
-      let emulator = '';
+      let emulator: string;
       if (emulators && emulators.length > 0) {
         console.log(chalk.blue('Multiple emulators available'));
         emulator = await askSelectEmulator();

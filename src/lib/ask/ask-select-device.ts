@@ -1,11 +1,11 @@
-import getDevices from '../helpers/get-devices';
+import getDevices from '../helpers/get-devices.js';
 import inquirer from 'inquirer';
-import Device from '../core/Device';
+import Device from '../core/Device.js';
 
 const askSelectDevice = async () => {
   const devices: Device[] = await getDevices();
   if (devices && devices.length > 1) {
-    const deviceIds = devices.map(deviceInfo => {
+    const deviceIds = devices.map((deviceInfo) => {
       return deviceInfo.sid;
     });
 

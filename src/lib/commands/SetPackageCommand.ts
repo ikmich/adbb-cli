@@ -1,11 +1,11 @@
-import BaseCommand from './BaseCommand';
-import { yes } from '../helpers/utils';
-import conprint from '../helpers/conprint';
-import askEnterPackage from '../ask/ask-enter-package';
-import store from '../helpers/store';
-import { CMD_UNSET_PACKAGE, CMD_UNSET_PKG } from '../../command-constants';
-import parseError from '../errors/parse-error';
-import chalk = require('chalk');
+import BaseCommand from './BaseCommand.js';
+import { yes } from '../helpers/utils.js';
+import conprint from '../helpers/conprint.js';
+import askEnterPackage from '../ask/ask-enter-package.js';
+import store from '../helpers/store.js';
+import { CMD_UNSET_DEFAULT_PACKAGE, CMD_UNSET_DEFAULT_PKG } from '../../command-constants.js';
+import parseError from '../errors/parse-error.js';
+import chalk from 'chalk';
 
 class SetPackageCommand extends BaseCommand {
   constructor(commandInfo) {
@@ -21,8 +21,8 @@ class SetPackageCommand extends BaseCommand {
     await super.run();
 
     switch (this.name) {
-      case CMD_UNSET_PACKAGE:
-      case CMD_UNSET_PKG:
+      case CMD_UNSET_DEFAULT_PACKAGE:
+      case CMD_UNSET_DEFAULT_PKG:
         store.unsetPackage();
         SetPackageCommand.unsetPkg();
         return;

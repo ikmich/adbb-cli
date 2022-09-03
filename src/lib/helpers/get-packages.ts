@@ -1,9 +1,9 @@
-import execShellCmd from './exec-shell-cmd';
-import buildAdbCommand from './build-adb-command';
-import { yes } from './utils';
-import conprint from './conprint';
-import parseError from '../errors/parse-error';
-import config from '../../config/config';
+import execShellCmd from './exec-shell-cmd.js';
+import buildAdbCommand from './build-adb-command.js';
+import { yes } from './utils.js';
+import conprint from './conprint.js';
+import parseError from '../errors/parse-error.js';
+import config from '../../config/config.js';
 
 const getPackages = async (filter: string, sid?: string): Promise<string[]> => {
   try {
