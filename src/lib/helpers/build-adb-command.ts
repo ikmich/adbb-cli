@@ -17,8 +17,10 @@ const buildAdbCommand = async (argsString: string, sid?: string) => {
     console.log({ cachedSid });
   }
 
-  if (yes(cachedSid)) {
-    sid = cachedSid;
+  if (!sid) {
+    if (yes(cachedSid)) {
+      sid = cachedSid;
+    }
   }
 
   let commandString = 'adb';

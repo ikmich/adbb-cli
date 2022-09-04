@@ -2,7 +2,7 @@
 
 ## Usage on Windows OS
 
-- Shell commands specific to Windows OS are **not currently implemented**. Full support for Windows OS is planned for a
+- Shell commands specific to Windows OS are not currently implemented. Full support for Windows OS is planned for a
   future release.
 
 ## Installation
@@ -232,3 +232,10 @@ adbb path org.app.cool_app
 # Get path for applications that match a filter
 adbb path :cool
 ```
+
+# Changelogs
+## 1.0.0
+- Bugfix: ScreenshotCommand logging wrong screenshot file path
+- Rename command: set-package(set-pkg) -> set-default-package (set-default-pkg)
+- Rename command: unset-package(unset-pkg) -> unset-default-package (unset-default-pkg)
+- Discard use of moment library in favour of date-fns

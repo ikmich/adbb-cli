@@ -33,7 +33,7 @@ export function arrayContains(haystack: any[], needle: any): boolean {
 }
 
 export function arrayContainsAnyOf(haystack: any[], needles: any[]): boolean {
-  for (let item of haystack) {
+  for (let item of needles) {
     if (haystack.indexOf(item) > -1) {
       return true;
     }

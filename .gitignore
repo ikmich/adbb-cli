@@ -1,8 +1,19 @@
-.idea/
 node_modules
 dist
-_developer
-install_dev.sh
-.help.txt
+build
+
+# npm pack output
 *.tgz
 package/
+
+# Custom
+_dev
+_developer
+.developer
+.dev
+help.txt
+install_dev.sh
+
+# IDE
+.idea/
+.vscode
