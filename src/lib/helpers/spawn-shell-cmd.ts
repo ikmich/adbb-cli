@@ -1,8 +1,8 @@
 import { ChildProcessWithoutNullStreams, SendHandle, Serializable, spawn } from 'child_process';
-import { ISpawnCallbacks } from '../../types/ISpawnCallbacks';
 
 // const os = require('os');
 import os from 'os';
+import { ISpawnCallbacks } from '../../types/types.js';
 
 const osType = os.platform();
 

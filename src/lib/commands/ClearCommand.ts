@@ -7,8 +7,13 @@ import conprint from '../helpers/conprint.js';
 import store from '../helpers/store.js';
 import askSelectPackage from '../ask/ask-select-package.js';
 
+import { ICommandInfo } from '../../types/types.js';
+
+/**
+ * Command to clear an app's data.
+ */
 class ClearCommand extends BaseCommand {
-  constructor(commandInfo) {
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
   }
 

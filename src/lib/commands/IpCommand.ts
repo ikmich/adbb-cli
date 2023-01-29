@@ -7,11 +7,13 @@ import { yes } from '../helpers/utils.js';
 import { NO_IP_ADDRESS_FOUND } from '../errors/error-constants.js';
 import parseError from '../errors/parse-error.js';
 
+import { ICommandInfo } from '../../types/types.js';
+
 /**
  * Command to get the device's IP address.
  */
 class IpCommand extends BaseCommand {
-  constructor(commandInfo) {
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
   }
 
@@ -19,7 +21,7 @@ class IpCommand extends BaseCommand {
     await super.run();
 
     try {
-      const ipManager = new IpManager();
+      const ipManager: IpManager = new IpManager();
       const netConfigs: NetConfig[] = await ipManager.getDeviceNetworkConfigs(this.options.sid);
       let output = '';
       if (netConfigs && netConfigs.length > 0) {

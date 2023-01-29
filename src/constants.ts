@@ -1,7 +1,9 @@
-export const LOOPBACK_ADDRESS = '127.0.0.1';
-export const IP_F_INET_ADDR = 'IP_F_INET_ADDR';
-export const IFCONFIG = 'IFCONFIG';
-export const STORE_REF_PACKAGE = 'ADBB_SESSION_PACKAGE';
-export const STORE_LAST_PKG_NOTICE_TIME = 'ADBB_LAST_PKG_NOTICE_TIME';
-export const STORE_LAST_WIFI_IP = 'ADBB_LAST_WIFI_IP';
-export const STORE_TARGET_SID = 'ADBB_TARGET_SID';
+export const LOOPBACK_ADDRESS: string = '127.0.0.1';
+export const IP_F_INET_ADDR: string = 'IP_F_INET_ADDR';
+export const IFCONFIG: string = 'IFCONFIG';
+export const STORE_REF_PACKAGE: string = 'ADBB_SESSION_PACKAGE';
+export const STORE_LAST_PKG_NOTICE_TIME: string = 'ADBB_LAST_PKG_NOTICE_TIME';
+export const STORE_LAST_WIFI_IP: string = 'ADBB_LAST_WIFI_IP';
+export const STORE_TARGET_SID: string = 'ADBB_TARGET_SID';
+export const STORE_LAST_RECORDING: string = 'ADBB_LAST_RECORDING';
+export const DIR_RECORDINGS: string = '/sdcard/adbb/recordings';

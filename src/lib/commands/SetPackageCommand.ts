@@ -7,8 +7,13 @@ import { CMD_UNSET_DEFAULT_PACKAGE, CMD_UNSET_DEFAULT_PKG } from '../../command-
 import parseError from '../errors/parse-error.js';
 import chalk from 'chalk';
 
+import { ICommandInfo } from '../../types/types.js';
+
+/**
+ * Set a package that should be used in future commands.
+ */
 class SetPackageCommand extends BaseCommand {
-  constructor(commandInfo) {
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
   }
 

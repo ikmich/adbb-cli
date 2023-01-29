@@ -14,15 +14,14 @@ import ip from 'ip';
 
 class IpManager {
   async getDeviceNetworkConfigs(deviceSid?: string): Promise<NetConfig[]> {
-    let commandString = `shell ip -f inet addr | ${config.cmd.grep} inet`;
-
-    let shellCommand = await buildAdbCommand(commandString, deviceSid);
+    let commandString: string = `shell ip -f inet addr | ${config.cmd.grep} inet`;
+    let shellCommand: string = await buildAdbCommand(commandString, deviceSid);
     let netConfigs: NetConfig[] = [];
 
     try {
-      let cmdOutput = await execShellCmd(shellCommand);
+      let cmdOutput: string = await execShellCmd(shellCommand);
 
-      let rexConfigString = /(inet \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,3}\s+.*scope\s+\w+\s+\w+$)/gim;
+      let rexConfigString: RegExp = /(inet \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,3}\s+.*scope\s+\w+\s+\w+$)/gim;
       let allConfigsMatches: any = cmdOutput.match(rexConfigString);
 
       if (allConfigsMatches && allConfigsMatches.length > 0) {
@@ -31,7 +30,7 @@ class IpManager {
             // console.log(`>> config: ${idx}`, configString);
           }
 
-          let rex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,3})\s+.*scope\s+(\w+)\s+(\w+$)/i;
+          let rex: RegExp = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,3})\s+.*scope\s+(\w+)\s+(\w+$)/i;
           let singleConfigMatches: any = configString.match(rex);
           if (singleConfigMatches && singleConfigMatches.length > 0) {
             let ip = singleConfigMatches[1].replace(/\/\d{1,3}$/, '');
@@ -114,10 +113,10 @@ class IpManager {
    */
   async ping(ip: string): Promise<TPingResult> {
     return new Promise((resolve, reject) => {
-      let output = '';
+      let output: string = '';
       try {
         let childProcess: ChildProcessWithoutNullStreams = spawnShellCmd(`ping -c ${config.PING_COUNT} ${ip}`, {
-          close: function (code: number, p2: NodeJS.Signals) {
+          close: function(code: number, p2: NodeJS.Signals) {
             if (code === 0) {
               let lines: string[] = output.split(/\n|\r\n/);
               // First line is a summary info line, and not relevant in ping results for calculating timeout rate
@@ -144,14 +143,14 @@ class IpManager {
               });
             }
           },
-          error: function (e: Error) {
+          error: function(e: Error) {
             reject(e);
           },
           // message: function(ser: Serializable, sh: SendHandle) {},
-          stderr: function (stream: Buffer, stderr: string) {
+          stderr: function(stream: Buffer, stderr: string) {
             reject(new Error(stderr));
           },
-          stdout: function (stream: Buffer, stdout: string) {
+          stdout: function(stream: Buffer, stdout: string) {
             output += stdout;
             // Print ping result line
             conprint.info(removeEndLines(stdout, 1));

@@ -9,11 +9,11 @@ const config = {
 
   environment: process.env.NODE_ENV || 'production',
 
-  isDev: function () {
+  isDev: function() {
     return this.environment === 'development';
   },
 
-  isProduction: function () {
+  isProduction: function() {
     return this.environment === 'production';
   },
 
@@ -33,7 +33,7 @@ const config = {
 
   ipRegex: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/,
 
-  filterDirectiveRegex: /^([:*]+)/,
+  filterDirectiveRegex: /^([:*])/,
 
   PORT_TCP: 5555,
 
@@ -56,7 +56,7 @@ const config = {
   },
 
   cmd: {
-    grep: (function () {
+    grep: (function() {
       if (isWindowsOs) {
         return 'findstr';
       }

@@ -1,4 +1,3 @@
-import { ICommandInfo } from '../../types/ICommandInfo.js';
 import WifiCommand from '../commands/WifiCommand.js';
 import DevicesCommand from '../commands/DevicesCommand.js';
 import ListPackagesCommand from '../commands/ListPackagesCommand.js';
@@ -14,15 +13,16 @@ import {
   CMD_EMU,
   CMD_EMULATOR,
   CMD_IP,
-  CMD_SET_DEFAULT_PACKAGE,
   CMD_PACKAGES,
   CMD_PATH,
   CMD_PING,
-  CMD_SET_DEFAULT_PKG,
   CMD_PKGS,
   CMD_RESET_SERVER,
+  CMD_SCREEN_REC,
+  CMD_SCREEN_RECORD,
   CMD_SCREENSHOT,
-  CMD_SCRSHOT,
+  CMD_SET_DEFAULT_PACKAGE,
+  CMD_SET_DEFAULT_PKG,
   CMD_UNINSTALL,
   CMD_UNSET_DEFAULT_PACKAGE,
   CMD_UNSET_DEFAULT_PKG,
@@ -38,6 +38,8 @@ import { arrayContainsAnyOf, isEmpty, no } from './utils.js';
 import PathCommand from '../commands/PathCommand.js';
 import ScreenshotCommand from '../commands/ScreenshotCommand.js';
 import config from '../../config/config.js';
+import ScreenRecordCommand from '../commands/screenrecord/ScreenRecordCommand.js';
+import { ICommandInfo } from '../../types/types.js';
 
 const commandDispatcher = {
   dispatch: async (commandInfo: ICommandInfo) => {
@@ -118,14 +120,19 @@ const commandDispatcher = {
         await new PathCommand(commandInfo).run();
         break;
 
-      case CMD_SCREENSHOT:
-      case CMD_SCRSHOT: {
+      case CMD_SCREENSHOT: {
         await new ScreenshotCommand(commandInfo).run();
         break;
       }
 
+      case CMD_SCREEN_RECORD:
+      case CMD_SCREEN_REC: {
+        await new ScreenRecordCommand(commandInfo).run();
+        break;
+      }
+
       default:
-        const cliCommand = await getCommandArgsString();
+        const cliCommand = getCommandArgsString();
 
         if (cliCommand) {
           if (cliCommand === 'shell') {
@@ -133,7 +140,7 @@ const commandDispatcher = {
             break;
           }
 
-          conprint.info('Running regular adb command...');
+          conprint.info('Running adb command directly...');
 
           try {
             const shellCmd = `adb ${cliCommand}`;

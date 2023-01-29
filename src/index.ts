@@ -16,8 +16,9 @@ import {
   CMD_PKG,
   CMD_PKGS,
   CMD_RESET_SERVER,
+  CMD_SCREEN_REC,
+  CMD_SCREEN_RECORD,
   CMD_SCREENSHOT,
-  CMD_SCRSHOT,
   CMD_SET_DEFAULT_PACKAGE,
   CMD_SET_DEFAULT_PKG,
   CMD_UNINSTALL,
@@ -34,11 +35,10 @@ const argv = yargs(hideBin(process.argv))
   .command(CMD_WIFI, 'Connect the device via wifi')
   .command(CMD_CLEAR, 'Clear data for application')
   .command(CMD_EMULATOR, 'Start an emulator. Shows available emulators for user to select')
-  .alias(CMD_EMULATOR, [CMD_EMU])
+  .alias(CMD_EMU, [CMD_EMULATOR])
   .command(CMD_IP, 'Show the device IP address(es)')
   .command(CMD_RESET_SERVER, 'Reset adb server')
   .command(CMD_SCREENSHOT, 'Take screenshot of the device screen')
-  .alias(CMD_SCRSHOT, [CMD_SCREENSHOT])
   .command(CMD_PATH, 'Get path of installed application package')
   .command(CMD_PING, 'Ping the device ip address to check the wifi connection')
   .command(CMD_UNSET_DEFAULT_PACKAGE, 'Unset currently set default reference package')
@@ -47,6 +47,8 @@ const argv = yargs(hideBin(process.argv))
   .alias(CMD_SET_DEFAULT_PACKAGE, CMD_SET_DEFAULT_PKG)
   .command(CMD_RESET_SERVER, 'Reset the adb connection')
   .command(CMD_UNINSTALL, 'Uninstall an application')
+  .command(CMD_SCREEN_RECORD, 'Record the screen for maximum of 3 minutes')
+  .alias(CMD_SCREEN_RECORD, CMD_SCREEN_REC)
 
   .options(<any>yargsOptions)
 
@@ -57,6 +59,3 @@ const commandInfo = argsParser.parse(argv);
 commandDispatcher.dispatch(commandInfo).catch((err) => {
   console.error(err);
 });
-
-// console.log('>> process.argv:', process.argv);
-// console.log('>> argv:', argv);

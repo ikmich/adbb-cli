@@ -1,5 +1,4 @@
 import BaseCommand from './BaseCommand.js';
-import { ICommandInfo } from '../../types/ICommandInfo.js';
 import { isEmpty, no, yes } from '../helpers/utils.js';
 import askEnterPackage from '../ask/ask-enter-package.js';
 import conprint from '../helpers/conprint.js';
@@ -8,7 +7,11 @@ import askInput from '../ask/ask-input.js';
 import parseError from '../errors/parse-error.js';
 import askSelectPackage from '../ask/ask-select-package.js';
 import buildAdbCommand from '../helpers/build-adb-command.js';
+import { ICommandInfo } from '../../types/types.js';
 
+/**
+ * Command to uninstall an installed package.
+ */
 class UninstallCommand extends BaseCommand {
   constructor(commandInfo: ICommandInfo) {
     super(commandInfo);

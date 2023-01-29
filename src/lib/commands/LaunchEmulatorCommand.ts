@@ -5,8 +5,10 @@ import askSelectEmulator from '../ask/ask-select-emulator.js';
 import conprint from '../helpers/conprint.js';
 import chalk from 'chalk';
 
+import { ICommandInfo } from '../../types/types.js';
+
 class LaunchEmulatorCommand extends BaseCommand {
-  constructor(commandInfo) {
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
   }
 

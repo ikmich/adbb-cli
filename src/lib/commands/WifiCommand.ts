@@ -15,46 +15,58 @@ import askSelect from '../ask/ask-select.js';
 import askInput from '../ask/ask-input.js';
 import parseError from '../errors/parse-error.js';
 
+import { ICommandInfo } from '../../types/types.js';
+
+/**
+ * Command to connect the device via Wi-Fi for debugging.
+ */
 class WifiCommand extends BaseCommand {
-  constructor(commandInfo) {
+  private ipManager: IpManager;
+
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
+    this.ipManager = new IpManager();
+  }
+
+  /**
+   * Gets the ip address to be disconnected.
+   * @private
+   */
+  private async getIpForDisconnect() {
+    const devices: Device[] = await getDevices();
+    const tcpDevices: Device[] = [];
+
+    for (let d of devices) {
+      if (d.isTcpConnection()) {
+        tcpDevices.push(d);
+      }
+    }
+
+    if (tcpDevices.length > 0) {
+      if (tcpDevices.length === 1) {
+        // Only one device is currently connected via tcpip. Disconnect that one.
+        return tcpDevices[0].sid;
+      } else {
+        // Multiple devices are currently connected via tcpip.
+        // Ask user to select device to disconnect:
+        const sidOptions: string[] = tcpDevices.map((d: Device) => d.sid);
+        return await askSelect('tcpDevice', 'Select tcp-connected device', sidOptions);
+      }
+    }
+
+    return this.ipManager.getDeviceIp();
   }
 
   async run() {
     await super.run();
 
-    const ipManager = new IpManager();
-
-    const getIpForDisconnect = async () => {
-      const devices: Device[] = await getDevices();
-      const tcpDevices: Device[] = [];
-      for (let d of devices) {
-        if (d.isTcpConnection()) {
-          tcpDevices.push(d);
-        }
-      }
-
-      if (tcpDevices.length > 0) {
-        if (tcpDevices.length === 1) {
-          // Only one device is currently connected via tcpip. Disconnect that one.
-          return tcpDevices[0].sid;
-        } else {
-          // Multiple devices are currently connected via tcpip.
-          // Ask user to select device to disconnect:
-          const choices: string[] = tcpDevices.map((d: Device) => d.sid);
-          return await askSelect('tcpDevice', 'Select tcp-connected device', choices);
-        }
-      }
-
-      return ipManager.getDeviceIp();
-    };
-
-    if (this.options.disconnect) {
+    const isDisconnectAction = this.options.disconnect || this.args.includes('disconnect');
+    if (isDisconnectAction) {
       console.log('Disconnecting...');
 
       try {
-        const adbCmd = await buildAdbCommand(`disconnect ${await getIpForDisconnect()}`, this.options.sid);
-        const output = await this.exec(adbCmd);
+        const adbCmd: string = await buildAdbCommand(`disconnect ${await this.getIpForDisconnect()}`, this.options.sid);
+        const output: string = await this.exec(adbCmd);
         conprint.info(output);
       } catch (e) {
         e = parseError(e);
@@ -64,9 +76,9 @@ class WifiCommand extends BaseCommand {
       return;
     }
 
-    let deviceIp;
+    let deviceIp: string;
     try {
-      deviceIp = await ipManager.getDeviceIp();
+      deviceIp = await this.ipManager.getDeviceIp();
     } catch (e) {
       conprint.error(e.message);
       return;
@@ -78,7 +90,7 @@ class WifiCommand extends BaseCommand {
     }
 
     try {
-      const hostIp = await ipManager.getHostIpInNetwork(deviceIp);
+      const hostIp: string = await this.ipManager.getHostIpInNetwork(deviceIp);
 
       if (no(hostIp)) {
         conprint.error(NO_HOST_IP_IN_NETWORK);
@@ -90,12 +102,12 @@ class WifiCommand extends BaseCommand {
         console.log('>> host ip:', hostIp);
       }
 
-      if (await ipManager.checkAreIPsInSameNetwork(deviceIp, hostIp)) {
+      if (this.ipManager.checkAreIPsInSameNetwork(deviceIp, hostIp)) {
         // => Same network
         try {
-          /*const result =*/
+          /* const result = */
           await this.listenTcp();
-          await setTimeout(async () => {
+          setTimeout(async () => {
             await askInput('done', 'Unplug usb and press ENTER/RETURN');
             await this.connectDeviceIp(deviceIp);
           }, 400);
@@ -115,9 +127,9 @@ class WifiCommand extends BaseCommand {
   private async listenTcp(): Promise<{ code: number; output: string }> {
     let output = '';
     return new Promise(async (resolve, reject) => {
-      const adbTcpipCmd = await buildAdbCommand(`tcpip ${config.PORT_TCP}`, this.options.sid);
+      const adbTcpIpCmd = await buildAdbCommand(`tcpip ${config.PORT_TCP}`, this.options.sid);
 
-      spawnShellCmd(adbTcpipCmd, {
+      spawnShellCmd(adbTcpIpCmd, {
         close: async (code: number, signal: NodeJS.Signals) => {
           if (code !== 0) {
             // Wrong exit code
@@ -126,13 +138,13 @@ class WifiCommand extends BaseCommand {
 
           resolve({ code, output });
         },
-        error: function (e: Error) {
+        error: function(e: Error) {
           reject(e);
         },
-        stderr: function (stream: Buffer, stderr: string) {
+        stderr: function(stream: Buffer, stderr: string) {
           reject(new Error(stderr));
         },
-        stdout: async function (stream: Buffer, tcpipOutput: string) {
+        stdout: async function(stream: Buffer, tcpipOutput: string) {
           output += tcpipOutput;
           conprint.info(tcpipOutput);
         },
@@ -146,20 +158,20 @@ class WifiCommand extends BaseCommand {
     return new Promise(async (resolve, reject) => {
       const adbConnectCmd = await buildAdbCommand(`connect ${deviceIp}:${config.PORT_TCP}`, this.options.sid);
       spawnShellCmd(adbConnectCmd, {
-        close: function (code: number, signal: NodeJS.Signals) {
+        close: function(code: number, signal: NodeJS.Signals) {
           if (code !== 0) {
             throw new ShellExitError(code);
           }
 
           resolve({ code, output: _output });
         },
-        error: function (e: Error) {
+        error: function(e: Error) {
           reject(e);
         },
-        stderr: function (stream: Buffer, stderr: string) {
+        stderr: function(stream: Buffer, stderr: string) {
           reject(new Error(stderr));
         },
-        stdout: function (stream: Buffer, output: string) {
+        stdout: function(stream: Buffer, output: string) {
           // Connected.
           _output += output;
           store.saveWifiIp(deviceIp);

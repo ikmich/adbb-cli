@@ -2,14 +2,16 @@ import { yes } from './utils.js';
 import config from '../../config/config.js';
 import {
   STORE_LAST_PKG_NOTICE_TIME,
+  STORE_LAST_RECORDING,
   STORE_LAST_WIFI_IP,
   STORE_REF_PACKAGE,
   STORE_TARGET_SID,
 } from '../../constants.js';
 
-import Conf, { Schema } from 'conf';
+import { Schema } from 'conf';
+import Conf from 'conf';
 
-const conf = new Conf({
+const conf = new Conf.default({
   schema: config.storeSchema as Schema<any>,
   projectName: 'adbb',
 });
@@ -89,6 +91,18 @@ const store = {
 
   clearTargetSid() {
     this.del(STORE_TARGET_SID);
+  },
+
+  saveLastRecording(path: string) {
+    this.save(STORE_LAST_RECORDING, path);
+  },
+
+  getLastRecording(): string {
+    return this.get(STORE_LAST_RECORDING) ?? '';
+  },
+
+  clearLastRecording() {
+    this.del(STORE_LAST_RECORDING);
   },
 };
 

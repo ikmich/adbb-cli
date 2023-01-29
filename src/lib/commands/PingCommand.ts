@@ -3,8 +3,10 @@ import conprint from '../helpers/conprint.js';
 import parseError from '../errors/parse-error.js';
 import IpManager, { TPingResult } from '../core/IpManager.js';
 
+import { ICommandInfo } from '../../types/types.js';
+
 class PingCommand extends BaseCommand {
-  constructor(commandInfo) {
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
   }
 

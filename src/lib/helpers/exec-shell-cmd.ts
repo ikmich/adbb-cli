@@ -2,6 +2,11 @@ import { exec, ExecException } from 'child_process';
 import config from '../../config/config.js';
 import { removeEndLines } from './utils.js';
 
+/**
+ * Execute a shell command.
+ *
+ * @param cmd
+ */
 const execShellCmd = async (cmd: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     exec(cmd, (error: ExecException | null, stdout: string, stderr: string) => {

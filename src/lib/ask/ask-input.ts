@@ -1,11 +1,12 @@
-import inquirer from 'inquirer';
+import inquirer, { Answers } from 'inquirer';
 
 const askInput = async (name: string = 'input', message: string = 'Enter input') => {
-  const result = await inquirer.prompt({
+  const questionObj: Record<string, any> = {
     type: 'input',
     name,
     message,
-  });
+  };
+  const result: Answers = await inquirer.prompt(questionObj);
 
   return result[name];
 };

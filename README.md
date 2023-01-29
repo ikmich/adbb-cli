@@ -22,6 +22,8 @@ yarn global add adbb
 ## Command summary
 
 ```
+adbb [command]
+
 Commands:
   adbb devices                List connected devices
   adbb packages               List installed packages
@@ -30,15 +32,16 @@ Commands:
   adbb emulator               Start an emulator. Shows available emulators for u
                               ser to select
   adbb ip                     Show the device IP address(es)
-  adbb reset-server           Reset adb server
+  adbb restart                Reset adb server
   adbb screenshot             Take screenshot of the device screen
   adbb path                   Get path of installed application package
   adbb ping                   Ping the device ip address to check the wifi conne
                               ction
   adbb unset-default-package  Unset currently set default reference package
   adbb set-default-package    Set default reference package for commands
-  adbb reset-server           Reset the adb connection
+  adbb restart                Reset the adb connection
   adbb uninstall              Uninstall an application
+  adbb screenrecord           Record the screen for maximum of 3 minutes
 
 Options:
       --version          Show version number                           [boolean]
@@ -51,6 +54,9 @@ Options:
       --unset            Unset a value                                 [boolean]
   -l, --list             Display items                                 [boolean]
       --open             Open file or resource                         [boolean]
+      --get                                                            [boolean]
+      --getAll                                                         [boolean]
+      --purge                                                          [boolean]
       --help             Show help                                     [boolean]
 ```
 
@@ -179,7 +185,7 @@ adbb clear :cool_
 
 Get the device IP address(es).
 
-#### `reset-server`
+#### `restart`
 
 Kill and restart the adb server. It's recommended to run this with the device connected via USB.
 
@@ -209,7 +215,7 @@ tcp connection.
 adbb ping
 ```
 
-#### `screenshot` | `scrshot`
+#### `screenshot`
 
 Take a screenshot of the device's currently active screen. The image file will be saved in the current directory from
 which this command was run.
@@ -220,6 +226,25 @@ adbb scrshot
 
 # Open the image file after screen capture
 adbb screenshot --open
+```
+
+#### `screenrec`
+
+Take a recording of the device screen for a max of 3 minutes. The video file will be saved on the device. You can
+extract the video recording files using various options of the `screenrec` command.
+```shell
+# Initiate recording
+adbb screenrec
+
+# Extract the latest recording from device to host computer and delete from device.
+adbb screenrec pull
+
+# Extract all the recordings from device to host computer and delete from device.
+adbb screenrec pull --all
+
+# Remove all recording files
+adbb screenrec clear
+adbb screenrec purge
 ```
 
 #### `path <package>`
@@ -234,7 +259,9 @@ adbb path :cool
 ```
 
 # Changelogs
+
 ## 1.0.0
+
 - Bugfix: ScreenshotCommand logging wrong screenshot file path
 - Rename command: set-package(set-pkg) -> set-default-package (set-default-pkg)
 - Rename command: unset-package(unset-pkg) -> unset-default-package (unset-default-pkg)

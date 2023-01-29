@@ -1,13 +1,12 @@
 {
   "name": "adbb",
-  "version": "1.0.0",
-  "description": "A little boost to the Android ADB command set, to make your Android development work easier.",
+  "version": "1.2.0",
+  "description": "Android adb command helper utility, for easier Android development.",
   "main": "dist/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node src/index.ts",
     "build": "rm -rf ./dist && tsc",
     "clean": "rm -rf ./dist",
-    "install-dev": "install_dev.sh",
     "tscheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
     "prepare": "npm run build"
@@ -40,18 +39,19 @@
     "conf": "^10.2.0",
     "cross-env": "^7.0.3",
     "date-fns": "^2.29.2",
-    "inquirer": "^9.1.1",
+    "inquirer": "^9.2.10",
     "ip": "^1.1.8",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.2",
-    "yargs": "^17.5.1"
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
+    "@types/inquirer": "^9.0.3",
     "@types/ip": "^1.1.0",
     "@types/node": "^18.7.14",
-    "@types/yargs": "^17.0.12"
+    "@types/yargs": "^17.0.24"
   },
   "files": [
     "dist/",

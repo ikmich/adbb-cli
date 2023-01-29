@@ -1,5 +1,5 @@
-import { IDeviceInfo } from '../../types/IDeviceInfo.js';
 import config from '../../config/config.js';
+import { IDeviceInfo } from '../../types/types.js';
 
 class Device implements IDeviceInfo {
   readonly device: string;
@@ -28,6 +28,10 @@ class Device implements IDeviceInfo {
 
   isOnline(): boolean {
     return this.state.toLowerCase() == 'device';
+  }
+
+  isEmulator(): boolean {
+    return this.device.startsWith('emulator');
   }
 }
 

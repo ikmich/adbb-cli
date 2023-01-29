@@ -4,8 +4,10 @@ import conprint from '../helpers/conprint.js';
 import { no, yes } from '../helpers/utils.js';
 import parseError from '../errors/parse-error.js';
 
+import { ICommandInfo } from '../../types/types.js';
+
 class ListPackagesCommand extends BaseCommand {
-  constructor(commandInfo) {
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
   }
 

@@ -1,5 +1,3 @@
-import { ICommandOptions } from '../../types/ICommandOptions.js';
-import { ICommandInfo } from '../../types/ICommandInfo.js';
 import execShellCmd from '../helpers/exec-shell-cmd.js';
 import ifConcat from '../helpers/if-concat.js';
 import parseError from '../errors/parse-error.js';
@@ -16,6 +14,7 @@ import {
   CMD_UNSET_DEFAULT_PACKAGE,
   CMD_UNSET_DEFAULT_PKG,
 } from '../../command-constants.js';
+import { ICommandInfo, ICommandOptions } from '../../types/types.js';
 
 class BaseCommand {
   public commandInfo: ICommandInfo;
@@ -48,8 +47,9 @@ class BaseCommand {
    */
   protected checkResolveArgFilter() {
     for (let arg of this.args) {
-      if (no(this.options.filter) && config.filterDirectiveRegex.test(arg)) {
-        // => Filter directive used for this arg. Use this as the filter.
+      let argIsFilter = config.filterDirectiveRegex.test(arg);
+      if (no(this.options.filter) && argIsFilter) {
+        // => Filter directive used for this arg. Use this to set the value of filter arg.
         this.options.filter = arg.replace(config.filterDirectiveRegex, '');
         break;
       }
@@ -57,21 +57,21 @@ class BaseCommand {
   }
 
   isDisconnectAction() {
-    const has_disconnect_arg = this.args.some((arg) => {
+    const hasDisconnectArg = this.args.some((arg) => {
       return arg === 'disconnect';
     });
 
-    const has_disconnect_option = yes(this.options.disconnect);
-    return has_disconnect_arg || has_disconnect_option;
+    const hasDisconnectOption = yes(this.options.disconnect);
+    return hasDisconnectArg || hasDisconnectOption;
   }
 
   async isSidRequired() {
-    const is_devices_command = this.name === 'devices';
-    const is_disconnect_action = this.isDisconnectAction();
-    const is_set_pkg = [CMD_SET_DEFAULT_PACKAGE, CMD_SET_DEFAULT_PKG].includes(this.name);
-    const is_unset_pkg = [CMD_UNSET_DEFAULT_PACKAGE, CMD_UNSET_DEFAULT_PKG].includes(this.name);
+    const isDevicesCommand = this.name === 'devices';
+    const isDisconnectAction = this.isDisconnectAction();
+    const isSetPkg = [CMD_SET_DEFAULT_PACKAGE, CMD_SET_DEFAULT_PKG].includes(this.name);
+    const isUnsetPkg = [CMD_UNSET_DEFAULT_PACKAGE, CMD_UNSET_DEFAULT_PKG].includes(this.name);
 
-    return !is_devices_command && !is_disconnect_action && !is_set_pkg && !is_unset_pkg;
+    return !isDevicesCommand && !isDisconnectAction && !isSetPkg && !isUnsetPkg;
   }
 
   /**
@@ -102,9 +102,9 @@ class BaseCommand {
     }
   }
 
-  done() {
-    store.clearTargetSid();
-  }
+  // done() {
+  //   store.clearTargetSid();
+  // }
 
   protected async exec(cmd: string): Promise<string> {
     try {

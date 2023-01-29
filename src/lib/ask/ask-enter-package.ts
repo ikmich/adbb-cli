@@ -1,5 +1,10 @@
 import inquirer from 'inquirer';
 
+/**
+ * Ask the user to specify a package name.
+ *
+ * @param label
+ */
 const askEnterPackage = async (label: string = 'Enter application package (e.g. com.package.app):') => {
   const answer = await inquirer.prompt({
     type: 'input',

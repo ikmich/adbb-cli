@@ -1,5 +1,6 @@
 import config from '../../config/config.js';
-import { ICommandInfo } from '../../types/ICommandInfo.js';
+
+import { ICommandInfo } from '../../types/types.js';
 
 const argsParser = {
   parse: (argv: any): ICommandInfo => {

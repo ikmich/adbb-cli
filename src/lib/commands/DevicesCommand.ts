@@ -3,9 +3,12 @@ import buildAdbCommand from '../helpers/build-adb-command.js';
 import conprint from '../helpers/conprint.js';
 import getDevices from '../helpers/get-devices.js';
 import parseError from '../errors/parse-error.js';
+import Device from '../core/Device.js';
+
+import { ICommandInfo } from '../../types/types.js';
 
 class DevicesCommand extends BaseCommand {
-  constructor(commandInfo) {
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
   }
 
@@ -16,7 +19,7 @@ class DevicesCommand extends BaseCommand {
       if (this.options.verbose || this.options.json || this.options.grid) {
         switch (true) {
           case this.options.grid: {
-            const devices = await getDevices();
+            const devices: Device[] = await getDevices();
             console.table(devices);
             break;
           }

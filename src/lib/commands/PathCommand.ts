@@ -7,8 +7,10 @@ import store from '../helpers/store.js';
 import askInput from '../ask/ask-input.js';
 import askSelectPackage from '../ask/ask-select-package.js';
 
+import { ICommandInfo } from '../../types/types.js';
+
 class PathCommand extends BaseCommand {
-  constructor(commandInfo) {
+  constructor(commandInfo: ICommandInfo) {
     super(commandInfo);
   }
 

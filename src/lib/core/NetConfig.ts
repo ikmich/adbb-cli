@@ -1,7 +1,7 @@
 class NetConfig {
-  public ip: string = '';
-  public scope: string = '';
-  public netInterface: string = '';
+  public readonly ip: string = '';
+  public readonly scope: string = '';
+  public readonly netInterface: string = '';
 
   constructor(ip: string, scope: string, netInterface: string) {
     this.ip = ip;
